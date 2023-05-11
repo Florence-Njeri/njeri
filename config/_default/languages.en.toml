@@ -1,0 +1,29 @@
+languageCode = "en"
+languageName = "English"
+displayName = "EN"
+isoCode = "en"
+weight = 1
+rtl = false
+
+title = "Florence Njeri"
+description = "Cybersecurity research and technical write ups"
+# copyright = "Copy, _right?_ :thinking_face:"
+
+dateFormat = "2 January 2006"
+
+[params]
+  # mainSections = ["section1", "section2"]
+
+[author]
+  name = "Florence Njeri"
+  image = "img/author.jpg"
+  headline = "Does the learning ever end?"
+  bio = "I am a software engineer, information security researcher and technical writer."
+  links = [
+    # { discord = "https://discord.gg/invitecode" },
+     { github = "https://github.com/Florence-Njeri" },
+    # { hashnode = "https://username.hashnode.dev" },
+     { linkedin = "https://www.linkedin.com/in/florencenjeri/" },
+    # { mastodon = "https://mastodon.instance/@username" },
+     { medium = "https://medium.com/@florencelnjeri" }
+  ]

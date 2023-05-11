@@ -1,0 +1,94 @@
+# Introduction
+
+For software engineers, it may be easy to assume that no hacker would target our app since it isn’t big or well known. This attitude can lead to recklessness and lower measures for securing data on an app. However, it’s important to remember that data collected by an organization is very valuable. There can also be legal consequences in terms of lawsuits against the business that ensue from leakage of a user’s personally identifiable information (PII).
+
+## What Is Excessive Data Exposure?
+
+Excessive data exposure occurs when an API response returns more data than the client needs. As a rule of thumb, if a client application needs three fields, for example, you shouldn’t return the whole object. Excessive data exposure is a big API security concern that should be at the top of every engineer’s mind when designing APIs.
+In this post, you’ll learn about excessive data exposure in Ruby on Rails. By the end of the post, you’ll have learned about the following topics:
+
+- Levels of data sensitivity
+- Examples of excessive data exposure in Ruby on Rails
+- Excessive data exposure prevention measures
+  
+## Levels of Data Sensitivity
+
+Once data has been obtained from users, it’s classified according to its sensitivity in terms of the effects it could have on an organization if altered or stolen by a third party. In this section, you’ll learn about the four levels into which you should classify your data.
+
+- Public: This is data that poses no security threat when presented to the general public. This includes data such as workers’ directories, password validation prompts, etc.
+- Internal: This is internal data that is used within the organization and would be harmful if exposed to people outside the organization. An example is email correspondence that doesn’t contain confidential information.
+- Sensitive: This is data that belongs to users in an organization and is highly confidential. Examples are credit card information, social security numbers, API keys, access tokens, etc.
+Restricted: This is data that only a few members of an organization have access to, such as highly classified business information.
+Now that you’ve learned about the different tiers of data sensitivity, in the section below, we’ll take a look at a sample API response in order to learn more about excessive data exposure.
+
+## Sample API Response
+
+For this example, let’s say a gaming application API that shows a user’s profile may return a raw user object that looks like the code snippet below to the client application:
+
+{
+ "id": 34,
+ "username": "trojan",
+ "level": 7,
+ "location": "Nairobi,Kenya",
+ "phone_no": "+254678543110",
+ "bio": "Kenyan gamer",
+ "address": "Corner Street, Karen, house 24",
+ "access_token": "FLWSECK_TEST-917984d85944319929e4280429ce5523-X"
+ }
+At first glance, you may not notice anything wrong with the API response above. But you'll see in the next section how returning this kind of raw data can lead to excessive data exposure in your Rails application.
+
+## Examples of Excessive Data Exposure
+
+The API response above leads to excessive data exposure in the following ways.
+
+### Returning Unfiltered Data
+
+The API response above returns raw unfiltered data, leaving the client app to filter out sensitive information about the user. The client application only needs the username, bio, and level fields, making the extra fields that are returned useless. In this instance, returning more data than the client application needs is a case of excessive data exposure.
+If a hacker were to intercept this API response, they could view all the sensitive data and, worse, make a copy of the data and sell it on the dark web.
+
+### Using Auto-Incrementing Primary Keys
+
+A Postgres database, by default, uses auto-incrementing primary keys unless otherwise specified. Since the primary keys are sent with the URL as an ID, anyone sniffing the website traffic could access the ID, which would be a sequentially incrementing integer. It lets the third party know the order of magnitude of a database. For example, if the API to get a user’s data is /user/1870, they know that your database has stored data for a couple of thousand users.
+
+### Returning Personally Identifiable Information in an API Response
+
+PII is any data that can be used to identify a person and is never shown on a website or mobile app. PII includes the ID number, email, credit card details, social security number, home address, driver’s license, etc. of a person. Returning PII in an API response is a big data breach and a case of excessive data exposure. If hackers gain access to PII, this could result in lawsuits from the users when discovered, which could then lead a small company to bankruptcy. API security is extremely important for both the company and its users.
+You’ve seen instances of excessive data exposure and how API design flows lead to security vulnerabilities. Therefore, in the next section, let’s now learn about preventive measures.
+
+### Protective Measures
+
+Listed below are some of the ways you can protect your Rails application against excessive data exposure.
+
+### Don’t Use Auto-Incrementing Primary Keys
+
+Since primary keys are publicly discoverable in the URLs and network logs as ID values, it’s better to use universally unique identifiers (UUIDs). UUIDs are random and unique, and nobody can guess the order of magnitude of your database.
+
+### Implement Server Authorization Checks
+
+Use the CanCanCan authorization gem. It defines access rules that restrict someone from viewing somebody else’s record by changing the ID in the URL. The user cannot change the ID in the URL to view another user’s profile data unless authorized.
+
+### Use Data Masking
+
+Data masking is used to hide sensitive information in your database, like a user’s email, and only display the nonsensitive information in an API response.
+
+### Encrypt Your Data
+
+If your app must store personally identifiable information, it should all be encrypted. Encryption protects all sensitive information from prying eyes. With encryption, even if an attacker got a snapshot of your database or API response, they wouldn’t be able to make sense of the data.
+
+### Use Hashing
+
+Use hashing to secure the databases that contain PII
+
+### Don’t Return a Raw Unfiltered API Response
+
+When designing APIs, use the principle of least privilege by only returning the data a user needs. Returning raw unfiltered data to a mobile or web application is never a good idea. Examine every API response, and filter out the data the user doesn’t need on the server before it’s presented to the client.
+
+### Don’t Store Sensitive PII Data
+
+Use a third party to store sensitive data. For example, for all credit card details, you should store them in a third party like Stripe. In this scenario, under no circumstances will the credit card details show up in any API request since you don’t store them in your own database.
+You should evaluate whether your APIs are secure from what you’ve learned in this article. And if they’re not, you should consider using some of the preventive measures stated above.
+
+## Conclusion
+
+In this post, you learned what excessive data exposure is, the levels of data sensitivity, and examples of how you could contribute to excessive data exposure when designing your Rails APIs. Finally, you learned about the measures you need to put in place to prevent excessive data exposure.
+Data is a very important asset to any company that should be protected at all costs. Ensuring your users’ data is secure protects your company from losses emanating from lawsuits and protects the company image. In the case of API requests, you shouldn’t return all the fields stored in the database by default. Data security helps customers trust your business with their data.
