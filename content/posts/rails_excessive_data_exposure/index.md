@@ -1,3 +1,10 @@
+---
+title: "Rails Excessive Data Exposure"
+description: ""
+date: 2022-05-18T09:36:41.827Z
+cascade:
+  showReadingTime: false
+---
 # Introduction
 
 For software engineers, it may be easy to assume that no hacker would target our app since it isn’t big or well known. This attitude can lead to recklessness and lower measures for securing data on an app. However, it’s important to remember that data collected by an organization is very valuable. There can also be legal consequences in terms of lawsuits against the business that ensue from leakage of a user’s personally identifiable information (PII).
