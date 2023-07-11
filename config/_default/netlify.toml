@@ -30,6 +30,6 @@ HUGO_VERSION = "0.115.2"
 HUGO_ENABLEGITINFO = "true"
 
 [[redirects]]
-from = "/npmjs/*"
-to = "/npmjs/"
-status = 200
+  from = "/*"
+  to = "/index.html"
+  status = 200
