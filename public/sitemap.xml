@@ -4,7 +4,7 @@
   
     
       <url>
-            <loc>/</loc>
+            <loc>http://florencenjeri.com/</loc>
             <lastmod>2022-05-18T09:36:41+00:00</lastmod>
             <priority>0</priority>
           </url>
@@ -14,14 +14,14 @@
   
     
       <url>
-            <loc>/posts/</loc>
+            <loc>http://florencenjeri.com/posts/</loc>
             <lastmod>2022-05-18T09:36:41+00:00</lastmod>
           </url>
     
   
     
       <url>
-            <loc>/posts/rails_excessive_data_exposure/</loc>
+            <loc>http://florencenjeri.com/posts/rails_excessive_data_exposure/</loc>
             <lastmod>2022-05-18T09:36:41+00:00</lastmod>
           </url>
     
@@ -30,7 +30,7 @@
   
     
       <url>
-            <loc>/about/</loc>
+            <loc>http://florencenjeri.com/about/</loc>
             <priority>0</priority>
           </url>
     
