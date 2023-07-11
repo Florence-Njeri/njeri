@@ -2,7 +2,7 @@
 # Refer to the theme docs for more details about each of these parameters.
 # https://jpanther.github.io/congo/docs/getting-started/
 
-# baseURL = "http://florencenjeri.com"
+baseURL = "http://florencenjeri.com"
 defaultContentLanguage = "en"
 
 enableRobotsTXT = true
@@ -14,3 +14,9 @@ summaryLength = 100
 
 [permalinks]
     post = "/:year/:month/:day/:slug/" 
+
+[[menu.main]]
+name = "about"
+identifier = "about"
+weight = 200
+url = "/about/"
