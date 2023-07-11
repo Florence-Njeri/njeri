@@ -10,7 +10,7 @@ tags:
   
 For software engineers, it may be easy to assume that no hacker would target our app since it isn’t big or well known. This attitude can lead to recklessness and lower measures for securing data on an app. However, it’s important to remember that data collected by an organization is very valuable. There can also be legal consequences in terms of lawsuits against the business that ensue from leakage of a user’s personally identifiable information (PII).
 
-## What Is Excessive Data Exposure?
+## What Is Excessive Data Exposure? 
 
 Excessive data exposure occurs when an API response returns more data than the client needs. As a rule of thumb, if a client application needs three fields, for example, you shouldn’t return the whole object. Excessive data exposure is a big API security concern that should be at the top of every engineer’s mind when designing APIs.
 In this post, you’ll learn about excessive data exposure in Ruby on Rails. By the end of the post, you’ll have learned about the following topics:
