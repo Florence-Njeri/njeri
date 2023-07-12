@@ -89,12 +89,14 @@ Second Class Upper Division.
 ---
 
 ## Skills
-- C, C++: 3/5
-- Splunk, Wireshark, OSINT: 4/5
-- JAVA, Kotlin: 4/5
-- Ruby on Rails: 4/5
-- Python, HTML, Javascript, CSS: 3/5
-- Bash Scripting: 3/5
-- Postgres, MYSQL: 4/5
-- AWS, Kubernetes, Docker: 3/5
-- Documentation Writing: 5/5
+
+- C, C++
+- Splunk, Wireshark, OSINT
+- JAVA, Kotlin
+- Ruby on Rails
+- Python, HTML, Javascript, CSS
+- Bash Scripting
+- Postgres, MYSQL
+- AWS, Kubernetes, Docker
+- Documentation Writing
+- Selenium, Puppeteer, Cypress
