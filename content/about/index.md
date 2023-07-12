@@ -100,3 +100,20 @@ Second Class Upper Division.
 - AWS, Kubernetes, Docker
 - Documentation Writing
 - Selenium, Puppeteer, Cypress
+
+## Published Articles and Documentation
+
+### Open Source
+
+- [Generator Tool Introduction](https://www.asyncapi.com/docs/tools/generator)
+- [Installation Guide](https://www.asyncapi.com/docs/tools/generator/installation-guide)
+- [Usage Guide](https://www.asyncapi.com/docs/tools/generator/usage)
+- [AsyncAPI Document](https://www.asyncapi.com/docs/tools/generator/asyncapi-document)
+- [Template Context](https://www.asyncapi.com/docs/tools/generator/template-context)
+- [Generator Version vs Template Version](https://www.asyncapi.com/docs/tools/generator/versioning)
+
+### Articles
+
+- [Mobile Regression Testing vs Unit Testing Explained](https://www.waldo.com/blog/mobile-regression-testing-vs-unit-testing)
+- [Rails Excessive Data Exposure: Examples and Prevention](https://www.stackhawk.com/blog/rails-excessive-data-exposure-examples-and-prevention/)
+- [Intro to cron and editing your crontab schedule](https://www.airplane.dev/blog/intro-to-cron-and-editing-your-crontab-schedule)
