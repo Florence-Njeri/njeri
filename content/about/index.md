@@ -81,8 +81,8 @@ Second Class Upper Division.
 ## Certifications
 - [Selenium - LinkedIn Learning](https://www.linkedin.com/learning/certificates/1f73686f1d03fa0dd1c3c2cb6cbaffbfbd88826614a0e07c4c7d1f7070142a02?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3BGrBhbqZzTT2834BokpRhMw%3D%3D)
 - [Entry Level Cybersecurity Training - Cybrary](https://app.cybrary.it/courses/api/certificate/CC-6b209987-5d01-4e22-9e46-b3c2dc3da036/view)
-- [Fullstack Nanodegree Udacity](confirm.udacity.com/VDKL6TDP)
-- [Android Basics Nanodegree - Udacity](confirm.udacity.com/D6C6PKUK)
+- [Fullstack Nanodegree Udacity](https://graduation.udacity.com/confirm/VDKL6TDP)
+- [Android Basics Nanodegree - Udacity](https://graduation.udacity.com/D6C6PKUK)
 - [Technical Writing - LinkedIn Learning](https://www.linkedin.com/learning/certificates/0e38fa4b9c122e35d79d71f90c52a5ed1758c18acc1e92dc7632df1c8a803d03?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_certifications_details%3Bqh0jqFPRRPGJ3psCTpr9eA%3D%3D)
 - [SOC Level 1 / Web Hacking - TryHackMe](https://tryhackme.com/p/florencenjeri)
 
