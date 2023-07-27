@@ -105,6 +105,7 @@ Second Class Upper Division.
 
 ### Open Source
 
+- [Creating a Generator Template](https://www.asyncapi.com/docs/tools/generator/generator_template)
 - [Generator Tool Introduction](https://www.asyncapi.com/docs/tools/generator)
 - [Installation Guide](https://www.asyncapi.com/docs/tools/generator/installation-guide)
 - [Usage Guide](https://www.asyncapi.com/docs/tools/generator/usage)
