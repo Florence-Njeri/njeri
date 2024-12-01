@@ -10,7 +10,7 @@ I am a software engineer with a high technical background. Skilled in web develo
 
 ### Software Engineer in Test
 
-Wattics, June 2021 -- Present (Remote, Ireland)
+Wattics, June 2021 -- February 2024 (Remote, Ireland)
 
 - Spearheaded the development of an agile test criterion to streamline the testing process and ensure consistent quality across all products.
 - Developed and maintained 600+ test automation scripts, resulting in a 75% increase in testing efficiency and reducing the time to market for new features.
@@ -71,6 +71,11 @@ Java, Kotlin, Firebase, Google Material Design, Figma
 ---
 
 ## Education
+
+### Masters in Software Cybersecurity
+ CYBERUS Erasmus Mundus JointMasters 
+ Universty of South Brittany and University of Luxemburg, September 2024 -- present
+ 
 
 ### B.Sc, Software Engineering
 
