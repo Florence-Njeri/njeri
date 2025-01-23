@@ -1,24 +1,12 @@
 ---
-title: Project Two; The Bad Program
-subtitle: Lab Two
-author: Lydiah Florence Njeri and Chinya Tsai
-date: 27 November 2024
-geometry: top=1.5cm,left=2cm,right=2cm,bottom=2cm
-license: CC0 1.0
-numbersections: true
-highlightstyle: pygments
-header-includes:
-    - \usepackage{comment}
-    - \usepackage{multicol}
-    - \usepackage{lmodern}
-    - \newcommand{\hideFromPandoc}[1]{#1}
-    - \usepackage[utf8]{inputenc}
-    - \hideFromPandoc{
-        \let\Begin\begin
-        \let\End\end
-      }
-colorlinks: true
-lang: en-GB
+title: "Secure Programming in C: Buffer Overwrites and Overflows"
+description: "This lab focuses on identifying vulnerabilities in the source code, applying and validating patches, and proposing future best practices to prevent similar issues."
+date: 2024-12-01T09:36:41.827Z
+cascade:
+  showReadingTime: true
+tags:
+- BUffer Overflow
+- Buffer Overwrites
 ---
 
 # Introduction

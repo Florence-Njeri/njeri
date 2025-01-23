@@ -72,8 +72,7 @@ Java, Kotlin, Firebase, Google Material Design, Figma
 
 ## Education
 
-### Masters in Software Cybersecurity
- CYBERUS Erasmus Mundus JointMasters 
+### CYBERUS Erasmus Mundus Joint Masters in Cybersecurity
  Universty of South Brittany and University of Luxemburg, September 2024 -- present
  
 
