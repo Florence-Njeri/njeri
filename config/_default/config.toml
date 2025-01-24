@@ -7,7 +7,7 @@ defaultContentLanguage = "en"
 title = "Florence Njeri"
 
 enableRobotsTXT = true
-paginate = 10
+pagerSize = 10
 summaryLength = 100
 
 [outputs]
