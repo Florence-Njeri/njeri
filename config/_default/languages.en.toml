@@ -16,9 +16,9 @@ dateFormat = "2 January 2006"
 
 [author]
   name = "Florence Njeri"
-  image = "img/author.jpg"
-  headline = "Does the learning ever end?"
-  bio = "I am a software engineer, information security researcher and technical writer."
+  image = "img/author_too.jpg"
+  headline = "Always curious, always learning."
+  bio = "Cybersecurity student, software engineer, QA engineer and technical writer."
   links = [
     # { discord = "https://discord.gg/invitecode" },
      { github = "https://github.com/Florence-Njeri" },
