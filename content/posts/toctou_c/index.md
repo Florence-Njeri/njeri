@@ -13,7 +13,7 @@ The objective of this lab is to build on our understanding of secure programming
 This lab focuses on identifying vulnerabilities in the source code, applying and validating patches, and proposing future best practices to prevent similar issues. Additionally, we will analyze the code using **security analysis tools (cppcheck)** to find out about the vulnerabilities in code. After compiling the project, we will inspect the resulting binary in Ghidra to identify similarities and differences, which will further inform our understanding of the program's security and allow us to apply effective mitigations. The goal is to deliver a secure, improved program with a detailed report on the analysis, changes, and recommendations.
 
 ## Link to the Lab resouces on Github
-[Lab 2](https://github.com/Florence-Njeri/LabTwo)
+[Lab 2](https://github.com/Florence-Njeri/Secure-Programming---Lab-Two) and [Lab 3](https://github.com/Florence-Njeri/Secure-Programming---LabThree)
 ## Analysis Method (cppcheck)
 
 Since we are provided with a source code, we try to identify potential threats in the code with a static code analysis tool- cppcheck.
