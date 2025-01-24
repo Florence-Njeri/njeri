@@ -1,4 +1,12 @@
-# Optimizing your Ruby on Rails app for improved performance and reduced memory footprint
+---
+title: "Optimizing your Ruby on Rails app for improved performance and reduced memory footprint"
+description: ""
+date: 2025-01-24T09:00:41.827Z
+cascade:
+  showReadingTime: true
+tags:
+- Ruby on Rails
+---
 
 Users desire apps that run smoothly, load fast, and don't crash. But what determines an app's performance? There are two key factors: performance and memory usage.
 Performance refers to how fast your app loads for users. Memory footprint is the amount of system memory your app  uses. If your app is slow or hogs too much memory, users won't stick around. That's where optimizing your Ruby on Rails app becomes essential.
