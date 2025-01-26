@@ -1,3 +1,8 @@
+---
+date: 2025-01-01T12:00:00  # Use a valid date format
+draft: false
+---
+
 # RESUME
 
 ---
@@ -97,7 +102,7 @@
 |-----------------|------------------------|------------------|----------------|----------------|  
 | C, C++           | Splunk, Wireshark, OSINT| AWS, Kubernetes, Docker | Technical Writing | Selenium, Puppeteer |  
 | Java, Kotlin     |                         | Bash Scripting   |                | Cypress        |  
-| Ruby on Rails    |                         |                  |                | Manual Testing |  
+| Ruby on Rails, Python    |                         |                  |                | Manual Testing |  
 
 ---
 
