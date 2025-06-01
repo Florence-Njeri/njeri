@@ -1,5 +1,5 @@
 ---
-title: "Exploiting the Time of Check Time of Use Vulnerability in a C Program "
+title: "Secure Programming in C: Buffer Overwrites and Overflows"
 description: ""
 date: 2025-01-24T09:00:41.827Z
 cascade:
