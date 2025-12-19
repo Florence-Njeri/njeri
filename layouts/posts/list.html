@@ -40,10 +40,6 @@
                   {{ .Summary }}
                 </p>
               {{ end }}
-              
-              {{ if .Site.Params.article.showTaxonomies | default false }}
-                {{ partial "taxonomies.html" . }}
-              {{ end }}
             </div>
           {{ end }}
         </div>
@@ -71,10 +67,7 @@
               {{ .Summary }}
             </p>
           {{ end }}
-          
-          {{ if $.Site.Params.article.showTaxonomies | default false }}
-            {{ partial "taxonomies.html" . }}
-          {{ end }}
+
         </div>
       {{ end }}
     </div>
