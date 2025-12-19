@@ -1,0 +1,83 @@
+{{ define "main" }}
+<article>
+  <header class="max-w-prose mb-12">
+    {{ if .Params.showBreadcrumbs | default (.Site.Params.list.showBreadcrumbs | default false) }}
+      {{ partial "breadcrumbs.html" . }}
+    {{ end }}
+    <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+      {{ .Title | emojify }}
+    </h1>
+    {{ with .Params.description }}
+      <p class="mt-4 text-xl text-neutral-500 dark:text-neutral-400">{{ . | emojify }}</p>
+    {{ end }}
+  </header>
+
+  {{ .Content }}
+
+  {{ $pages := .Pages }}
+  {{ if .Site.Params.list.groupByYear | default true }}
+    {{ range $pages.GroupByPublishDate "2006" }}
+      <section class="mb-12">
+        <h2 class="text-2xl font-bold text-neutral-700 dark:text-neutral-300 mb-6">{{ .Key }}</h2>
+        <div class="space-y-8">
+          {{ range .Pages }}
+            <div class="flex flex-col space-y-2 pb-8 border-b border-neutral-200 dark:border-neutral-700">
+              <div class="flex items-start justify-between">
+                <h3 class="text-xl font-semibold text-primary-600 dark:text-primary-400 hover:underline flex-1">
+                  <a href="{{ .RelPermalink }}">{{ .Title | emojify }}</a>
+                </h3>
+                <time class="text-sm text-neutral-500 dark:text-neutral-400 ml-4 whitespace-nowrap">
+                  {{ .PublishDate | time.Format ":date_long" }}
+                </time>
+              </div>
+              
+              {{ if .Params.summary }}
+                <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                  {{ .Summary | truncate 300 }}
+                </p>
+              {{ else if .Summary }}
+                <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                  {{ .Summary }}
+                </p>
+              {{ end }}
+              
+              {{ if .Site.Params.article.showTaxonomies | default false }}
+                {{ partial "taxonomies.html" . }}
+              {{ end }}
+            </div>
+          {{ end }}
+        </div>
+      </section>
+    {{ end }}
+  {{ else }}
+    <div class="space-y-8">
+      {{ range $pages }}
+        <div class="flex flex-col space-y-2 pb-8 border-b border-neutral-200 dark:border-neutral-700">
+          <div class="flex items-start justify-between">
+            <h3 class="text-xl font-semibold text-primary-600 dark:text-primary-400 hover:underline flex-1">
+              <a href="{{ .RelPermalink }}">{{ .Title | emojify }}</a>
+            </h3>
+            <time class="text-sm text-neutral-500 dark:text-neutral-400 ml-4 whitespace-nowrap">
+              {{ .PublishDate | time.Format ":date_long" }}
+            </time>
+          </div>
+          
+          {{ if .Params.summary }}
+            <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+              {{ .Summary | truncate 300 }}
+            </p>
+          {{ else if .Summary }}
+            <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+              {{ .Summary }}
+            </p>
+          {{ end }}
+          
+          {{ if $.Site.Params.article.showTaxonomies | default false }}
+            {{ partial "taxonomies.html" . }}
+          {{ end }}
+        </div>
+      {{ end }}
+    </div>
+  {{ end }}
+</article>
+{{ end }}
