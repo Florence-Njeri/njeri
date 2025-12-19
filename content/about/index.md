@@ -5,11 +5,11 @@ draft: false
 
 # About
 
-I'm a master's student in the **Erasmus Mundus CYBERUS** program, specializing in software cybersecurity with a focus on **AI safety and security**. With 4+ years of experience in software development and QA engineering, I'm passionate about advancing adversarial machine learning security through rigorous research and collaboration.
+I'm a master's student in the **Erasmus Mundus CYBERUS** program, specializing in software cybersecurity with a focus on **AI safety and security**. With 4+ years of experience in software development and QA engineering, I'm passionate about advancing AI security through rigorous research and collaboration.
 
 ## Research Interests
 
-My current interest is in **trustworthy AI** and building robust systems resilient to adversarial attacks. I'm particularly interested in:
+My current interest is in **trustworthy AI** and ensuring systems are resilient to adversarial attacks. I'm particularly interested in:
 
 - **Adversarial Machine Learning**: Studying poisoning attacks, model robustness, and defense mechanisms.
 - **LLM Security**: Exploring alignment, prompt injection, and jailbreaking techniques.
@@ -23,11 +23,11 @@ I'm currently deepening my understanding of transformer architectures and mechan
 
 ## Experience Highlights
 
-**Open Source Cybersecurity** — I currently work with the AsyncAPI Initiative implementing security best practices including incident response plans, SBOMs, and GitHub security hardening (MFA, CodeQL, protected branches).
+**Open Source Cybersecurity**: I currently work with the AsyncAPI Initiative implementing security best practices including incident response plans, SBOMs, and GitHub security hardening (MFA, CodeQL, protected branches).
 
-**Security Research** — At Grenoble LIG Lab, I validated a privacy-preserving authentication protocol using ProVerif and built a DNSSEC-enabled server prototype with KnotDNS, researching FIDO key integration for enhanced security.
+**Security Research**: At Grenoble LIG Lab, I validated a privacy-preserving authentication protocol using ProVerif and built a DNSSEC-enabled server prototype with KnotDNS, researching FIDO key integration for enhanced security.
 
-**Security Testing** — My QA background across multiple companies (Gotu, Wattics/EnergyCAP, Brrng) developed my adversarial thinking and manual vulnerability assessment skills. I've conducted practical penetration tests (XSS, SQLi, CSRF, XXE, command injection) using Burp Suite and ZAP on DVWA and Juice Shop.
+**Software Security Testing**: My QA background across multiple companies (Gotu, Wattics/EnergyCAP, Brrng) developed my adversarial thinking and manual vulnerability assessment skills. I've conducted practical penetration tests (XSS, SQLi, CSRF, XXE, command injection) using Burp Suite and ZAP on DVWA and Juice Shop.
 
 ## Technical Background
 
