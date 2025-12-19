@@ -1,0 +1,79 @@
+/* Center article content */
+article {
+    max-width: 65ch;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Center article prose content */
+.prose {
+    max-width: 65ch;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Ensure main content is centered */
+main .max-w-7xl,
+main .max-w-prose {
+    max-width: 65ch !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Enhance pagination styling */
+.pagination {
+    margin-top: 4rem !important;
+    padding-top: 3rem !important;
+    border-top: 2px solid rgba(var(--color-neutral-200), 1);
+}
+
+.dark .pagination {
+    border-top-color: rgba(var(--color-neutral-700), 1);
+}
+
+/* Style pagination links */
+.pagination a {
+    display: block;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease-in-out;
+    background-color: rgba(var(--color-neutral-50), 1);
+    border: 1px solid rgba(var(--color-neutral-200), 1);
+}
+
+.dark .pagination a {
+    background-color: rgba(var(--color-neutral-800), 1);
+    border-color: rgba(var(--color-neutral-700), 1);
+}
+
+.pagination a:hover {
+    background-color: rgba(var(--color-primary-100), 1);
+    border-color: rgba(var(--color-primary-300), 1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dark .pagination a:hover {
+    background-color: rgba(var(--color-primary-900), 0.3);
+    border-color: rgba(var(--color-primary-600), 1);
+}
+
+/* Pagination text styling */
+.pagination .text-xl {
+    font-weight: 600 !important;
+    color: rgba(var(--color-neutral-900), 1) !important;
+    line-height: 1.4 !important;
+}
+
+.dark .pagination .text-xl {
+    color: rgba(var(--color-neutral-100), 1) !important;
+}
+
+.pagination .text-sm {
+    color: rgba(var(--color-neutral-500), 1) !important;
+    margin-top: 0.5rem !important;
+}
+
+.dark .pagination .text-sm {
+    color: rgba(var(--color-neutral-400), 1) !important;
+}
