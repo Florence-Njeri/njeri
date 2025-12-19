@@ -11,8 +11,6 @@ showEdit: false
 showPagination: false
 ---
 
-## Now
-
 **Learning Transformers** (Next 4 weeks)  
 Working through the [ARENA Transformer Interpretability course](https://arena-chapter1-transformer-interp.streamlit.app/) to deepen my understanding of transformer architectures and mechanistic interpretability.
 
