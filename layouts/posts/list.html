@@ -40,6 +40,16 @@
                   {{ .Summary }}
                 </p>
               {{ end }}
+
+              {{ with .Params.tags }}
+                <div class="flex flex-wrap gap-2 mt-1 text-xs">
+                  {{ range . }}
+                    <a href="{{ (printf "/tags/%s/" (urlize .)) | relLangURL }}" class="inline-flex items-center px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
+                      {{ . }}
+                    </a>
+                  {{ end }}
+                </div>
+              {{ end }}
             </div>
           {{ end }}
         </div>
@@ -66,6 +76,16 @@
             <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
               {{ .Summary }}
             </p>
+          {{ end }}
+
+          {{ with .Params.tags }}
+            <div class="flex flex-wrap gap-2 mt-1 text-xs">
+              {{ range . }}
+                <a href="{{ (printf "/tags/%s/" (urlize .)) | relLangURL }}" class="inline-flex items-center px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
+                  {{ . }}
+                </a>
+              {{ end }}
+            </div>
           {{ end }}
 
         </div>
