@@ -3,7 +3,7 @@ title: "8kSec - Factsdroid WriteUp"
 description: "Android MITM attack using Burp Suite"
 date: 2026-02-04T09:00:00Z
 cascade:
-	showReadingTime: true
+  showReadingTime: true
 tags:
 - Mobile Security
 - Pentesting
