@@ -1,6 +1,6 @@
 ---
-title: "8kSec Factsdroid WriteUp"
-description: ""
+title: "8kSec - Factsdroid WriteUp"
+description: "Android MITM attack using Burp Suite"
 date: 2026-02-04T09:00:00Z
 cascade:
 	showReadingTime: true
@@ -9,11 +9,11 @@ tags:
 - Pentesting
 - Reverse Engineering
 - MITM
+ - Mobile Exploits
 ---
 
-# 8kSec Factsdroid WriteUp
 
-**GOAL**: Intercept network traffic in FactsDroid and view/modify the API requests and responses between FactsDroid and the backend server without statically patching the provided APK. The objective is to successfully implement a Machine-in-The-Middle (MITM) attack that allows you to manipulate the facts being displayed to the user, potentially inserting custom content or modifying the retrieved facts before they reach the application.
+**GOAL**: Intercept network traffic in FactsDroid and view/modify the API requests and responses between FactsDroid and the backend server without statically patching the provided APK. The objective is to successfully implement a Man-in-The-Middle (MITM) attack that allows you to manipulate the facts being displayed to the user, potentially inserting custom content or modifying the retrieved facts before they reach the application.
 
 Upon installing the app using `adb install factsdroid.apk`, I immediately see this error message when launching the app:
 ![alt text](isrooted.png)
