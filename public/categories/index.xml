@@ -2,9 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Florence Njeri</title>
-    <link>http://florencenjeri.com/categories/</link>
+    <link>https://florencenjeri.com/categories/</link>
     <description>Recent content in Categories on Florence Njeri</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en</language><atom:link href="http://florencenjeri.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 03 Feb 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://florencenjeri.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android</title>
+      <link>https://florencenjeri.com/categories/android/</link>
+      <pubDate>Tue, 03 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/categories/android/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Security</title>
+      <link>https://florencenjeri.com/categories/security/</link>
+      <pubDate>Tue, 03 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/categories/security/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>

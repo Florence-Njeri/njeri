@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  dir="ltr"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+>
+
+<head>
+  <meta charset="utf-8" />
+  
+    <meta http-equiv="content-language" content="en" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="rgb(255,255,255)" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Android Pentesting with AndroGoat &middot; Florence Njeri</title>
+    <meta name="title" content="Android Pentesting with AndroGoat &middot; Florence Njeri" />
+  <meta name="description" content="Android Pentesting #
+To sharpen my skills, I recently took a deep dive into AndroGoat—a deliberately insecure Android application designed to showcase the most common OWASP Mobile Top 10 vulnerabilities.
+In this post, I’ll walk through how I combined both static and dynamic analysis to uncover hardcoded secrets, bypass security checks with Frida, and extract sensitive data from local storage.
+My pentesting toolkit:
+My pentesting tookit included:
+
+
+Jadx-GUI: For decompiling and reading Java/Kotlin source code.
+
+
+The Android Debug Bridge (adb)**: The &ldquo;command line&rdquo; for interacting with the emulator on android studio." />
+  
+  
+  
+  <link rel="canonical" href="https://florencenjeri.com/posts/androgoat/" />
+  
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.e566b6c0a0b7804755e52094f25218ae3fe33adeea50ed9df826ef64667c360685e72c0592ed510e3e76e840aaea4693f4bbbbf250fa1c16631a1a29e5c5acdf.css" integrity="sha512-5Wa2wKC3gEdV5SCU8lIYrj/jOt7qUO2d&#43;CbvZGZ8NgaF5ywFku1RDj526ECq6kaT9Lu78lD6HBZjGhop5cWs3w==" />
+  
+  
+  <script type="text/javascript" src="/js/appearance.min.c6198a5ecbc6c7b35a8568d29315f50cf5d775d4461c515a476359767f1a745c245aa83fa96b0c7d83da976cf77481e1fc29537a2391a53ffe69a991638802e6.js" integrity="sha512-xhmKXsvGx7NahWjSkxX1DPXXddRGHFFaR2NZdn8adFwkWqg/qWsMfYPal2z3dIHh/ClTeiORpT/&#43;aamRY4gC5g=="></script>
+  
+  
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  <meta property="og:url" content="https://florencenjeri.com/posts/androgoat/">
+  <meta property="og:site_name" content="Florence Njeri">
+  <meta property="og:title" content="Android Pentesting with AndroGoat">
+  <meta property="og:description" content="Android Pentesting # To sharpen my skills, I recently took a deep dive into AndroGoat—a deliberately insecure Android application designed to showcase the most common OWASP Mobile Top 10 vulnerabilities.
+In this post, I’ll walk through how I combined both static and dynamic analysis to uncover hardcoded secrets, bypass security checks with Frida, and extract sensitive data from local storage.
+My pentesting toolkit:
+My pentesting tookit included:
+Jadx-GUI: For decompiling and reading Java/Kotlin source code.
+The Android Debug Bridge (adb)**: The “command line” for interacting with the emulator on android studio.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-02-03T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-02-03T00:00:00+00:00">
+    <meta property="article:tag" content="Mobile">
+    <meta property="article:tag" content="Android">
+    <meta property="article:tag" content="Pentest">
+    <meta property="article:tag" content="Mobile Pentest">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Android Pentesting with AndroGoat">
+  <meta name="twitter:description" content="Android Pentesting # To sharpen my skills, I recently took a deep dive into AndroGoat—a deliberately insecure Android application designed to showcase the most common OWASP Mobile Top 10 vulnerabilities.
+In this post, I’ll walk through how I combined both static and dynamic analysis to uncover hardcoded secrets, bypass security checks with Frida, and extract sensitive data from local storage.
+My pentesting toolkit:
+My pentesting tookit included:
+Jadx-GUI: For decompiling and reading Java/Kotlin source code.
+The Android Debug Bridge (adb)**: The “command line” for interacting with the emulator on android studio.">
+
+  
+<script type="application/ld+json">
+  [{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Posts",
+    "name": "Android Pentesting with AndroGoat",
+    "headline": "Android Pentesting with AndroGoat",
+    
+    "abstract": "\u003ch1 id=\u0022android-pentesting\u0022 class=\u0022relative group\u0022\u003eAndroid Pentesting \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#android-pentesting\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h1\u003e\n\u003cp\u003eTo sharpen my skills, I recently took a deep dive into AndroGoat—a deliberately insecure Android application designed to showcase the most common OWASP Mobile Top 10 vulnerabilities.\u003c\/p\u003e\n\u003cp\u003eIn this post, I’ll walk through how I combined both static and dynamic analysis to uncover hardcoded secrets, bypass security checks with Frida, and extract sensitive data from local storage.\u003c\/p\u003e\n\u003cp\u003eMy pentesting toolkit:\u003c\/p\u003e\n\u003cp\u003eMy pentesting tookit included:\u003c\/p\u003e\n\u003cul\u003e\n\u003cli\u003e\n\u003cp\u003e\u003cstrong\u003eJadx-GUI\u003c\/strong\u003e: For decompiling and reading Java\/Kotlin source code.\u003c\/p\u003e\n\u003c\/li\u003e\n\u003cli\u003e\n\u003cp\u003eThe Android Debug Bridge (adb)**: The \u0026ldquo;command line\u0026rdquo; for interacting with the emulator on android studio.\u003c\/p\u003e",
+    "inLanguage": "en",
+    "url" : "https:\/\/florencenjeri.com\/posts\/androgoat\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Florence Njeri"
+    },
+    "copyrightYear": "2026",
+    "dateCreated": "2026-02-03T00:00:00\u002b00:00",
+    "datePublished": "2026-02-03T00:00:00\u002b00:00",
+    
+    "dateModified": "2026-02-03T00:00:00\u002b00:00",
+    
+    "keywords": ["mobile","android","pentest","mobile pentest"],
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "2846"
+  }]
+  </script>
+
+  <meta name="author" content="Florence Njeri" />
+  
+  
+
+
+
+
+
+
+  
+  
+  
+
+
+  
+</head><body
+    class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="font-bold text-primary-600 ltr:pr-2 rtl:pl-2 dark:text-primary-400"
+          >&darr;</span
+        >Skip to main content</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral print:hidden sm:py-10">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="z-40 flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Florence Njeri</a
+  >
+
+      
+
+    </div>
+    
+      
+      <label id="menu-button" for="menu-controller" class="block sm:hidden">
+        <input type="checkbox" id="menu-controller" class="hidden" />
+        <div class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400">
+          
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+
+  </span>
+
+
+        </div>
+        <div
+          id="menu-wrapper"
+          class="fixed inset-0 z-30 invisible w-full h-full m-auto overflow-auto transition-opacity opacity-0 cursor-default bg-neutral-100/50 backdrop-blur-sm dark:bg-neutral-900/50"
+        >
+          <ul
+            class="flex flex-col w-full px-6 py-6 mx-auto overflow-visible list-none max-w-7xl ltr:text-right rtl:text-left sm:px-14 sm:py-10 sm:pt-10 md:px-24 lg:px-32"
+          >
+            <li class="mb-1">
+              <span class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400"
+                >
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+  </span>
+
+</span
+              >
+            </li>
+            
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/"
+                      title=""
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Home</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/posts/"
+                      title="Posts"
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Posts</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/now/"
+                      title="Now"
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Now</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/about/"
+                      title=""
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >About</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    
+                    
+                  
+                </li>
+              
+              
+            
+          </ul>
+        </div>
+      </label>
+      
+      <ul class="flex-row hidden list-none ltr:text-right rtl:text-left sm:flex">
+        
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/"
+                  title=""
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Home</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/posts/"
+                  title="Posts"
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Posts</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/now/"
+                  title="Now"
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Now</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/about/"
+                  title=""
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >About</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                
+                
+              
+            </li>
+          
+          
+
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex flex-col grow">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        Android Pentesting with AndroGoat
+      </h1>
+      <div class="mt-8 mb-12 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+        
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+    
+  
+
+  
+
+  
+
+  
+    
+  
+
+  
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      &lt;time datetime=&#34;2026-02-03 00:00:00 &amp;#43;0000 UTC&#34;&gt;February 3, 2026&lt;/time&gt;&lt;span class=&#34;px-2 text-primary-500&#34;&gt;&amp;middot;&lt;/span&gt;&lt;span title=&#34;Reading time&#34;&gt;14 mins&lt;/span&gt;
+    
+
+    
+    
+  </div>
+
+  
+  
+    <div class="my-1 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400 ">
+      
+        
+          
+            <a
+              href="/categories/security/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >Security</a
+            >
+          
+            <a
+              href="/categories/android/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >Android</a
+            >
+          
+        
+      
+        
+          
+            <a
+              href="/tags/mobile/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >Mobile</a
+            >
+          
+            <a
+              href="/tags/android/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >Android</a
+            >
+          
+            <a
+              href="/tags/pentest/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >Pentest</a
+            >
+          
+            <a
+              href="/tags/mobile-pentest/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >Mobile Pentest</a
+            >
+          
+        
+      
+    </div>
+  
+
+
+      </div>
+      
+    </header>
+    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+      
+      <div class="min-w-0 min-h-0 max-w-prose grow">
+        <h1 id="android-pentesting" class="relative group">Android Pentesting <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#android-pentesting" aria-label="Anchor">#</a></span></h1>
+<p>To sharpen my skills, I recently took a deep dive into AndroGoat—a deliberately insecure Android application designed to showcase the most common OWASP Mobile Top 10 vulnerabilities.</p>
+<p>In this post, I’ll walk through how I combined both static and dynamic analysis to uncover hardcoded secrets, bypass security checks with Frida, and extract sensitive data from local storage.</p>
+<p>My pentesting toolkit:</p>
+<p>My pentesting tookit included:</p>
+<ul>
+<li>
+<p><strong>Jadx-GUI</strong>: For decompiling and reading Java/Kotlin source code.</p>
+</li>
+<li>
+<p>The Android Debug Bridge (adb)**: The &ldquo;command line&rdquo; for interacting with the emulator on android studio.</p>
+</li>
+<li>
+<p><strong>Frida</strong>: For dynamic instrumentation. Instrumentation is the art of imjecting new functionality to the application at runtime e.g adding logs, bypassing certain conditional checks e.g check if the device running the app is an emulator etc.</p>
+</li>
+<li>
+<p><strong>MobSF &amp; APKLeaks</strong>: For automated static analysis of the apk.</p>
+</li>
+<li>
+<p><strong>Burp Suite</strong>: To intercept network traffic.</p>
+</li>
+</ul>
+<h2 id="reconnaissance-with-mobsf" class="relative group">Reconnaissance with MobSF <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#reconnaissance-with-mobsf" aria-label="Anchor">#</a></span></h2>
+<p>I started my recon by first uploading the androgoat apk to <a
+  href="https://mobsf.live/"
+  
+  target="_blank" rel="noreferrer noopener"
+>MobSF</a>. This gave me a high-level overview of the attack surface before I started manual testing. Through MobSF,I was able to verify several high-risk strings:</p>
+<ul>
+<li>
+<p><strong>Hardcodes Secrets</strong> including <em>AWS Credentials</em> and <em>OpenAI Key</em>: Found in the resource strings and app logic.</p>
+</li>
+<li>
+<p>Sensitive Information is getting logged</p>
+</li>
+<li>
+<p><strong>SQL Injection</strong></p>
+</li>
+<li>
+<p><strong>Debug Mode</strong>: The <code>android:debuggable</code> flag is set to true.</p>
+</li>
+<li>
+<p><strong>Weak Cryptographic Algorithm</strong> MD5 weak algorithm is used to hash pins and passwords.</p>
+</li>
+</ul>
+<h2 id="1-hardcoded-secrets-high" class="relative group">1. Hardcoded Secrets (High) <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1-hardcoded-secrets-high" aria-label="Anchor">#</a></span></h2>
+<p>I found multiple static credentials in the APK. Because APKs are just ZIPs, anyone can unzip or decompile and steal these keys; obfuscation does not protect them. The exposed OpenAI and AWS keys could be abused for data access and cloud spend.</p>
+<p><strong>How I uncovered them</strong></p>
+<ol>
+<li>Manual static review in Jadx: Searched for strings like &ldquo;key&rdquo; and &ldquo;secret&rdquo; and saw the OpenAI key that automated tools missed. 
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            srcset="
+            /posts/androgoat/strings_hu_2c21582624ae4556.png 330w,
+            /posts/androgoat/strings_hu_32eabc305db6c76.png 660w,
+            /posts/androgoat/strings_hu_db19ed1a7660894.png 1024w,
+            /posts/androgoat/strings_hu_eedcd102b9197c5a.png 2x"
+            src="/posts/androgoat/strings_hu_32eabc305db6c76.png"
+          
+        
+        alt=""
+      />
+      
+    </figure>
+  
+
+</li>
+<li>Automation with <a
+  href="https://github.com/dwisiswant0/apkleaks"
+  
+  target="_blank" rel="noreferrer noopener"
+>apkleaks</a>: Flagged the same OpenAI key and the AWS secret:
+<ul>
+<li><code>abcdef1234567890abcdef1234567890abcdef12</code> (OpenAI API key)</li>
+<li><code>OviCwsFNWeoCSDKl3ZoD8j4BPnc1kCsfV+lOABCw</code> (AWS Secret Access Key)
+
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            srcset="
+            /posts/androgoat/apkleaks_hu_fdfa6acedb226781.png 330w,
+            /posts/androgoat/apkleaks_hu_f6f2c2ec8dfd1fc1.png 660w,
+            /posts/androgoat/apkleaks_hu_5c11017ed11cf3db.png 1024w,
+            /posts/androgoat/apkleaks_hu_1b1e283c1d040195.png 2x"
+            src="/posts/androgoat/apkleaks_hu_f6f2c2ec8dfd1fc1.png"
+          
+        
+        alt=""
+      />
+      
+    </figure>
+  
+
+</li>
+</ul>
+</li>
+<li>Cross-check in MobSF: Its Secrets report listed the same tokens in resources/config, confirming they are truly embedded:</li>
+</ol>
+<pre tabindex="0"><code>The following secrets were identified from the app. Ensure that these are not secrets or private information.
+-abcdef1234567890abcdef1234567890abcdef12
+258EAFA5-E914-47DA-95CA-C5AB0DC85B11
+sha256/5gsjyidrmWjcLRClfCk+Dd6O0nx1CyFrVUW5wVkwEx0=
+OviCwsFNWeoCSDKl3ZoD8j4BPnc1kCsfV+lOABCw
+sha256/mEflZT5enoR1FuXLgYYGqnVEoZvmf9c2bVBpiOjYQ0c=
+</code></pre><p><strong>How to Reproduce</strong></p>
+<ul>
+<li>Decompile with Jadx; search for <code>apiKey</code>, <code>secret</code>, <code>Bearer</code>, <code>AWS</code> across code and resources.</li>
+<li>Run <code>apkleaks -f androgoat.apk</code> to enumerate obvious tokens.</li>
+<li>Upload the APK to MobSF and open the Secrets section to verify what’s embedded.</li>
+</ul>
+<p><strong>Fix</strong></p>
+<ul>
+<li>Do not ship secrets in the APK. Fetch them at runtime from a backend over TLS and gate with authentication/authorization.</li>
+<li>Rotate the exposed OpenAI and AWS keys immediately; assume compromise.</li>
+<li>Add automated secret scanning tools like <strong>gitleaks</strong> or <strong>trufflehog</strong> in CI before signing and shipping the APK to help detect is there are secrets in the codebase.</li>
+</ul>
+<hr>
+<h2 id="2-root-and-emulator-detection" class="relative group">2. Root and Emulator Detection <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#2-root-and-emulator-detection" aria-label="Anchor">#</a></span></h2>
+<h3 id="root-detection" class="relative group">Root detection <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#root-detection" aria-label="Anchor">#</a></span></h3>
+<p>A <strong>rooted device</strong> has a modified system that allows the user and apps to execute commands as the root;  <strong>su</strong>.</p>
+<p><strong>Why apps care</strong>: Banking and security apps block rooted devices because if a device is rooted, the fundamental security sandbox is compromised. Malware with root access could theoretically read the banking app&rsquo;s memory or keys.</p>
+<p>Root detection is done by checking if the device running the application can see the <code>su</code> binary, then you must be root E.G.</p>
+<pre tabindex="0"><code>String[] file = {&#34;/system/app/Superuser/Superuser.apk&#34;, &#34;/system/app/Superuser.apk&#34;, &#34;/sbin/su&#34;, &#34;/system/bin/su&#34;, &#34;/system/xbin/su&#34;, &#34;/data/local/xbin/su&#34;, &#34;/data/local/bin/su&#34;, &#34;/system/sd/xbin/su&#34;, &#34;/system/bin/failsafe/su&#34;, &#34;/data/local/su&#34;, &#34;/su/bin/su&#34;, &#34;re.robv.android.xposed.installer-1.apk&#34;, &#34;/data/app/eu.chainfire.supersu-1/base.apk&#34;};
+        boolean result = false;
+        for (String files : file) {
+            File f = new File(files);
+            result = f.exists();
+            if (result) {
+                break;
+            }
+</code></pre><p>Despite the check being there, I am still able to bypass this filter check on a rooted android emulator (one that ships with Google APIs and not Google playstore).</p>
+<p>Google APIs emulator images allow adb‑root and writable partitions but do not include a <code>su</code> binary. Any root‑detection logic that relies solely on checking for <code>su</code> will incorrectly conclude that the device is not rooted, even though the environment is privileged thus the check will always return false.</p>
+<p>This is why you need to also add an emulator check.</p>
+<h3 id="emulator-detection" class="relative group">Emulator Detection <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#emulator-detection" aria-label="Anchor">#</a></span></h3>
+<p>The app grabs almost every identifying string from the Android OS and mashes them into one long string variable called <code>buildDetails</code> and then checks for any words associated with emulators e.g <code>generic</code>, <code>sdk</code>, <code>genymotion</code>, <code>x86</code>, <code>emulator</code> etc</p>
+<p><strong>Bypassing this with Frida</strong>:</p>
+<p>Inject code that always returns False when the <code>isEmulator</code> function is called.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Java</span><span class="p">.</span><span class="na">perform</span><span class="p">(</span><span class="n">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 1. Target the specific Activity class</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="n">EmulatorDetection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Java</span><span class="p">.</span><span class="na">use</span><span class="p">(</span><span class="s">&#34;owasp.sat.agoat.EmulatorDetectionActivity&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 2. Overwrite the isEmulator function</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">EmulatorDetection</span><span class="p">.</span><span class="na">isEmulator</span><span class="p">.</span><span class="na">implementation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 3. Force return false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">});</span><span class="w">
+</span></span></span></code></pre></div><p>I was able to successfully bypass this check:</p>
+<p>
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            srcset="
+            /posts/androgoat/emulator_check_bypass_hu_c2487dc493870d11.png 330w,
+            /posts/androgoat/emulator_check_bypass_hu_a8029c795780d9a4.png 660w,
+            /posts/androgoat/emulator_check_bypass_hu_f6f02db557f10b32.png 1024w,
+            /posts/androgoat/emulator_check_bypass_hu_e4e2ea0c2466f931.png 2x"
+            src="/posts/androgoat/emulator_check_bypass_hu_a8029c795780d9a4.png"
+          
+        
+        alt=""
+      />
+      
+    </figure>
+  
+
+</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Java" data-lang="Java"><span class="line"><span class="cl"><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">isEmulator</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">buildDetails</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Build</span><span class="p">.</span><span class="na">FINGERPRINT</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Build</span><span class="p">.</span><span class="na">DEVICE</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Build</span><span class="p">.</span><span class="na">MODEL</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Build</span><span class="p">.</span><span class="na">BRAND</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Build</span><span class="p">.</span><span class="na">PRODUCT</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Build</span><span class="p">.</span><span class="na">MANUFACTURER</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Build</span><span class="p">.</span><span class="na">HARDWARE</span><span class="p">).</span><span class="na">toLowerCase</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Intrinsics</span><span class="p">.</span><span class="na">checkNotNullExpressionValue</span><span class="p">(</span><span class="n">buildDetails</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;this as java.lang.String).toLowerCase()&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">StringsKt</span><span class="p">.</span><span class="na">contains$default</span><span class="p">((</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="n">buildDetails</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="s">&#34;generic&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="n">2</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">Object</span><span class="p">)</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">StringsKt</span><span class="p">.</span><span class="na">contains$default</span><span class="p">((</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="n">buildDetails</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="n">EnvironmentCompat</span><span class="p">.</span><span class="na">MEDIA_UNKNOWN</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="n">2</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">Object</span><span class="p">)</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">StringsKt</span><span class="p">.</span><span class="na">contains$default</span><span class="p">((</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="n">buildDetails</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="s">&#34;emulator&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="n">2</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">Object</span><span class="p">)</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">StringsKt</span><span class="p">.</span><span class="na">contains$default</span><span class="p">((</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="n">buildDetails</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="s">&#34;sdk&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="n">2</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">Object</span><span class="p">)</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">StringsKt</span><span class="p">.</span><span class="na">contains$default</span><span class="p">((</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="n">buildDetails</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="s">&#34;vbox&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="n">2</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">Object</span><span class="p">)</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">StringsKt</span><span class="p">.</span><span class="na">contains$default</span><span class="p">((</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="n">buildDetails</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="s">&#34;genymotion&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="n">2</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">Object</span><span class="p">)</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">StringsKt</span><span class="p">.</span><span class="na">contains$default</span><span class="p">((</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="n">buildDetails</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="s">&#34;x86&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="n">2</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">Object</span><span class="p">)</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">StringsKt</span><span class="p">.</span><span class="na">contains$default</span><span class="p">((</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="n">buildDetails</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="s">&#34;goldfish&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="n">2</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">Object</span><span class="p">)</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">StringsKt</span><span class="p">.</span><span class="na">contains$default</span><span class="p">((</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="n">buildDetails</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">CharSequence</span><span class="p">)</span><span class="w"> </span><span class="s">&#34;test-keys&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="n">2</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">Object</span><span class="p">)</span><span class="w"> </span><span class="kc">null</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><h3 id="recommendations" class="relative group">Recommendations <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#recommendations" aria-label="Anchor">#</a></span></h3>
+<p><strong>1. Robust Device Integrity</strong></p>
+<ul>
+<li>
+<p><strong>Defense in Depth</strong>: Treat root and emulator checks as <strong>hardening only</strong>, not as a primary security control. Back‑end authorization and server‑side controls must not trust these checks.</p>
+</li>
+<li>
+<p><strong>Enhanced Root Detection</strong>: If you still want stronger detection, use multiple root indicators instead of a single <code>su</code> path list. This includes:</p>
+</li>
+<li>
+<p>Mount options and build tags.</p>
+</li>
+<li>
+<p>Known root apps and writable system paths.</p>
+</li>
+<li>
+<p>SELinux state and dangerous system properties.</p>
+</li>
+<li>
+<p><strong>Multi-Factor Emulator Detection</strong>: Complement string‑based emulator checks with:</p>
+</li>
+<li>
+<p><strong>Sensor anomalies</strong>: Identifying a lack of GPS or accelerometer patterns.</p>
+</li>
+<li>
+<p><strong>Telephony inconsistencies</strong>: Checking for IMEI/SIM anomalies.</p>
+</li>
+<li>
+<p><strong>Environment checks</strong>: Searching for emulator‑specific files and properties.</p>
+</li>
+<li>
+<p><strong>Attestation Services</strong>: Consider using <strong>Google Play Integrity API</strong> (or SafetyNet Attestation) to get a server‑validated signal of device integrity.</p>
+</li>
+</ul>
+<p><strong>2. Runtime Protection</strong></p>
+<ul>
+<li><strong>Anti-Instrumentation</strong>: Increase resistance against dynamic instrumentation:</li>
+<li><strong>Obfuscation</strong>: Obfuscate critical classes and methods, including your <code>isEmulator</code> and root check logic.</li>
+<li><strong>Anti-Hooking</strong>: Add basic anti‑debugging and anti‑hooking checks (e.g., Frida detection, debugger presence, and tamper checks on <code>Build.*</code> values).</li>
+</ul>
+<hr>
+<h2 id="3-androiddebuggable" class="relative group">3. android:debuggable <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#3-androiddebuggable" aria-label="Anchor">#</a></span></h2>
+<p>In a real app, <code>android:debuggable</code> should be false in the release manifest and controlled via Gradle build types, so only debug builds are debuggable and the Play Store APK ships with debugging disabled.</p>
+<p>Setting it to <code>true</code> lowers the attackers difficulty in learning how the app works or pausing the app and modifying the code while the app is running a dn recompiling it with additional vulnerability.</p>
+<p><strong>GOAL:</strong> Prevents dynamic analysis tools from hooking and manipulating the app.</p>
+<h2 id="4-insecure-data-storage" class="relative group">4. Insecure Data Storage <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#4-insecure-data-storage" aria-label="Anchor">#</a></span></h2>
+<p>In AndroGoat, the same sensitive information (usernames and passwords) is written to multiple storage locations on the device: Shared Preferences, SQLite databases, temporary files and even external storage. None of these locations are encrypted. This means that anyone who can get filesystem access (stolen device, rooted device, <code>adb/run-as</code>, or a malicious app with storage permissions) can trivially dump and read these values without needing to break any cryptographic algorithms.</p>
+<h3 id="shared-preferences" class="relative group">Shared Preferences <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#shared-preferences" aria-label="Anchor">#</a></span></h3>
+<p>The app stores the username and password in <code>user.xml</code> under <code>/data/data/owasp.sat.agoat/shared_prefs</code>. This file is just an XML key/value store. On a normal (non‑rooted) device it is only readable by the app’s UID, but:</p>
+<ul>
+<li>On a rooted device or emulator, I can simply <code>cat</code> this file or pull it off the device.</li>
+<li>With <code>run-as owasp.sat.agoat</code> (and <code>android:debuggable=true</code>), I can also access it from <code>adb</code> without full root.</li>
+</ul>
+<p>So even though Shared Preferences feels like a “private” store, it is not secure enough for raw credentials.</p>
+<p>
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            srcset="
+            /posts/androgoat/usr_pwd_hu_fc9b9a700a34b0f4.png 330w,
+            /posts/androgoat/usr_pwd_hu_78feae5e2a19e359.png 660w,
+            /posts/androgoat/usr_pwd_hu_851a18244778d803.png 1024w,
+            /posts/androgoat/usr_pwd_hu_762373b0c2524e2b.png 2x"
+            src="/posts/androgoat/usr_pwd_hu_78feae5e2a19e359.png"
+          
+        
+        alt=""
+      />
+      
+    </figure>
+  
+
+</p>
+<h3 id="sqlite" class="relative group">SQLite <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#sqlite" aria-label="Anchor">#</a></span></h3>
+<p>Android apps use SQLite for structured data storage (similar to a standard SQL database).</p>
+<p><strong>The Vulnerability</strong>: Standard SQLite databases are not encrypted. If an attacker gains access to the device (physically or via malware with root access), they can copy the .db file and read all contents.</p>
+<p>The same problem appears again in the SQLite database under <code>/data/data/owasp.sat.agoat/databases</code>. SQLite gives you structure, not security. By default there is no encryption on the <code>.db</code> file, so once I have a copy of that file I can open it in DB Browser for SQLite and read all user records in clear text.</p>
+<p>In this app, I was able to export the database directory and see all stored usernames and passwords immediately, without any brute‑forcing or reversing.</p>
+<p>
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            src="/posts/androgoat/sqlite.png"
+          
+        
+        alt=""
+      />
+      
+    </figure>
+  
+
+</p>
+<h3 id="temp-file" class="relative group">Temp File <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#temp-file" aria-label="Anchor">#</a></span></h3>
+<p>The application is also writing temporary files under <code>/data/data/owasp.sat.agoat</code>. Temp files are often forgotten by developers, but from an attacker’s point of view they are just another place to look for credentials or session data. If these files are not securely deleted, they can survive longer than intended and become an easy loot bag on a rooted device.</p>
+<h3 id="extrenal-storage--sdcard" class="relative group">Extrenal Storage / SDCARD <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#extrenal-storage--sdcard" aria-label="Anchor">#</a></span></h3>
+<p>Since we have defined the <code>READ_EXTERNAL_STORAGE</code> in the manifest, we can read from external storage. Upon checking the sdcard location of our app, I do see the tmp file with the credentials: <code>/sdcard/Android/data/owasp.sat.agoat/files</code>. Finally, the app leaks credentials into external storage under this path.</p>
+<p>External storage is shared space: any other app with <code>READ_EXTERNAL_STORAGE</code> (or broad storage access on older Android versions) can read these files. So at this point, a low‑privileged malicious app installed on the same device can read the tmp file with credentials, without needing root at all.</p>
+<h3 id="recommendations-1" class="relative group">Recommendations <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#recommendations-1" aria-label="Anchor">#</a></span></h3>
+<p>For a real app, the safer pattern is:</p>
+<ul>
+<li>Avoid storing raw passwords or long‑lived secrets on disk at all. Store only what you absolutely need (for example short‑lived access tokens instead of credentials).</li>
+<li>If you need to persist sensitive data, use Android’s <code>EncryptedSharedPreferences</code> or a similar wrapper instead of plain XML, and use an encrypted database solution (or store only hashed values with a strong KDF and salt) rather than a clear‑text SQLite file.</li>
+<li>Do not write credentials to temporary files. If a temp file is unavoidable, keep it in internal cache and delete it immediately after use.</li>
+<li>Never write secrets to external storage / SD card. Treat external storage as untrusted and world‑readable. If you must store something there, encrypt it first with a key held in the Android Keystore and never store the key next to the data.</li>
+</ul>
+<hr>
+<h2 id="5-input-validations" class="relative group">5. Input Validations <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#5-input-validations" aria-label="Anchor">#</a></span></h2>
+<p>The &ldquo;Golden Rule&rdquo; of OWASP is that client-side validation is for user experience, but server-side validation is for security. AndroGoat deliberately breaks this rule in a few places: SQL queries are built by string concatenation, HTML is rendered without sanitisation, and WebView is allowed to load almost anything the user types. This makes it very easy to turn normal user input into executable code on the device.</p>
+<h3 id="1-sql-injection" class="relative group">1. SQL Injection <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1-sql-injection" aria-label="Anchor">#</a></span></h3>
+<p>Happens because the app takes user input and processes that as code by directly concatenating it into a SQLite database query. Content Providers are most prone to SQL Injection since this data is shared with all the apps e.g contacts. Successful compromise of the SQLite dbs leads to corruption, deletion or exfiltration of data.</p>
+<p>Bypassed by: <code>' OR '1'='1</code> OR <code>' OR 1=1 --</code> and the vulnerable piece of code is here: <code>String qry = &quot;SELECT * FROM users WHERE username='&quot; + ((Object) $username.getText()) + &quot;'&quot;;</code> because we are appending unsanitised user input to the SQL query by string concatenation</p>
+<p>
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            srcset="
+            /posts/androgoat/sql_injection_hu_afec57554af988be.png 330w,
+            /posts/androgoat/sql_injection_hu_9c74fb132af5fe08.png 660w,
+            /posts/androgoat/sql_injection_hu_fd8e269d12af086c.png 1024w,
+            /posts/androgoat/sql_injection_hu_f1ed8bd6bb8d0ac.png 2x"
+            src="/posts/androgoat/sql_injection_hu_9c74fb132af5fe08.png"
+          
+        
+        alt=""
+      />
+      
+    </figure>
+  
+
+</p>
+<p>In practice this means I can log in as any user I want, or dump large parts of the users table, without knowing a valid password.</p>
+<h4 id="solution" class="relative group">Solution: <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#solution" aria-label="Anchor">#</a></span></h4>
+<p>Use prepared statements / parameterised queries when passing user input into SQLite so that the input is always treated as data and not as part of the SQL syntax.</p>
+<h3 id="2-xss" class="relative group">2. XSS <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#2-xss" aria-label="Anchor">#</a></span></h3>
+<p>XSS allows an attacker to execute arbitrary JavaScript code in the context of the WebView. Successful exploitation of this vulnerability may allow a remote attacker to steal potentially sensitive information, change appearance of a web page, perform phishing and drive-by-download attacks.</p>
+<p>Source of the vulnerability: <code>webSettings.setJavaScriptEnabled(true);</code>. By default, Android WebView does not execute JavaScript. Explicitly setting this to true allows the script tags inside the HTML content to run.</p>
+<p>Compromise using the Javascript input: &lt;img src=x onerror=alert(&lsquo;XSS&rsquo;)&gt; 
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            srcset="
+            /posts/androgoat/xss_hu_a27175320c3eec94.png 330w,
+            /posts/androgoat/xss_hu_30721b9d4feca913.png 660w,
+            /posts/androgoat/xss_hu_742769f6071067f5.png 1024w,
+            /posts/androgoat/xss_hu_a83c4b503394397f.png 2x"
+            src="/posts/androgoat/xss_hu_30721b9d4feca913.png"
+          
+        
+        alt=""
+      />
+      
+    </figure>
+  
+
+</p>
+<h3 id="3-webview" class="relative group">3. Webview <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#3-webview" aria-label="Anchor">#</a></span></h3>
+<p>Can be caused by <strong>Unvalidated, Unrestricted WebView URL Loading</strong> using:</p>
+<pre tabindex="0"><code>webViewSettings.setJavaScriptEnabled(true); //1
+webViewSettings.setAllowFileAccess(true); //2
+webViewSettings.setAllowContentAccess(true);
+webViewSettings.setAllowFileAccessFromFileURLs(true); //3
+setAllowUniversalAccessFromFileURLs(true);
+String url = $urlEditText.getText().toString();
+$webView.loadUrl(url); //4
+    }
+</code></pre><p>The code above allows for an attacker to do the following:</p>
+<ol>
+<li>This allows for Cross-Site Scripting (XSS) if the user loads a malicious page.</li>
+<li><strong>Local File Inclusion</strong>: Allows the WebView to access the Android file system using the <code>file://</code> scheme. e.g <code>file:///data/data/owasp.sat.agoat/shared_prefs/</code></li>
+</ol>
+<p>E.G Dump shared preferences:
+
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            srcset="
+            /posts/androgoat/web_view_sp_hu_183cfd0d08c6f02d.png 330w,
+            /posts/androgoat/web_view_sp_hu_fe56e75189d3b6a0.png 660w,
+            /posts/androgoat/web_view_sp_hu_ce1cadaa1642c082.png 1024w,
+            /posts/androgoat/web_view_sp_hu_2729fa2325a94abd.png 2x"
+            src="/posts/androgoat/web_view_sp_hu_fe56e75189d3b6a0.png"
+          
+        
+        alt=""
+      />
+      
+    </figure>
+  
+
+</p>
+<ol start="3">
+<li>Allows JavaScript running in a file scheme context (e.g., <code>file:///sdcard/exploit.html</code>)
+webViewSettings.</li>
+</ol>
+<p>E.G.</p>
+<p>
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            srcset="
+            /posts/androgoat/webview_sd_card_hu_ce07f08dd6da0348.png 330w,
+            /posts/androgoat/webview_sd_card_hu_faeb79010c3a1e20.png 660w,
+            /posts/androgoat/webview_sd_card_hu_f3c6d3448553140f.png 1024w,
+            /posts/androgoat/webview_sd_card_hu_711d72a86808bc36.png 2x"
+            src="/posts/androgoat/webview_sd_card_hu_faeb79010c3a1e20.png"
+          
+        
+        alt=""
+      />
+      
+    </figure>
+  
+
+</p>
+<ol start="4">
+<li>Disables the Same-Origin Policy (SOP) for file schemes. It allows a script running in a local file to make requests to any origin (including the internet or other local files) and read the response.</li>
+</ol>
+<p>The app is loading the user input directly into the WebView without any validations, with universal file access enabled.</p>
+<h3 id="recommendations-2" class="relative group">Recommendations <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#recommendations-2" aria-label="Anchor">#</a></span></h3>
+<ul>
+<li>Validate and sanitise all user input on the server side, and never build SQL queries by string concatenation. Always use <strong>parameterised queries</strong> or <strong>prepared statements</strong>.</li>
+<li>For XSS, avoid rendering untrusted HTML directly. If a WebView is required, keep <code>setJavaScriptEnabled(false)</code> unless there is a strong reason, and sanitise any HTML you do render.</li>
+<li>Lock down WebView usage: restrict <code>loadUrl</code> to a small whitelist of trusted domains, disable <code>setAllowFileAccessFromFileURLs</code> and <code>setAllowUniversalAccessFromFileURLs</code> unless absolutely necessary, and do not allow user-controlled <code>file://</code> URLs.</li>
+</ul>
+<hr>
+<h2 id="6side-channel-data-leakage" class="relative group">6.Side Channel Data Leakage <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#6side-channel-data-leakage" aria-label="Anchor">#</a></span></h2>
+<p>This is how sensitive information can be leaked through the Android operating system&rsquo;s features, rather than through a direct flaw in the app&rsquo;s code or network. In other words, nothing is “hacked” in the classic sense; the app is simply not marking sensitive fields correctly or is writing secrets to places where the OS can see and reuse them.</p>
+<p>When you type information into standard EditText fields on Android, the operating system&rsquo;s keyboard (like Gboard or Samsung Keyboard) attempts to &ldquo;learn&rdquo; your typing habits to offer autocorrect suggestions and predictions. To do this, it stores the words you type in a local dictionary or cache.</p>
+<p>If an application does not explicitly tell the OS, &ldquo;This field contains sensitive data by using the password field, the keyboard will cache sensitive data. An attacker who gains physical access to the device or a malicious app with access to the user dictionary can extract this data.</p>
+<h3 id="1-keyboard-cache" class="relative group">1. Keyboard Cache <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1-keyboard-cache" aria-label="Anchor">#</a></span></h3>
+<p>Android keyboards (Input Method Editors or IMEs) utilize a user dictionary to provide auto-correction and predictive text. By default, any text typed into a standard <code>EditText</code> field is added to this dictionary. In AndroGoat, <em>the password is defined using <code>EditText</code> therefore if i start typing my password, the cached value I had entered is shown in the suggestions</em>:</p>
+<p>
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            srcset="
+            /posts/androgoat/keyboard_cache_hu_e83b712a89f3f9ea.png 330w,
+            /posts/androgoat/keyboard_cache_hu_3fd518f7dbd0f3b8.png 660w,
+            /posts/androgoat/keyboard_cache_hu_ceba6a8e3ed28c64.png 1024w,
+            /posts/androgoat/keyboard_cache_hu_67152ef57aedf27d.png 2x"
+            src="/posts/androgoat/keyboard_cache_hu_3fd518f7dbd0f3b8.png"
+          
+        
+        alt=""
+      />
+      
+    </figure>
+  
+
+</p>
+<h3 id="2-insecure-logging" class="relative group">2. Insecure Logging <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#2-insecure-logging" aria-label="Anchor">#</a></span></h3>
+<p>The app writes the raw password to Logcat which violates GDPR rules.</p>
+<p>
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            srcset="
+            /posts/androgoat/logging_hu_3264501aa008126a.png 330w,
+            /posts/androgoat/logging_hu_64cbda5cae0745a3.png 660w,
+            /posts/androgoat/logging_hu_8752094f49d04f6d.png 1024w,
+            /posts/androgoat/logging_hu_27f7eee630441799.png 2x"
+            src="/posts/androgoat/logging_hu_64cbda5cae0745a3.png"
+          
+        
+        alt=""
+      />
+      
+    </figure>
+  
+
+</p>
+<h3 id="3-clipboard-vuln" class="relative group">3. Clipboard Vuln <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#3-clipboard-vuln" aria-label="Anchor">#</a></span></h3>
+<p>OTP code is coppied to clipboard. In Android, clipboard data is made available to all the apps that have the <code>READ_CLIPBOARD</code> permission.</p>
+<p><strong>The attack</strong>
+A malicious app can constantly monitor the clipboard. As soon as your app generates the OTP and puts it on the clipboard, the malicious app grabs it and exfiltrates this data to a remote server for example. This allows attackers to bypass 2FA.</p>
+<h3 id="recommendations-3" class="relative group">Recommendations <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#recommendations-3" aria-label="Anchor">#</a></span></h3>
+<ul>
+<li>For keyboard cache, mark sensitive fields correctly (e.g. use <code>android:inputType=&quot;textPassword&quot;</code> and <code>android:importantForAutofill=&quot;no&quot;</code> / <code>noExcludeDescendants</code>) so that the OS does not learn or suggest secrets.</li>
+<li>Never log secrets. Avoid writing passwords, OTPs or tokens to Logcat; if you need logging, log high‑level events only (e.g. &ldquo;login failed&rdquo;) and strip sensitive values.</li>
+<li>Avoid putting OTPs or passwords on the clipboard. Where possible, auto‑fill the value inside the app instead of copying it, or at least clear the clipboard immediately after use and warn users that clipboard data can be read by other apps.</li>
+</ul>
+<h2 id="7-biometric-authentication" class="relative group">7. BIOMETRIC AUTHENTICATION <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#7-biometric-authentication" aria-label="Anchor">#</a></span></h2>
+<p>Biometric authentication includes the fingerprint reader and the camera for facial recognition. In Android, biometrics can be used in two very different ways: either just as a convenience &ldquo;unlock&rdquo; (a boolean callback that says success/fail), or as a way to unlock a real cryptographic key from the Android Keystore.</p>
+<p><strong>The flaw</strong>: In this app, biometrics are only used in the first, weak way. The code just listens for the <code>onAuthenticationSucceeded</code> callback and, if it fires, treats the user as fully authenticated. No cryptographic key is unlocked, no token is signed, and nothing is bound to the hardware. The app is basically saying: &ldquo;If Android tells me success, I will trust it blindly.&rdquo;</p>
+<p><strong>The exploit</strong>: Because there is no cryptographic proof, I can use Frida to fake that callback. Instead of presenting a real finger, I hook the biometric flow and manually trigger success:</p>
+<ul>
+<li>I attach Frida to the process and hook <code>BiometricPrompt.authenticate()</code> / the callback path.</li>
+<li>When the app requests a fingerprint and waits for <code>onAuthenticationSucceeded</code>, my script intercepts the call and immediately invokes the success path.</li>
+</ul>
+<p>From the app&rsquo;s point of view, it looks exactly like a genuine fingerprint match, but no real biometric was used and the user never touched the sensor.</p>
+
+      </div>
+    </section>
+    <footer class="pt-8 max-w-prose print:hidden">
+      
+
+      
+
+      
+  
+    
+    
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="group flex" href="/posts/rails-memoryfootprint/">
+              <span
+                class="mr-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+              <span
+                class="ml-2 text-neutral-700 transition-transform group-hover:translate-x-[2px] group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Optimizing your Ruby on Rails app for improved performance and reduced memory footprint</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2025-01-24 09:00:41.827 &#43;0000 UTC">January 24, 2025</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/database_security/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >3 Critical Database Security Threats You Need to Know</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2026-02-03 00:00:00 &#43;0000 UTC">February 3, 2026</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ml-2 text-neutral-700 transition-transform group-hover:translate-x-[2px] group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span
+                class="mr-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+        
+          <div
+            class="pointer-events-none absolute top-[100vh] bottom-0 w-12 ltr:right-0 rtl:left-0"
+          >
+            <a
+              href="#the-top"
+              class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+              aria-label="Scroll to top"
+              title="Scroll to top"
+            >
+              &uarr;
+            </a>
+          </div>
+        
+      </main><footer class="py-10 print:hidden">
+  
+    <nav class="pb-4 text-base font-medium text-neutral-500 dark:text-neutral-400">
+      <ul class="flex flex-col list-none sm:flex-row">
+        
+          <li
+            class="mb-1 group ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+          >
+            
+              <a
+                href="https://github.com/Florence-Njeri"
+                title=""
+                target="_blank"
+                >
+                  <span
+                    class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                  >
+                    
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+
+  </span>
+
+
+                  </span>
+                </a
+              >
+            
+          </li>
+        
+          <li
+            class="mb-1 group ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+          >
+            
+              <a
+                href="https://www.linkedin.com/in/florencenjeri/"
+                title=""
+                target="_blank"
+                >
+                  <span
+                    class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                  >
+                    
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+
+  </span>
+
+
+                  </span>
+                </a
+              >
+            
+          </li>
+        
+      </ul>
+    </nav>
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+        
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2026
+            Florence Njeri
+        </p>
+      
+      
+    </div>
+    
+  </div>
+  
+</footer>
+    </div>
+  </body>
+</html>

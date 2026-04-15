@@ -3,7 +3,7 @@ title: "Reverse Engineering"
 description: "Decompiling and analyzing binaries with Ghidra; examples and notes."
 date: 2024-12-01T09:36:41.827Z
 cascade:
-	showReadingTime: true
+  showReadingTime: true
 tags:
 - Reverse Engineering
 - C Programming
@@ -103,3 +103,7 @@ Given this information we are able to deduce how to obtain the flag by crafting 
 
 ## Challenge 2
 
+After running the second challenge, I saw that the program requires a password in order to run.
+![alt text](image.png)
+
+I then decompiled the executable using Ghidra

@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  dir="ltr"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+>
+
+<head>
+  <meta charset="utf-8" />
+  
+    <meta http-equiv="content-language" content="en" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="rgb(255,255,255)" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Optimizing your Ruby on Rails app for improved performance and reduced memory footprint &middot; Florence Njeri</title>
+    <meta name="title" content="Optimizing your Ruby on Rails app for improved performance and reduced memory footprint &middot; Florence Njeri" />
+  <meta name="description" content="Users desire apps that run smoothly, load fast, and don&rsquo;t crash. But what determines an app&rsquo;s performance? There are two key factors: performance and memory usage.
+Performance refers to how fast your app loads for users. Memory footprint is the amount of system memory your app  uses. If your app is slow or hogs too much memory, users won&rsquo;t stick around. That&rsquo;s where optimizing your Ruby on Rails app becomes essential.
+In this article, we&rsquo;ll explore techniques that enhance performance and reduce memory usage, ensuring user satisfaction and the success of your app.
+Understanding performance and memory footprint #
+The performance of an app refers to how fast your app loads for the end-users. As a developer, app performance should always be a priority even as you are adding new features and architecting your app." />
+  
+  
+  
+  <link rel="canonical" href="https://florencenjeri.com/posts/rails-memoryfootprint/" />
+  
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.e566b6c0a0b7804755e52094f25218ae3fe33adeea50ed9df826ef64667c360685e72c0592ed510e3e76e840aaea4693f4bbbbf250fa1c16631a1a29e5c5acdf.css" integrity="sha512-5Wa2wKC3gEdV5SCU8lIYrj/jOt7qUO2d&#43;CbvZGZ8NgaF5ywFku1RDj526ECq6kaT9Lu78lD6HBZjGhop5cWs3w==" />
+  
+  
+  <script type="text/javascript" src="/js/appearance.min.c6198a5ecbc6c7b35a8568d29315f50cf5d775d4461c515a476359767f1a745c245aa83fa96b0c7d83da976cf77481e1fc29537a2391a53ffe69a991638802e6.js" integrity="sha512-xhmKXsvGx7NahWjSkxX1DPXXddRGHFFaR2NZdn8adFwkWqg/qWsMfYPal2z3dIHh/ClTeiORpT/&#43;aamRY4gC5g=="></script>
+  
+  
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  <meta property="og:url" content="https://florencenjeri.com/posts/rails-memoryfootprint/">
+  <meta property="og:site_name" content="Florence Njeri">
+  <meta property="og:title" content="Optimizing your Ruby on Rails app for improved performance and reduced memory footprint">
+  <meta property="og:description" content="Users desire apps that run smoothly, load fast, and don’t crash. But what determines an app’s performance? There are two key factors: performance and memory usage. Performance refers to how fast your app loads for users. Memory footprint is the amount of system memory your app uses. If your app is slow or hogs too much memory, users won’t stick around. That’s where optimizing your Ruby on Rails app becomes essential.
+In this article, we’ll explore techniques that enhance performance and reduce memory usage, ensuring user satisfaction and the success of your app.
+Understanding performance and memory footprint # The performance of an app refers to how fast your app loads for the end-users. As a developer, app performance should always be a priority even as you are adding new features and architecting your app.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-01-24T09:00:41+00:00">
+    <meta property="article:modified_time" content="2025-01-24T09:00:41+00:00">
+    <meta property="article:tag" content="Ruby on Rails">
+    <meta property="og:image" content="https://florencenjeri.com/posts/rails-memoryfootprint/cover.jpg">
+
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://florencenjeri.com/posts/rails-memoryfootprint/cover.jpg">
+  <meta name="twitter:title" content="Optimizing your Ruby on Rails app for improved performance and reduced memory footprint">
+  <meta name="twitter:description" content="Users desire apps that run smoothly, load fast, and don’t crash. But what determines an app’s performance? There are two key factors: performance and memory usage. Performance refers to how fast your app loads for users. Memory footprint is the amount of system memory your app uses. If your app is slow or hogs too much memory, users won’t stick around. That’s where optimizing your Ruby on Rails app becomes essential.
+In this article, we’ll explore techniques that enhance performance and reduce memory usage, ensuring user satisfaction and the success of your app.
+Understanding performance and memory footprint # The performance of an app refers to how fast your app loads for the end-users. As a developer, app performance should always be a priority even as you are adding new features and architecting your app.">
+
+  
+<script type="application/ld+json">
+  [{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Posts",
+    "name": "Optimizing your Ruby on Rails app for improved performance and reduced memory footprint",
+    "headline": "Optimizing your Ruby on Rails app for improved performance and reduced memory footprint",
+    
+    "abstract": "\u003cp\u003eUsers desire apps that run smoothly, load fast, and don\u0026rsquo;t crash. But what determines an app\u0026rsquo;s performance? There are two key factors: performance and memory usage.\nPerformance refers to how fast your app loads for users. Memory footprint is the amount of system memory your app  uses. If your app is slow or hogs too much memory, users won\u0026rsquo;t stick around. That\u0026rsquo;s where optimizing your Ruby on Rails app becomes essential.\u003c\/p\u003e\n\u003cp\u003eIn this article, we\u0026rsquo;ll explore techniques that enhance performance and reduce memory usage, ensuring user satisfaction and the success of your app.\u003c\/p\u003e\n\u003ch2 id=\u0022understanding-performance-and-memory-footprint\u0022 class=\u0022relative group\u0022\u003eUnderstanding performance and memory footprint \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#understanding-performance-and-memory-footprint\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h2\u003e\n\u003cp\u003eThe \u003cstrong\u003eperformance\u003c\/strong\u003e of an app refers to how fast your app loads for the end-users. As a developer, app performance should always be a priority even as you are adding new features and architecting your app.\u003c\/p\u003e",
+    "inLanguage": "en",
+    "url" : "https:\/\/florencenjeri.com\/posts\/rails-memoryfootprint\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Florence Njeri"
+    },
+    "copyrightYear": "2025",
+    "dateCreated": "2025-01-24T09:00:41\u002b00:00",
+    "datePublished": "2025-01-24T09:00:41\u002b00:00",
+    
+    "dateModified": "2025-01-24T09:00:41\u002b00:00",
+    
+    "keywords": ["Ruby on Rails"],
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "1475"
+  }]
+  </script>
+
+  <meta name="author" content="Florence Njeri" />
+  
+  
+
+
+
+
+
+
+  
+  
+  
+
+
+  
+</head><body
+    class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="font-bold text-primary-600 ltr:pr-2 rtl:pl-2 dark:text-primary-400"
+          >&darr;</span
+        >Skip to main content</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral print:hidden sm:py-10">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="z-40 flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Florence Njeri</a
+  >
+
+      
+
+    </div>
+    
+      
+      <label id="menu-button" for="menu-controller" class="block sm:hidden">
+        <input type="checkbox" id="menu-controller" class="hidden" />
+        <div class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400">
+          
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+
+  </span>
+
+
+        </div>
+        <div
+          id="menu-wrapper"
+          class="fixed inset-0 z-30 invisible w-full h-full m-auto overflow-auto transition-opacity opacity-0 cursor-default bg-neutral-100/50 backdrop-blur-sm dark:bg-neutral-900/50"
+        >
+          <ul
+            class="flex flex-col w-full px-6 py-6 mx-auto overflow-visible list-none max-w-7xl ltr:text-right rtl:text-left sm:px-14 sm:py-10 sm:pt-10 md:px-24 lg:px-32"
+          >
+            <li class="mb-1">
+              <span class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400"
+                >
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+  </span>
+
+</span
+              >
+            </li>
+            
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/"
+                      title=""
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Home</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/posts/"
+                      title="Posts"
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Posts</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/now/"
+                      title="Now"
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Now</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/about/"
+                      title=""
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >About</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    
+                    
+                  
+                </li>
+              
+              
+            
+          </ul>
+        </div>
+      </label>
+      
+      <ul class="flex-row hidden list-none ltr:text-right rtl:text-left sm:flex">
+        
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/"
+                  title=""
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Home</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/posts/"
+                  title="Posts"
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Posts</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/now/"
+                  title="Now"
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Now</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/about/"
+                  title=""
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >About</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                
+                
+              
+            </li>
+          
+          
+
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex flex-col grow">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        Optimizing your Ruby on Rails app for improved performance and reduced memory footprint
+      </h1>
+      <div class="mt-8 mb-12 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+        
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+    
+  
+
+  
+
+  
+
+  
+    
+  
+
+  
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      &lt;time datetime=&#34;2025-01-24 09:00:41.827 &amp;#43;0000 UTC&#34;&gt;January 24, 2025&lt;/time&gt;&lt;span class=&#34;px-2 text-primary-500&#34;&gt;&amp;middot;&lt;/span&gt;&lt;span title=&#34;Reading time&#34;&gt;7 mins&lt;/span&gt;
+    
+
+    
+    
+  </div>
+
+  
+  
+    <div class="my-1 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400 ">
+      
+        
+      
+        
+          
+            <a
+              href="/tags/ruby-on-rails/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >Ruby on Rails</a
+            >
+          
+        
+      
+    </div>
+  
+
+
+      </div>
+      
+        <div class="prose">
+          <img
+            class="mb-6 -mt-4 rounded-md"
+            
+              
+                src="/posts/rails-memoryfootprint/cover.jpg"
+              
+            
+            alt=""
+          />
+          
+        </div>
+      
+    </header>
+    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+      
+      <div class="min-w-0 min-h-0 max-w-prose grow">
+        <p>Users desire apps that run smoothly, load fast, and don&rsquo;t crash. But what determines an app&rsquo;s performance? There are two key factors: performance and memory usage.
+Performance refers to how fast your app loads for users. Memory footprint is the amount of system memory your app  uses. If your app is slow or hogs too much memory, users won&rsquo;t stick around. That&rsquo;s where optimizing your Ruby on Rails app becomes essential.</p>
+<p>In this article, we&rsquo;ll explore techniques that enhance performance and reduce memory usage, ensuring user satisfaction and the success of your app.</p>
+<h2 id="understanding-performance-and-memory-footprint" class="relative group">Understanding performance and memory footprint <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#understanding-performance-and-memory-footprint" aria-label="Anchor">#</a></span></h2>
+<p>The <strong>performance</strong> of an app refers to how fast your app loads for the end-users. As a developer, app performance should always be a priority even as you are adding new features and architecting your app.</p>
+<p><strong>Memory footprint</strong> refers to how much system memory or RAM space your app uses while it&rsquo;s running. Most computers have a finite amount of memory therefore, excessive memory usage can lead to freezing or crashes, degrading the user experience. Developers must find ways to minimize their app&rsquo;s memory footprint.</p>
+<h2 id="goals-of-optimization" class="relative group">Goals of optimization <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#goals-of-optimization" aria-label="Anchor">#</a></span></h2>
+<p>The main goals of optimizing memory use and app performance are:</p>
+<ol>
+<li><strong>User satisfaction</strong>. Your goal as a developer is to get as many users as possible to use your app and to ensure that they enjoy interacting with the app.</li>
+<li><strong>Business Scalability</strong>. Optimized performance and reduced memory usage enable your business to scale, attracting more customers and generating revenue. It validates your efforts as a developer and ensures wider adoption of your technology and keeps the investors happy.</li>
+</ol>
+<p>But how do you optimize your Rails app? In the next section, you&rsquo;ll learn about various techniques you can use to optimize the performance and memory usage of your app:</p>
+<h2 id="techniques-for-optimization" class="relative group">Techniques for optimization <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#techniques-for-optimization" aria-label="Anchor">#</a></span></h2>
+<h3 id="lazy-loading" class="relative group">Lazy loading <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#lazy-loading" aria-label="Anchor">#</a></span></h3>
+<p>Lazy loading involves loading webpage components on demand, as the user needs them, rather than downloading the entire webpage at once. This prevents noticeable lagging while webpage content gets downloaded. For example, a blogging app could be architectured to dynamically load posts as the user scrolls, preventing memory overload. For instance:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ruby" data-lang="ruby"><span class="line"><span class="cl"><span class="c1"># articles_controller.rb</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">ArticlesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span></span><span class="line"><span class="cl">  <span class="k">def</span> <span class="nf">index</span>
+</span></span><span class="line"><span class="cl">    <span class="vi">@articles</span> <span class="o">=</span> <span class="no">Article</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># Load only 10 articles initially</span>
+</span></span><span class="line"><span class="cl">  <span class="k">end</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># Load more articles when the user clicks on the load more button</span>
+</span></span><span class="line"><span class="cl">  <span class="k">def</span> <span class="nf">load_more_articles</span>
+</span></span><span class="line"><span class="cl">    <span class="vi">@articles</span> <span class="o">=</span> <span class="no">Article</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">offset</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:offset</span><span class="o">]</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">render</span> <span class="ss">partial</span><span class="p">:</span> <span class="s1">&#39;articles/article&#39;</span><span class="p">,</span> <span class="ss">collection</span><span class="p">:</span> <span class="vi">@articles</span>
+</span></span><span class="line"><span class="cl">  <span class="k">end</span>
+</span></span><span class="line"><span class="cl"><span class="k">end</span>
+</span></span></code></pre></div><p>In Rails, you should write your code so that data is queried from your database as required. The fewer the SQL queries made to the database at a single time, the better the app&rsquo;s performance. Alternatively, you can perform all the heavy database queries in the background so not to freeze the UI.</p>
+<p>Lazy loading leads to quicker initial load time and doesn&rsquo;t hog server/client resources every time they access an app.</p>
+<h3 id="optimize-your-database-queries" class="relative group">Optimize your database queries <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#optimize-your-database-queries" aria-label="Anchor">#</a></span></h3>
+<p>Writing inefficient database queries slows down apps and leads to excessive memory consumption, both of which will plummet the app&rsquo;s performance. In Rails, N+1 queries are a major performance problem. They occur when you query the database multiple times for related records, resulting in slower response times.
+For example, in your blog app, you may have two models: <code>Article</code> and <code>Comment</code>. N+1 will occur when you write two queries; one to fetch a list of all articles and another to fetch all the comments associated with each article.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ruby" data-lang="ruby"><span class="line"><span class="cl"><span class="sr">//</span> <span class="no">Fetch</span> <span class="n">all</span> <span class="n">the</span> <span class="n">articles</span>
+</span></span><span class="line"><span class="cl"><span class="n">articles</span> <span class="o">=</span> <span class="no">Article</span><span class="o">.</span><span class="n">all</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="sr">//</span> <span class="no">Loop</span> <span class="n">through</span> <span class="n">all</span> <span class="n">the</span> <span class="n">articles</span> <span class="ow">and</span> <span class="n">find</span> <span class="n">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">comments</span>
+</span></span><span class="line"><span class="cl"><span class="n">articles</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">article</span><span class="o">|</span>
+</span></span><span class="line"><span class="cl">  <span class="n">count</span> <span class="o">=</span> <span class="n">article</span><span class="o">.</span><span class="n">comment</span><span class="o">.</span><span class="n">count</span>
+</span></span><span class="line"><span class="cl"><span class="k">end</span>
+</span></span></code></pre></div><p>To optimize N+1 queries:</p>
+<ol>
+<li>Use the <a
+  href="https://github.com/flyerhzm/bullet"
+  
+  target="_blank" rel="noreferrer noopener"
+>Bullet gem</a> to help detect the N+1 queries in your apps.</li>
+<li>Use Active Record&rsquo;s eager loading to write memory-efficient database queries. Active Record has an <code>eager_load</code> function that gets all the associated data using a left outer join to combine the requests into a single query. To make the code snippet above performant, you should use <code>articles = Article.includes(:comments)</code> to fetch articles and associated comments in a single query.</li>
+<li>Use indexes to reduce how much data your queries need to read and process from the database. Indexed queries reduces query response time and make it easy to scale an app without affecting its performance.</li>
+<li>Use Active Record to cache recent queries. Therefore instead of feching data from the database for all subsequent similar requests, it&rsquo;s best to fetch the data from the Active record cache.</li>
+</ol>
+<p>Optimizing database queries is crucial for app performance. By using Active Record&rsquo;s eager loading, indexing smartly, and leveraging cache, you can significantly boost your app&rsquo;s speed and efficiency.</p>
+<h3 id="use-memory-profiling-tools" class="relative group">Use memory profiling tools <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#use-memory-profiling-tools" aria-label="Anchor">#</a></span></h3>
+<p>Memory profiling tools are tools that are used to monitor and identify memory leaks in an app that could lead to app lagging or crashing. Ruby uses a Garbage Collector to automatically allocate and deallocate memory from objects which optimizes memory. However, sometimes the Garbage Collector fails to deallocate memory from objects that are no longer being used leading to memory leaks. You therefore need to use a memory profiler tool or memory profiler gems such as <a
+  href="https://rubygems.org/gems/ruby-prof/versions/0.16.2?locale=en"
+  
+  target="_blank" rel="noreferrer noopener"
+>ruby-prof</a> to identify which objects are in use and how much memory is allocated to each.</p>
+<p>For instance, you can use the built-in Ruby profiler by running <code>ruby -rprile script.rb</code> which tells Ruby to require the <code>profile</code> library and then run the <code>script.rb</code> file. Once the script is executed successfully or you kill the ruby process, the <code>profile</code> library will print out a performance profile on your terminal. You can then use a profiling tool to identify methods and parts of code that cause the highest memory usage and fix these memory issues.</p>
+<h3 id="caching" class="relative group">Caching <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#caching" aria-label="Anchor">#</a></span></h3>
+<p>Caching is the practice of storing the response data returned from the server when a request is made and reusing the data for similar requests. The more requests you make to the server, the slower the app gets, especially as the app grows and the data being fetched increases. Caching is the most effective way of improving your app&rsquo;s performance.</p>
+<p>The following are some caching techniques you can use in your Rails apps:</p>
+<ul>
+<li>
+<p><strong>Memory caching</strong>. Ruby has built-in caching which lets you cache your fragments, pages, and actions to reuse when responding to requests. Rails provides fragment caching by default, and to add page and action caching, you&rsquo;ll need to add <code>actionpack-page_caching</code> and <code>actionpack-action_caching</code> gems to your Gemfile. Rails with fetch the views, pages or actions from the cache store as opposed to makiing a request to the server, reducing app latency significantly and improving performance and scalability.</p>
+</li>
+<li>
+<p><strong>Memoizing expensive computations</strong>.Memoization is a technique used in Ruby to speed up accessor methods by changing the results of methods. For example:</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ruby" data-lang="ruby"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">current_user</span>
+</span></span><span class="line"><span class="cl">    <span class="vi">@current_user</span> <span class="o">||=</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">end</span>
+</span></span></code></pre></div><p>Using the <code>||=</code> memoization pattern, you cache the database query result of the <code>@current_user</code> after the first time the method is invoked. All the subsequent calls reuse the value stored in the <code>@current_user</code> instance variable. The <code>||=</code> means that if the <code>@current user</code> instance variable isn&rsquo;t empty or null, don&rsquo;t evaluate the right-hand side of the expression and return its value, else evaluate the expression on the right. This improves performance by caching expensive method calls.</p>
+<h3 id="remove-unused-gems" class="relative group">Remove unused Gems <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#remove-unused-gems" aria-label="Anchor">#</a></span></h3>
+<p>Each Rails gem consumes some memory during startup causing memory bloat and slowing down your app You should occasionally check how much memory gems use using the derailed benchmarks gem. Add <code>gem 'derailed_benchmarks', group: :development</code> to your Gemfile, then run <code>bundle exec derailed bundle:mem</code> and from the output identify gems consuming excessive memory and consider replacing them with lightweight alternatives.
+
+
+
+
+  
+  
+  
+    <figure>
+      <img class="mx-auto my-0 rounded-md" src="gems.png" alt="Terminal output showing the gems consuming the most memory in an app" />
+      
+    </figure>
+  
+
+
+From the screenshot above, you can see that <code>papertrail</code> consumes the most memory on startup out of all the gems, you then look for alternatives to replace the gem with a lightweight gem.</p>
+<h3 id="use-cdn-to-reduce-latency" class="relative group">Use CDN to reduce latency <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#use-cdn-to-reduce-latency" aria-label="Anchor">#</a></span></h3>
+<p>A Content Delivery Network(CDN) refers to a geographically distributed group of servers that caches app data closer to the users. CDNs solve the latency (time between when an app makes a request for data and when the data from the server is rendered to the end-user) problem through the following ways:</p>
+<ol>
+<li>They reduce app load time by reducing the distance between the end users by letting the users connect to the closest server geographically to them.</li>
+<li>CDNs also offer the load balancing feature that evenly distributes the oncoming app traffic amongst multiple backend servers which prevents one server from being overloaded with requests hence improving app performance.</li>
+</ol>
+<h2 id="conclusion" class="relative group">Conclusion <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#conclusion" aria-label="Anchor">#</a></span></h2>
+<p>Optimizing your Ruby on Rails app is crucial for keeping users engaged and your business growing. By implementing techniques like lazy loading, optimizing database queries, using memory profiling tools, caching data, removing unused gems, and leveraging CDNs, you can ensure your app runs smoothly and efficiently. Don&rsquo;t forget to monitor and fine-tune your app regularly to maintain peak performance. Start optimizing today to provide the best experience for your users and unlock your app&rsquo;s full potential.</p>
+
+      </div>
+    </section>
+    <footer class="pt-8 max-w-prose print:hidden">
+      
+
+      
+
+      
+  
+    
+    
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="group flex" href="/posts/toctou_c/">
+              <span
+                class="mr-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+              <span
+                class="ml-2 text-neutral-700 transition-transform group-hover:translate-x-[2px] group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Secure Programming in C: Buffer Overwrites and Overflows</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2025-01-24 09:00:41.827 &#43;0000 UTC">January 24, 2025</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/androgoat/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Android Pentesting with AndroGoat</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2026-02-03 00:00:00 &#43;0000 UTC">February 3, 2026</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ml-2 text-neutral-700 transition-transform group-hover:translate-x-[2px] group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span
+                class="mr-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+        
+          <div
+            class="pointer-events-none absolute top-[100vh] bottom-0 w-12 ltr:right-0 rtl:left-0"
+          >
+            <a
+              href="#the-top"
+              class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+              aria-label="Scroll to top"
+              title="Scroll to top"
+            >
+              &uarr;
+            </a>
+          </div>
+        
+      </main><footer class="py-10 print:hidden">
+  
+    <nav class="pb-4 text-base font-medium text-neutral-500 dark:text-neutral-400">
+      <ul class="flex flex-col list-none sm:flex-row">
+        
+          <li
+            class="mb-1 group ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+          >
+            
+              <a
+                href="https://github.com/Florence-Njeri"
+                title=""
+                target="_blank"
+                >
+                  <span
+                    class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                  >
+                    
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+
+  </span>
+
+
+                  </span>
+                </a
+              >
+            
+          </li>
+        
+          <li
+            class="mb-1 group ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+          >
+            
+              <a
+                href="https://www.linkedin.com/in/florencenjeri/"
+                title=""
+                target="_blank"
+                >
+                  <span
+                    class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                  >
+                    
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+
+  </span>
+
+
+                  </span>
+                </a
+              >
+            
+          </li>
+        
+      </ul>
+    </nav>
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+        
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2026
+            Florence Njeri
+        </p>
+      
+      
+    </div>
+    
+  </div>
+  
+</footer>
+    </div>
+  </body>
+</html>

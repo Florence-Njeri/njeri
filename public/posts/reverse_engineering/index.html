@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  dir="ltr"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+>
+
+<head>
+  <meta charset="utf-8" />
+  
+    <meta http-equiv="content-language" content="en" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="rgb(255,255,255)" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Reverse Engineering &middot; Florence Njeri</title>
+    <meta name="title" content="Reverse Engineering &middot; Florence Njeri" />
+  <meta name="description" content="Decompiling and analyzing binaries with Ghidra; examples and notes." />
+  
+  
+  
+  <link rel="canonical" href="https://florencenjeri.com/posts/reverse_engineering/" />
+  
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.e566b6c0a0b7804755e52094f25218ae3fe33adeea50ed9df826ef64667c360685e72c0592ed510e3e76e840aaea4693f4bbbbf250fa1c16631a1a29e5c5acdf.css" integrity="sha512-5Wa2wKC3gEdV5SCU8lIYrj/jOt7qUO2d&#43;CbvZGZ8NgaF5ywFku1RDj526ECq6kaT9Lu78lD6HBZjGhop5cWs3w==" />
+  
+  
+  <script type="text/javascript" src="/js/appearance.min.c6198a5ecbc6c7b35a8568d29315f50cf5d775d4461c515a476359767f1a745c245aa83fa96b0c7d83da976cf77481e1fc29537a2391a53ffe69a991638802e6.js" integrity="sha512-xhmKXsvGx7NahWjSkxX1DPXXddRGHFFaR2NZdn8adFwkWqg/qWsMfYPal2z3dIHh/ClTeiORpT/&#43;aamRY4gC5g=="></script>
+  
+  
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  <meta property="og:url" content="https://florencenjeri.com/posts/reverse_engineering/">
+  <meta property="og:site_name" content="Florence Njeri">
+  <meta property="og:title" content="Reverse Engineering">
+  <meta property="og:description" content="Decompiling and analyzing binaries with Ghidra; examples and notes.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-12-01T09:36:41+00:00">
+    <meta property="article:modified_time" content="2024-12-01T09:36:41+00:00">
+    <meta property="article:tag" content="Reverse Engineering">
+    <meta property="article:tag" content="C Programming">
+    <meta property="article:tag" content="Cyber Security">
+    <meta property="article:tag" content="Ghidra">
+    <meta property="article:tag" content="CTF">
+    <meta property="article:tag" content="Coding101">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Reverse Engineering">
+  <meta name="twitter:description" content="Decompiling and analyzing binaries with Ghidra; examples and notes.">
+
+  
+<script type="application/ld+json">
+  [{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Posts",
+    "name": "Reverse Engineering",
+    "headline": "Reverse Engineering",
+    "description": "Decompiling and analyzing binaries with Ghidra; examples and notes.",
+    "abstract": "\u003ch1 id=\u0022reverse-engineering\u0022 class=\u0022relative group\u0022\u003eReverse Engineering \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#reverse-engineering\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h1\u003e\n\u003cp\u003eDecompiling a program from assemnly back to high level language to try and understand what the program does.\u003c\/p\u003e\n\u003cp\u003eExample uses cases:\u003c\/p\u003e\n\u003cul\u003e\n\u003cli\u003eVulnerability Analysis\u003c\/li\u003e\n\u003cli\u003eMalware Research\u003c\/li\u003e\n\u003c\/ul\u003e\n\u003ch2 id=\u0022binary-analysis-tools-summary-ghidra-book-ch-2\u0022 class=\u0022relative group\u0022\u003e\u003cstrong\u003eBinary Analysis Tools Summary (Ghidra Book, Ch. 2)\u003c\/strong\u003e \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#binary-analysis-tools-summary-ghidra-book-ch-2\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h2\u003e\n\u003ch4 id=\u00221\u0022 class=\u0022relative group\u0022\u003e\u003cstrong\u003e1. \u003ccode\u003efile\u003c\/code\u003e\u003c\/strong\u003e \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#1\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h4\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eWhat:\u003c\/strong\u003e Identifies the file format (ELF, PE, Mach-O), architecture (x86, ARM), and bit-width (32\/64-bit).\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eWhen:\u003c\/strong\u003e \u003cstrong\u003eStep 1 (Triage).\u003c\/strong\u003e Use it the moment you receive a mystery file.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eWhy vs Others:\u003c\/strong\u003e Use this instead of \u003ccode\u003enm\u003c\/code\u003e or \u003ccode\u003eobjdump\u003c\/code\u003e initially because it tells you if the file is even an executable or if it is \u0026ldquo;stripped\u0026rdquo; (missing names).\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eExample Command:\u003c\/strong\u003e \u003ccode\u003efile \u0026lt;filename\u0026gt;\u003c\/code\u003e\u003c\/li\u003e\n\u003c\/ul\u003e\n\u003ch4 id=\u00222\u0022 class=\u0022relative group\u0022\u003e\u003cstrong\u003e2. \u003ccode\u003estrings\u003c\/code\u003e\u003c\/strong\u003e \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#2\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h4\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eWhat:\u003c\/strong\u003e Scans the entire file for sequences of printable characters (ASCII\/Unicode).\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eWhen:\u003c\/strong\u003e \u003cstrong\u003eInitial Recon.\u003c\/strong\u003e Use it to find hardcoded passwords, IP addresses, URLs, or developer comments.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eWhy vs Others:\u003c\/strong\u003e Unlike \u003ccode\u003enm\u003c\/code\u003e, which only looks at official \u0026ldquo;names\u0026rdquo; (symbols), \u003ccode\u003estrings\u003c\/code\u003e finds human-readable text hidden anywhere in the binary\u0026rsquo;s raw data.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eExample Command:\u003c\/strong\u003e \u003ccode\u003estrings -a \u0026lt;filename\u0026gt;\u003c\/code\u003e\u003c\/li\u003e\n\u003c\/ul\u003e\n\u003ch4 id=\u00223\u0022 class=\u0022relative group\u0022\u003e\u003cstrong\u003e3. \u003ccode\u003enm\u003c\/code\u003e\u003c\/strong\u003e \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#3\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h4\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eWhat:\u003c\/strong\u003e Lists the \u0026ldquo;Symbol Table\u0026rdquo;—the names of functions and global variables used in the code.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eWhen:\u003c\/strong\u003e \u003cstrong\u003eFunction Discovery.\u003c\/strong\u003e Use it to find the \u003ccode\u003emain\u003c\/code\u003e entry point or identify specific logic like \u003ccode\u003evalidate_key\u003c\/code\u003e.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eWhy vs Others:\u003c\/strong\u003e It provides a much cleaner \u0026ldquo;Table of Contents\u0026rdquo; than \u003ccode\u003eobjdump\u003c\/code\u003e. If you just need a list of functions without seeing the code, this is the fastest tool.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eExample Command:\u003c\/strong\u003e \u003ccode\u003enm -D \u0026lt;filename\u0026gt;\u003c\/code\u003e\u003c\/li\u003e\n\u003c\/ul\u003e\n\u003ch4 id=\u00224\u0022 class=\u0022relative group\u0022\u003e\u003cstrong\u003e4. \u003ccode\u003eldd\u003c\/code\u003e\u003c\/strong\u003e \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#4\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h4\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eWhat:\u003c\/strong\u003e Prints the shared libraries (dependencies) that the program needs to run.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eWhen:\u003c\/strong\u003e \u003cstrong\u003eDependency Analysis.\u003c\/strong\u003e Use it to see what external tools the program relies on (e.g., encryption or networking libraries).\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eWhy vs Others:\u003c\/strong\u003e Unlike \u003ccode\u003ereadelf\u003c\/code\u003e, \u003ccode\u003eldd\u003c\/code\u003e shows you exactly where those libraries are located on \u003cem\u003eyour\u003c\/em\u003e specific system.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eExample Command:\u003c\/strong\u003e \u003ccode\u003eldd \u0026lt;filename\u0026gt;\u003c\/code\u003e\u003c\/li\u003e\n\u003c\/ul\u003e\n\u003ch4 id=\u00225\u0022 class=\u0022relative group\u0022\u003e\u003cstrong\u003e5. \u003ccode\u003eobjdump\u003c\/code\u003e\u003c\/strong\u003e \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#5\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h4\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eWhat:\u003c\/strong\u003e The \u0026ldquo;Swiss Army Knife\u0026rdquo; for displaying headers, section info, and raw disassembly.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eWhen:\u003c\/strong\u003e \u003cstrong\u003eDeep Dive (CLI).\u003c\/strong\u003e Use it when you want to see the actual assembly code without opening a GUI like Ghidra.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eWhy vs Others:\u003c\/strong\u003e It is the only tool in this list that can actually \u003cstrong\u003edisassemble\u003c\/strong\u003e machine code into human-readable assembly instructions.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eExample Command:\u003c\/strong\u003e \u003ccode\u003eobjdump -d \u0026lt;filename\u0026gt;\u003c\/code\u003e\u003c\/li\u003e\n\u003c\/ul\u003e\n\u003ch4 id=\u00226\u0022 class=\u0022relative group\u0022\u003e\u003cstrong\u003e6. \u003ccode\u003ereadelf\u003c\/code\u003e\u003c\/strong\u003e \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#6\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h4\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eWhat:\u003c\/strong\u003e Displays extremely detailed technical information about the ELF (Linux) file header and sections.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eWhen:\u003c\/strong\u003e \u003cstrong\u003eStructure Analysis.\u003c\/strong\u003e Use it to find the exact memory addresses of the \u003ccode\u003e.text\u003c\/code\u003e (code) or \u003ccode\u003e.data\u003c\/code\u003e (variables) sections.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eWhy vs Others:\u003c\/strong\u003e It is \u003cstrong\u003esafer\u003c\/strong\u003e than \u003ccode\u003eldd\u003c\/code\u003e because it only reads the file header and never attempts to execute any part of the binary.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eExample Command:\u003c\/strong\u003e \u003ccode\u003ereadelf -h \u0026lt;filename\u0026gt;\u003c\/code\u003e\u003c\/li\u003e\n\u003c\/ul\u003e\n\u003chr\u003e\n\u003cp\u003e\u003cstrong\u003eNOTE:\u003c\/strong\u003e If a binary is \u003cstrong\u003eStripped\u003c\/strong\u003e, \u003ccode\u003enm\u003c\/code\u003e will fail. Your best alternatives are then \u003cstrong\u003e\u003ccode\u003estrings\u003c\/code\u003e\u003c\/strong\u003e (to find text clues) or \u003cstrong\u003e\u003ccode\u003eobjdump -d\u003c\/code\u003e\u003c\/strong\u003e (to manually read the assembly logic).\u003c\/p\u003e",
+    "inLanguage": "en",
+    "url" : "https:\/\/florencenjeri.com\/posts\/reverse_engineering\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Florence Njeri"
+    },
+    "copyrightYear": "2024",
+    "dateCreated": "2024-12-01T09:36:41\u002b00:00",
+    "datePublished": "2024-12-01T09:36:41\u002b00:00",
+    
+    "dateModified": "2024-12-01T09:36:41\u002b00:00",
+    
+    "keywords": ["Reverse Engineering","C Programming","Cyber Security","Ghidra","CTF","Coding101"],
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "721"
+  }]
+  </script>
+
+  <meta name="author" content="Florence Njeri" />
+  
+  
+
+
+
+
+
+
+  
+  
+  
+
+
+  
+</head><body
+    class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="font-bold text-primary-600 ltr:pr-2 rtl:pl-2 dark:text-primary-400"
+          >&darr;</span
+        >Skip to main content</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral print:hidden sm:py-10">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="z-40 flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Florence Njeri</a
+  >
+
+      
+
+    </div>
+    
+      
+      <label id="menu-button" for="menu-controller" class="block sm:hidden">
+        <input type="checkbox" id="menu-controller" class="hidden" />
+        <div class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400">
+          
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+
+  </span>
+
+
+        </div>
+        <div
+          id="menu-wrapper"
+          class="fixed inset-0 z-30 invisible w-full h-full m-auto overflow-auto transition-opacity opacity-0 cursor-default bg-neutral-100/50 backdrop-blur-sm dark:bg-neutral-900/50"
+        >
+          <ul
+            class="flex flex-col w-full px-6 py-6 mx-auto overflow-visible list-none max-w-7xl ltr:text-right rtl:text-left sm:px-14 sm:py-10 sm:pt-10 md:px-24 lg:px-32"
+          >
+            <li class="mb-1">
+              <span class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400"
+                >
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+  </span>
+
+</span
+              >
+            </li>
+            
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/"
+                      title=""
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Home</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/posts/"
+                      title="Posts"
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Posts</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/now/"
+                      title="Now"
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Now</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/about/"
+                      title=""
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >About</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    
+                    
+                  
+                </li>
+              
+              
+            
+          </ul>
+        </div>
+      </label>
+      
+      <ul class="flex-row hidden list-none ltr:text-right rtl:text-left sm:flex">
+        
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/"
+                  title=""
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Home</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/posts/"
+                  title="Posts"
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Posts</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/now/"
+                  title="Now"
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Now</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/about/"
+                  title=""
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >About</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                
+                
+              
+            </li>
+          
+          
+
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex flex-col grow">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        Reverse Engineering
+      </h1>
+      <div class="mt-8 mb-12 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+        
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+    
+  
+
+  
+
+  
+
+  
+    
+  
+
+  
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      &lt;time datetime=&#34;2024-12-01 09:36:41.827 &amp;#43;0000 UTC&#34;&gt;December 1, 2024&lt;/time&gt;&lt;span class=&#34;px-2 text-primary-500&#34;&gt;&amp;middot;&lt;/span&gt;&lt;span title=&#34;Reading time&#34;&gt;4 mins&lt;/span&gt;
+    
+
+    
+    
+  </div>
+
+  
+  
+    <div class="my-1 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400 ">
+      
+        
+      
+        
+          
+            <a
+              href="/tags/reverse-engineering/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >Reverse Engineering</a
+            >
+          
+            <a
+              href="/tags/c-programming/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >C Programming</a
+            >
+          
+            <a
+              href="/tags/cyber-security/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >Cyber Security</a
+            >
+          
+            <a
+              href="/tags/ghidra/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >Ghidra</a
+            >
+          
+            <a
+              href="/tags/ctf/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >CTF</a
+            >
+          
+            <a
+              href="/tags/coding101/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >Coding101</a
+            >
+          
+        
+      
+    </div>
+  
+
+
+      </div>
+      
+    </header>
+    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+      
+      <div class="min-w-0 min-h-0 max-w-prose grow">
+        <h1 id="reverse-engineering" class="relative group">Reverse Engineering <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#reverse-engineering" aria-label="Anchor">#</a></span></h1>
+<p>Decompiling a program from assemnly back to high level language to try and understand what the program does.</p>
+<p>Example uses cases:</p>
+<ul>
+<li>Vulnerability Analysis</li>
+<li>Malware Research</li>
+</ul>
+<h2 id="binary-analysis-tools-summary-ghidra-book-ch-2" class="relative group"><strong>Binary Analysis Tools Summary (Ghidra Book, Ch. 2)</strong> <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#binary-analysis-tools-summary-ghidra-book-ch-2" aria-label="Anchor">#</a></span></h2>
+<h4 id="1" class="relative group"><strong>1. <code>file</code></strong> <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1" aria-label="Anchor">#</a></span></h4>
+<ul>
+<li><strong>What:</strong> Identifies the file format (ELF, PE, Mach-O), architecture (x86, ARM), and bit-width (32/64-bit).</li>
+<li><strong>When:</strong> <strong>Step 1 (Triage).</strong> Use it the moment you receive a mystery file.</li>
+<li><strong>Why vs Others:</strong> Use this instead of <code>nm</code> or <code>objdump</code> initially because it tells you if the file is even an executable or if it is &ldquo;stripped&rdquo; (missing names).</li>
+<li><strong>Example Command:</strong> <code>file &lt;filename&gt;</code></li>
+</ul>
+<h4 id="2" class="relative group"><strong>2. <code>strings</code></strong> <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#2" aria-label="Anchor">#</a></span></h4>
+<ul>
+<li><strong>What:</strong> Scans the entire file for sequences of printable characters (ASCII/Unicode).</li>
+<li><strong>When:</strong> <strong>Initial Recon.</strong> Use it to find hardcoded passwords, IP addresses, URLs, or developer comments.</li>
+<li><strong>Why vs Others:</strong> Unlike <code>nm</code>, which only looks at official &ldquo;names&rdquo; (symbols), <code>strings</code> finds human-readable text hidden anywhere in the binary&rsquo;s raw data.</li>
+<li><strong>Example Command:</strong> <code>strings -a &lt;filename&gt;</code></li>
+</ul>
+<h4 id="3" class="relative group"><strong>3. <code>nm</code></strong> <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#3" aria-label="Anchor">#</a></span></h4>
+<ul>
+<li><strong>What:</strong> Lists the &ldquo;Symbol Table&rdquo;—the names of functions and global variables used in the code.</li>
+<li><strong>When:</strong> <strong>Function Discovery.</strong> Use it to find the <code>main</code> entry point or identify specific logic like <code>validate_key</code>.</li>
+<li><strong>Why vs Others:</strong> It provides a much cleaner &ldquo;Table of Contents&rdquo; than <code>objdump</code>. If you just need a list of functions without seeing the code, this is the fastest tool.</li>
+<li><strong>Example Command:</strong> <code>nm -D &lt;filename&gt;</code></li>
+</ul>
+<h4 id="4" class="relative group"><strong>4. <code>ldd</code></strong> <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#4" aria-label="Anchor">#</a></span></h4>
+<ul>
+<li><strong>What:</strong> Prints the shared libraries (dependencies) that the program needs to run.</li>
+<li><strong>When:</strong> <strong>Dependency Analysis.</strong> Use it to see what external tools the program relies on (e.g., encryption or networking libraries).</li>
+<li><strong>Why vs Others:</strong> Unlike <code>readelf</code>, <code>ldd</code> shows you exactly where those libraries are located on <em>your</em> specific system.</li>
+<li><strong>Example Command:</strong> <code>ldd &lt;filename&gt;</code></li>
+</ul>
+<h4 id="5" class="relative group"><strong>5. <code>objdump</code></strong> <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#5" aria-label="Anchor">#</a></span></h4>
+<ul>
+<li><strong>What:</strong> The &ldquo;Swiss Army Knife&rdquo; for displaying headers, section info, and raw disassembly.</li>
+<li><strong>When:</strong> <strong>Deep Dive (CLI).</strong> Use it when you want to see the actual assembly code without opening a GUI like Ghidra.</li>
+<li><strong>Why vs Others:</strong> It is the only tool in this list that can actually <strong>disassemble</strong> machine code into human-readable assembly instructions.</li>
+<li><strong>Example Command:</strong> <code>objdump -d &lt;filename&gt;</code></li>
+</ul>
+<h4 id="6" class="relative group"><strong>6. <code>readelf</code></strong> <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#6" aria-label="Anchor">#</a></span></h4>
+<ul>
+<li><strong>What:</strong> Displays extremely detailed technical information about the ELF (Linux) file header and sections.</li>
+<li><strong>When:</strong> <strong>Structure Analysis.</strong> Use it to find the exact memory addresses of the <code>.text</code> (code) or <code>.data</code> (variables) sections.</li>
+<li><strong>Why vs Others:</strong> It is <strong>safer</strong> than <code>ldd</code> because it only reads the file header and never attempts to execute any part of the binary.</li>
+<li><strong>Example Command:</strong> <code>readelf -h &lt;filename&gt;</code></li>
+</ul>
+<hr>
+<p><strong>NOTE:</strong> If a binary is <strong>Stripped</strong>, <code>nm</code> will fail. Your best alternatives are then <strong><code>strings</code></strong> (to find text clues) or <strong><code>objdump -d</code></strong> (to manually read the assembly logic).</p>
+<h2 id="reversing-with-ghidra" class="relative group">Reversing with GHIDRA <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#reversing-with-ghidra" aria-label="Anchor">#</a></span></h2>
+<h2 id="challenge-1" class="relative group">Challenge 1 <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#challenge-1" aria-label="Anchor">#</a></span></h2>
+<p>Reverse Engineering <a
+  href="https://crackmes.one/crackme/5b8a37a433c5d45fc286ad83"
+  
+  target="_blank" rel="noreferrer noopener"
+>CBM hacker&rsquo;s easy_reverse</a> with Ghidra. After unzipping the file and getting access to the executable I ran it with the command <code>./rev50_linux64-bit</code> and see that it expects me to pass the password as an argument:</p>
+<p>
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            src="/posts/reverse_engineering/crackmes_one.png"
+          
+        
+        alt="alt text"
+      />
+      
+    </figure>
+  
+
+</p>
+<p>I then decompiled the excecutrable file using Ghidra and selected the main function from the Symbol Tree which loads the decompiled main function code in the Decompiled Window as shown below:</p>
+<p>
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            src="/posts/reverse_engineering/decompiled.png"
+          
+        
+        alt="alt text"
+      />
+      
+    </figure>
+  
+
+</p>
+<p>I proceed to change the main undefuined signature above to the C standard signature  <code>int main(int argc, char *argv[])</code>.</p>
+<p>The code now looks much cleaner and easy to read so I proceeded to analyze the code while adding comments:</p>
+<p>
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            srcset="
+            /posts/reverse_engineering/commented_code_hu_c3e5dc2b637838af.png 330w,
+            /posts/reverse_engineering/commented_code_hu_867a357f8ed00b6a.png 660w,
+            /posts/reverse_engineering/commented_code_hu_cf8ce54b0a09d350.png 1024w,
+            /posts/reverse_engineering/commented_code_hu_9697a8a43e5ee3a5.png 2x"
+            src="/posts/reverse_engineering/commented_code_hu_867a357f8ed00b6a.png"
+          
+        
+        alt="alt text"
+      />
+      
+    </figure>
+  
+
+</p>
+<h3 id="1-the-argument-count-argc" class="relative group">1. The Argument Count (<code>argc</code>) <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1-the-argument-count-argc" aria-label="Anchor">#</a></span></h3>
+<p>First, the program checks if two arguments are passed using<code>argc == 2</code> where <code>argv[0]</code> is the name of the program in C. Therefore, <code>argc == 2</code> means the program expects exactly one user-provided argument. If you run the program without an argument, it calls the usage function and exits.</p>
+<h3 id="2-the-string-length" class="relative group">2. The String Length <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#2-the-string-length" aria-label="Anchor">#</a></span></h3>
+<p>Next, it checks the length of the user input using <code>strlen</code> to ensure it is exactly 10 characters long <code>arg1_len == 10</code>.</p>
+<h3 id="3-the-character-check" class="relative group">3. The Character Check <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#3-the-character-check" aria-label="Anchor">#</a></span></h3>
+<p>This is the specific requirement  <code>argv[1][4] == '@'</code> that checks if the 5th character of the user provided input is an @ symbol</p>
+<p>Given this information we are able to deduce how to obtain the flag by crafting an argument that satistifies all the conditions listed above as shown in the following screenshot:</p>
+<p>
+
+
+
+  
+  
+  
+    <figure>
+      <img class="mx-auto my-0 rounded-md" src="image.png" alt="alt text" />
+      
+    </figure>
+  
+
+</p>
+<h2 id="challenge-2" class="relative group">Challenge 2 <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#challenge-2" aria-label="Anchor">#</a></span></h2>
+<p>After running the second challenge, I saw that the program requires a password in order to run.
+
+
+
+
+  
+  
+  
+    <figure>
+      <img class="mx-auto my-0 rounded-md" src="image.png" alt="alt text" />
+      
+    </figure>
+  
+
+</p>
+<p>I then decompiled the executable using Ghidra</p>
+
+      </div>
+    </section>
+    <footer class="pt-8 max-w-prose print:hidden">
+      
+
+      
+
+      
+  
+    
+    
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="group flex" href="/posts/buffer_overflow_c/">
+              <span
+                class="mr-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+              <span
+                class="ml-2 text-neutral-700 transition-transform group-hover:translate-x-[2px] group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Secure Programming in C: Buffer Overwrites and Overflows</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2024-12-01 09:36:41.827 &#43;0000 UTC">December 1, 2024</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/toctou_c/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Secure Programming in C: Buffer Overwrites and Overflows</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2025-01-24 09:00:41.827 &#43;0000 UTC">January 24, 2025</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ml-2 text-neutral-700 transition-transform group-hover:translate-x-[2px] group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span
+                class="mr-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+        
+          <div
+            class="pointer-events-none absolute top-[100vh] bottom-0 w-12 ltr:right-0 rtl:left-0"
+          >
+            <a
+              href="#the-top"
+              class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+              aria-label="Scroll to top"
+              title="Scroll to top"
+            >
+              &uarr;
+            </a>
+          </div>
+        
+      </main><footer class="py-10 print:hidden">
+  
+    <nav class="pb-4 text-base font-medium text-neutral-500 dark:text-neutral-400">
+      <ul class="flex flex-col list-none sm:flex-row">
+        
+          <li
+            class="mb-1 group ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+          >
+            
+              <a
+                href="https://github.com/Florence-Njeri"
+                title=""
+                target="_blank"
+                >
+                  <span
+                    class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                  >
+                    
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+
+  </span>
+
+
+                  </span>
+                </a
+              >
+            
+          </li>
+        
+          <li
+            class="mb-1 group ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+          >
+            
+              <a
+                href="https://www.linkedin.com/in/florencenjeri/"
+                title=""
+                target="_blank"
+                >
+                  <span
+                    class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                  >
+                    
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+
+  </span>
+
+
+                  </span>
+                </a
+              >
+            
+          </li>
+        
+      </ul>
+    </nav>
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+        
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2026
+            Florence Njeri
+        </p>
+      
+      
+    </div>
+    
+  </div>
+  
+</footer>
+    </div>
+  </body>
+</html>

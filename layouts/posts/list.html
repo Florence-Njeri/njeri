@@ -21,16 +21,75 @@
         <h2 class="text-2xl font-bold text-neutral-700 dark:text-neutral-300 mb-6">{{ .Key }}</h2>
         <div class="space-y-8">
           {{ range .Pages }}
-            <div class="flex flex-col space-y-2 pb-8 border-b border-neutral-200 dark:border-neutral-700">
-              <div class="flex items-start justify-between">
-                <h3 class="text-xl font-semibold text-primary-600 dark:text-primary-400 hover:underline flex-1">
+            {{ $thumb := .Resources.GetMatch "thumb.*" }}
+            {{ if not $thumb }}{{ $thumb = .Resources.GetMatch "cover.*" }}{{ end }}
+            <div class="pb-8 border-b border-neutral-200 dark:border-neutral-700">
+              <div class="flex flex-col gap-4 md:flex-row md:items-start">
+                {{ with $thumb }}
+                  {{ $image := .Fill "360x200 smart" }}
+                  <a href="{{ $.RelPermalink }}" class="block overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 md:w-64 md:flex-none">
+                    <img src="{{ $image.RelPermalink }}" alt="{{ $.Title | plainify }}" class="h-44 w-full object-cover transition duration-300 hover:scale-[1.02]" />
+                  </a>
+                {{ end }}
+                <div class="flex min-w-0 flex-1 flex-col space-y-3">
+                  <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <h3 class="text-xl font-semibold text-primary-600 dark:text-primary-400 hover:underline sm:flex-1">
+                      <a href="{{ .RelPermalink }}">{{ .Title | emojify }}</a>
+                    </h3>
+                    <time class="text-sm text-neutral-500 dark:text-neutral-400 whitespace-nowrap">
+                      {{ .PublishDate | time.Format ":date_long" }}
+                    </time>
+                  </div>
+
+                  {{ if .Params.summary }}
+                    <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                      {{ .Summary | truncate 300 }}
+                    </p>
+                  {{ else if .Summary }}
+                    <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                      {{ .Summary }}
+                    </p>
+                  {{ end }}
+
+                  {{ with .Params.tags }}
+                    <div class="flex flex-wrap gap-2 mt-1 text-xs">
+                      {{ range . }}
+                        <a href="{{ (printf "/tags/%s/" (urlize .)) | relLangURL }}" class="inline-flex items-center px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
+                          {{ . }}
+                        </a>
+                      {{ end }}
+                    </div>
+                  {{ end }}
+                </div>
+              </div>
+            </div>
+          {{ end }}
+        </div>
+      </section>
+    {{ end }}
+  {{ else }}
+    <div class="space-y-8">
+      {{ range $pages }}
+        {{ $thumb := .Resources.GetMatch "thumb.*" }}
+        {{ if not $thumb }}{{ $thumb = .Resources.GetMatch "cover.*" }}{{ end }}
+        <div class="pb-8 border-b border-neutral-200 dark:border-neutral-700">
+          <div class="flex flex-col gap-4 md:flex-row md:items-start">
+            {{ with $thumb }}
+              {{ $image := .Fill "360x200 smart" }}
+              <a href="{{ $.RelPermalink }}" class="block overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 md:w-64 md:flex-none">
+                <img src="{{ $image.RelPermalink }}" alt="{{ $.Title | plainify }}" class="h-44 w-full object-cover transition duration-300 hover:scale-[1.02]" />
+              </a>
+            {{ end }}
+            <div class="flex min-w-0 flex-1 flex-col space-y-3">
+              <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                <h3 class="text-xl font-semibold text-primary-600 dark:text-primary-400 hover:underline sm:flex-1">
                   <a href="{{ .RelPermalink }}">{{ .Title | emojify }}</a>
                 </h3>
-                <time class="text-sm text-neutral-500 dark:text-neutral-400 ml-4 whitespace-nowrap">
+                <time class="text-sm text-neutral-500 dark:text-neutral-400 whitespace-nowrap">
                   {{ .PublishDate | time.Format ":date_long" }}
                 </time>
               </div>
-              
+
               {{ if .Params.summary }}
                 <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
                   {{ .Summary | truncate 300 }}
@@ -51,43 +110,7 @@
                 </div>
               {{ end }}
             </div>
-          {{ end }}
-        </div>
-      </section>
-    {{ end }}
-  {{ else }}
-    <div class="space-y-8">
-      {{ range $pages }}
-        <div class="flex flex-col space-y-2 pb-8 border-b border-neutral-200 dark:border-neutral-700">
-          <div class="flex items-start justify-between">
-            <h3 class="text-xl font-semibold text-primary-600 dark:text-primary-400 hover:underline flex-1">
-              <a href="{{ .RelPermalink }}">{{ .Title | emojify }}</a>
-            </h3>
-            <time class="text-sm text-neutral-500 dark:text-neutral-400 ml-4 whitespace-nowrap">
-              {{ .PublishDate | time.Format ":date_long" }}
-            </time>
           </div>
-          
-          {{ if .Params.summary }}
-            <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
-              {{ .Summary | truncate 300 }}
-            </p>
-          {{ else if .Summary }}
-            <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
-              {{ .Summary }}
-            </p>
-          {{ end }}
-
-          {{ with .Params.tags }}
-            <div class="flex flex-wrap gap-2 mt-1 text-xs">
-              {{ range . }}
-                <a href="{{ (printf "/tags/%s/" (urlize .)) | relLangURL }}" class="inline-flex items-center px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
-                  {{ . }}
-                </a>
-              {{ end }}
-            </div>
-          {{ end }}
-
         </div>
       {{ end }}
     </div>

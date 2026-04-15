@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  dir="ltr"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+>
+
+<head>
+  <meta charset="utf-8" />
+  
+    <meta http-equiv="content-language" content="en" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="rgb(255,255,255)" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Getting Started With GET Curl Commands &middot; Florence Njeri</title>
+    <meta name="title" content="Getting Started With GET Curl Commands &middot; Florence Njeri" />
+  <meta name="description" content="Getting Started With GET Curl Commands #
+Introduction to curl #
+A curl command is a tool used on the terminal to make network requests  using various protocols. curl is designed to aid with the data transfer to and from a server without the need for a web browser. With curl ,you can upload or download files, send requests to API endpoints to simulate user interaction from the terminal  using a supported protocol such as HTTPs, FTP, and more." />
+  
+  
+  
+  <link rel="canonical" href="https://florencenjeri.com/posts/get_curl_commands/" />
+  
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.e566b6c0a0b7804755e52094f25218ae3fe33adeea50ed9df826ef64667c360685e72c0592ed510e3e76e840aaea4693f4bbbbf250fa1c16631a1a29e5c5acdf.css" integrity="sha512-5Wa2wKC3gEdV5SCU8lIYrj/jOt7qUO2d&#43;CbvZGZ8NgaF5ywFku1RDj526ECq6kaT9Lu78lD6HBZjGhop5cWs3w==" />
+  
+  
+  <script type="text/javascript" src="/js/appearance.min.c6198a5ecbc6c7b35a8568d29315f50cf5d775d4461c515a476359767f1a745c245aa83fa96b0c7d83da976cf77481e1fc29537a2391a53ffe69a991638802e6.js" integrity="sha512-xhmKXsvGx7NahWjSkxX1DPXXddRGHFFaR2NZdn8adFwkWqg/qWsMfYPal2z3dIHh/ClTeiORpT/&#43;aamRY4gC5g=="></script>
+  
+  
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  <meta property="og:url" content="https://florencenjeri.com/posts/get_curl_commands/">
+  <meta property="og:site_name" content="Florence Njeri">
+  <meta property="og:title" content="Getting Started With GET Curl Commands">
+  <meta property="og:description" content="Getting Started With GET Curl Commands # Introduction to curl # A curl command is a tool used on the terminal to make network requests using various protocols. curl is designed to aid with the data transfer to and from a server without the need for a web browser. With curl ,you can upload or download files, send requests to API endpoints to simulate user interaction from the terminal using a supported protocol such as HTTPs, FTP, and more.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2023-09-16T09:36:41+00:00">
+    <meta property="article:modified_time" content="2023-09-16T09:36:41+00:00">
+    <meta property="article:tag" content="Getting Started">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Getting Started With GET Curl Commands">
+  <meta name="twitter:description" content="Getting Started With GET Curl Commands # Introduction to curl # A curl command is a tool used on the terminal to make network requests using various protocols. curl is designed to aid with the data transfer to and from a server without the need for a web browser. With curl ,you can upload or download files, send requests to API endpoints to simulate user interaction from the terminal using a supported protocol such as HTTPs, FTP, and more.">
+
+  
+<script type="application/ld+json">
+  [{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Posts",
+    "name": "Getting Started With GET Curl Commands",
+    "headline": "Getting Started With GET Curl Commands",
+    
+    "abstract": "\u003ch2 id=\u0022getting-started-with-get-curl-commands\u0022 class=\u0022relative group\u0022\u003eGetting Started With GET Curl Commands \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#getting-started-with-get-curl-commands\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h2\u003e\n\u003ch3 id=\u0022introduction-to-curl\u0022 class=\u0022relative group\u0022\u003eIntroduction to curl \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#introduction-to-curl\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h3\u003e\n\u003cp\u003eA \u003ccode\u003ecurl\u003c\/code\u003e command is a tool used on the terminal to make network requests  using various protocols. \u003ccode\u003ecurl\u003c\/code\u003e is designed to aid with the data transfer to and from a server without the need for a web browser. With \u003ccode\u003ecurl\u003c\/code\u003e ,you can upload or download files, send requests to API endpoints to simulate user interaction from the terminal  using a supported protocol such as HTTPs, FTP, and more.\u003c\/p\u003e",
+    "inLanguage": "en",
+    "url" : "https:\/\/florencenjeri.com\/posts\/get_curl_commands\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Florence Njeri"
+    },
+    "copyrightYear": "2023",
+    "dateCreated": "2023-09-16T09:36:41\u002b00:00",
+    "datePublished": "2023-09-16T09:36:41\u002b00:00",
+    
+    "dateModified": "2023-09-16T09:36:41\u002b00:00",
+    
+    "keywords": ["Getting Started"],
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "437"
+  }]
+  </script>
+
+  <meta name="author" content="Florence Njeri" />
+  
+  
+
+
+
+
+
+
+  
+  
+  
+
+
+  
+</head><body
+    class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="font-bold text-primary-600 ltr:pr-2 rtl:pl-2 dark:text-primary-400"
+          >&darr;</span
+        >Skip to main content</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral print:hidden sm:py-10">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="z-40 flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Florence Njeri</a
+  >
+
+      
+
+    </div>
+    
+      
+      <label id="menu-button" for="menu-controller" class="block sm:hidden">
+        <input type="checkbox" id="menu-controller" class="hidden" />
+        <div class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400">
+          
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+
+  </span>
+
+
+        </div>
+        <div
+          id="menu-wrapper"
+          class="fixed inset-0 z-30 invisible w-full h-full m-auto overflow-auto transition-opacity opacity-0 cursor-default bg-neutral-100/50 backdrop-blur-sm dark:bg-neutral-900/50"
+        >
+          <ul
+            class="flex flex-col w-full px-6 py-6 mx-auto overflow-visible list-none max-w-7xl ltr:text-right rtl:text-left sm:px-14 sm:py-10 sm:pt-10 md:px-24 lg:px-32"
+          >
+            <li class="mb-1">
+              <span class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400"
+                >
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+  </span>
+
+</span
+              >
+            </li>
+            
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/"
+                      title=""
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Home</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/posts/"
+                      title="Posts"
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Posts</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/now/"
+                      title="Now"
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Now</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/about/"
+                      title=""
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >About</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    
+                    
+                  
+                </li>
+              
+              
+            
+          </ul>
+        </div>
+      </label>
+      
+      <ul class="flex-row hidden list-none ltr:text-right rtl:text-left sm:flex">
+        
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/"
+                  title=""
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Home</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/posts/"
+                  title="Posts"
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Posts</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/now/"
+                  title="Now"
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Now</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/about/"
+                  title=""
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >About</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                
+                
+              
+            </li>
+          
+          
+
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex flex-col grow">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        Getting Started With GET Curl Commands
+      </h1>
+      <div class="mt-8 mb-12 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+        
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+    
+  
+
+  
+
+  
+
+  
+    
+  
+
+  
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      &lt;time datetime=&#34;2023-09-16 09:36:41.827 &amp;#43;0000 UTC&#34;&gt;September 16, 2023&lt;/time&gt;&lt;span class=&#34;px-2 text-primary-500&#34;&gt;&amp;middot;&lt;/span&gt;&lt;span title=&#34;Reading time&#34;&gt;3 mins&lt;/span&gt;
+    
+
+    
+    
+  </div>
+
+  
+  
+    <div class="my-1 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400 ">
+      
+        
+      
+        
+          
+            <a
+              href="/tags/getting-started/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >Getting Started</a
+            >
+          
+        
+      
+    </div>
+  
+
+
+      </div>
+      
+    </header>
+    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+      
+      <div class="min-w-0 min-h-0 max-w-prose grow">
+        <h2 id="getting-started-with-get-curl-commands" class="relative group">Getting Started With GET Curl Commands <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#getting-started-with-get-curl-commands" aria-label="Anchor">#</a></span></h2>
+<h3 id="introduction-to-curl" class="relative group">Introduction to curl <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#introduction-to-curl" aria-label="Anchor">#</a></span></h3>
+<p>A <code>curl</code> command is a tool used on the terminal to make network requests  using various protocols. <code>curl</code> is designed to aid with the data transfer to and from a server without the need for a web browser. With <code>curl</code> ,you can upload or download files, send requests to API endpoints to simulate user interaction from the terminal  using a supported protocol such as HTTPs, FTP, and more.</p>
+<p><strong>Explanation of GET requests</strong></p>
+<p>Webpages display content to the end-user by requesting for resources from the server.These requests are commonly made using a GET HTTP request, often accompanied by query parameters when necessary.</p>
+<p>This guide shows you how to run GET requests using a  <code>curl</code> commands on the terminal.</p>
+<p><strong>Prerequisites</strong></p>
+<ol>
+<li>A Mac, Windows or Linux laptop</li>
+<li>Access to the terminal</li>
+<li>Have curl installed in your machine.</li>
+</ol>
+<p>To verify that curl is installed by run the command <code>curl --version</code> on the terminal. If properly installed, it will output the curl version installed.</p>
+<h3 id="sending-get-requests-with-curl" class="relative group">Sending GET Requests with Curl <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#sending-get-requests-with-curl" aria-label="Anchor">#</a></span></h3>
+<p>The GET command in <code>curl</code> is used to perform a GET request to the specified URL and retrieve user content from the server. The basic syntax for GET commands is as follows:
+<code>curl [OPTIONS] [URL]</code>
+<code>[OPTIONS]</code> - curl parameters such as <code>-o</code> to specify where to save the output.</p>
+<p><code>[URL]</code> - specify the URL or sequence of URLs you want to make a request to.</p>
+<p>The <code>curl</code> request below performa a GET HTTTP request and fetches the content on the specified URL then prints the response body on the terminal</p>
+<p><code>curl https://documentwrite.dev/</code></p>
+<h3 id="usage" class="relative group">Usage <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#usage" aria-label="Anchor">#</a></span></h3>
+<p><strong>Downloading an image using curl</strong></p>
+<p>To download this image, <a
+  href="https://documentwrite.dev/wp-content/uploads/2021/08/document-write-logo.png"
+  
+  target="_blank" rel="noreferrer noopener"
+>https://documentwrite.dev/wp-content/uploads/2021/08/document-write-logo.png</a>, using curl, you will follow the following steps on your terminal:</p>
+<ol>
+<li>Open the terminal or command prompt.</li>
+<li>Navigate to the path you want to save the image. In this case the pictures directory using the command <code>cd pictures</code></li>
+<li>Run the following command to command to download the image:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="n">logo</span><span class="p">.</span><span class="na">png</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="c1">//documentwrite.dev/wp-content/uploads/2021/08/document-write-logo.png</span><span class="w">
+</span></span></span></code></pre></div><p>The command above does the following:
+<code>-o logo.png</code> ****specifies the name of the file where to save the output of the response.</p>
+<p><a
+  href="https://documentwrite.dev/wp-content/uploads/2021/08/document-write-logo.png"
+  
+  target="_blank" rel="noreferrer noopener"
+><code>https://documentwrite.dev/wp-content/uploads/2021/08/document-write-logo.png</code></a> is the url of the logo you want to download.</p>
+<p>Check that the image file is downloaded successfully to the pictures folder.</p>
+<h3 id="conclusion" class="relative group">Conclusion <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#conclusion" aria-label="Anchor">#</a></span></h3>
+<p>In this guide, we learned about curl and how to use the GET curl command to download an image from a URL. Curl is a powerful tool that can be used for various data transfer tasks, and its simplicity makes it accessible even to non-coders.</p>
+<p>Remember to adjust the command and URL according to your specific use case.</p>
+
+      </div>
+    </section>
+    <footer class="pt-8 max-w-prose print:hidden">
+      
+
+      
+
+      
+  
+    
+    
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="group flex" href="/posts/rails_excessive_data_exposure/">
+              <span
+                class="mr-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+              <span
+                class="ml-2 text-neutral-700 transition-transform group-hover:translate-x-[2px] group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Rails Excessive Data Exposure</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2022-05-18 09:36:41.827 &#43;0000 UTC">May 18, 2022</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/buffer_overflow_c/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Secure Programming in C: Buffer Overwrites and Overflows</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2024-12-01 09:36:41.827 &#43;0000 UTC">December 1, 2024</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ml-2 text-neutral-700 transition-transform group-hover:translate-x-[2px] group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span
+                class="mr-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+        
+          <div
+            class="pointer-events-none absolute top-[100vh] bottom-0 w-12 ltr:right-0 rtl:left-0"
+          >
+            <a
+              href="#the-top"
+              class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+              aria-label="Scroll to top"
+              title="Scroll to top"
+            >
+              &uarr;
+            </a>
+          </div>
+        
+      </main><footer class="py-10 print:hidden">
+  
+    <nav class="pb-4 text-base font-medium text-neutral-500 dark:text-neutral-400">
+      <ul class="flex flex-col list-none sm:flex-row">
+        
+          <li
+            class="mb-1 group ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+          >
+            
+              <a
+                href="https://github.com/Florence-Njeri"
+                title=""
+                target="_blank"
+                >
+                  <span
+                    class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                  >
+                    
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+
+  </span>
+
+
+                  </span>
+                </a
+              >
+            
+          </li>
+        
+          <li
+            class="mb-1 group ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+          >
+            
+              <a
+                href="https://www.linkedin.com/in/florencenjeri/"
+                title=""
+                target="_blank"
+                >
+                  <span
+                    class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                  >
+                    
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+
+  </span>
+
+
+                  </span>
+                </a
+              >
+            
+          </li>
+        
+      </ul>
+    </nav>
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+        
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2026
+            Florence Njeri
+        </p>
+      
+      
+    </div>
+    
+  </div>
+  
+</footer>
+    </div>
+  </body>
+</html>

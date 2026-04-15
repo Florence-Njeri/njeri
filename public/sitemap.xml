@@ -4,29 +4,8 @@
   
     
       <url>
-            <loc>http://localhost:1313/</loc>
-            <lastmod>2025-01-24T09:00:41+00:00</lastmod>
-          </url>
-    
-  
-    
-      <url>
-            <loc>http://localhost:1313/posts/toctou_c/</loc>
-            <lastmod>2025-01-24T09:00:41+00:00</lastmod>
-          </url>
-    
-  
-    
-      <url>
-            <loc>http://localhost:1313/posts/rails-memoryfootprint/</loc>
-            <lastmod>2025-01-24T09:00:41+00:00</lastmod>
-          </url>
-    
-  
-    
-      <url>
-            <loc>http://localhost:1313/posts/</loc>
-            <lastmod>2025-01-24T09:00:41+00:00</lastmod>
+            <loc>https://florencenjeri.com/</loc>
+            <lastmod>2026-04-15T09:00:00+00:00</lastmod>
           </url>
     
   
@@ -37,12 +16,137 @@
     
   
     
+      <url>
+            <loc>https://florencenjeri.com/posts/android_storage/</loc>
+            <lastmod>2026-04-15T09:00:00+00:00</lastmod>
+          </url>
+    
   
     
   
     
       <url>
-            <loc>http://localhost:1313/posts/buffer_overflow_c/</loc>
+            <loc>https://florencenjeri.com/posts/</loc>
+            <lastmod>2026-04-15T09:00:00+00:00</lastmod>
+          </url>
+    
+  
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/posts/andropseudoprotect/</loc>
+            <lastmod>2026-03-01T09:00:00+00:00</lastmod>
+          </url>
+    
+  
+    
+  
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/posts/factsdroid/</loc>
+            <lastmod>2026-02-04T09:00:00+00:00</lastmod>
+          </url>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/posts/database_security/</loc>
+            <lastmod>2026-02-03T00:00:00+00:00</lastmod>
+          </url>
+    
+  
+    
+  
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/posts/androgoat/</loc>
+            <lastmod>2026-02-03T00:00:00+00:00</lastmod>
+          </url>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/now/</loc>
+            <lastmod>2025-12-19T00:00:00+00:00</lastmod>
+          </url>
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/posts/rails-memoryfootprint/</loc>
+            <lastmod>2025-01-24T09:00:41+00:00</lastmod>
+          </url>
+    
+  
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/posts/toctou_c/</loc>
+            <lastmod>2025-01-24T09:00:41+00:00</lastmod>
+          </url>
+    
+  
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/about/</loc>
+            <lastmod>2025-01-01T12:00:00+00:00</lastmod>
+          </url>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/posts/reverse_engineering/</loc>
+            <lastmod>2024-12-01T09:36:41+00:00</lastmod>
+          </url>
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/posts/buffer_overflow_c/</loc>
             <lastmod>2024-12-01T09:36:41+00:00</lastmod>
           </url>
     
@@ -51,32 +155,76 @@
   
     
       <url>
-            <loc>http://localhost:1313/posts/get_curl_commands/</loc>
+            <loc>https://florencenjeri.com/posts/get_curl_commands/</loc>
             <lastmod>2023-09-16T09:36:41+00:00</lastmod>
           </url>
     
   
     
-  
-    
       <url>
-            <loc>http://localhost:1313/posts/rails_excessive_data_exposure/</loc>
+            <loc>https://florencenjeri.com/posts/rails_excessive_data_exposure/</loc>
             <lastmod>2022-05-18T09:36:41+00:00</lastmod>
           </url>
     
   
     
       <url>
-            <loc>http://localhost:1313/about/</loc>
+            <loc>https://florencenjeri.com/posts/androdialer/</loc>
           </url>
     
   
     
       <url>
-            <loc>http://localhost:1313/posts/hack_the_box/curl/</loc>
+            <loc>https://florencenjeri.com/posts/android_contentproviders/</loc>
           </url>
     
   
+    
+      <url>
+            <loc>https://florencenjeri.com/posts/android_network/</loc>
+          </url>
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/posts/android_permissions/</loc>
+          </url>
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/posts/android_webviews/</loc>
+          </url>
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/posts/droidpass/</loc>
+          </url>
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/posts/insecureshop/</loc>
+          </url>
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/posts/pentest_android_apps/</loc>
+          </url>
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/posts/uncrackable_1/</loc>
+          </url>
+    
+  
+    
+      <url>
+            <loc>https://florencenjeri.com/posts/uncrackable_3/</loc>
+          </url>
     
   
 </urlset>

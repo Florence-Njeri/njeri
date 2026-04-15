@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Getting Started on Florence Njeri</title>
+    <link>https://florencenjeri.com/tags/getting-started/</link>
+    <description>Recent content in Getting Started on Florence Njeri</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 16 Sep 2023 09:36:41 +0000</lastBuildDate>
+    <atom:link href="https://florencenjeri.com/tags/getting-started/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Getting Started With GET Curl Commands</title>
+      <link>https://florencenjeri.com/posts/get_curl_commands/</link>
+      <pubDate>Sat, 16 Sep 2023 09:36:41 +0000</pubDate>
+      <guid>https://florencenjeri.com/posts/get_curl_commands/</guid>
+      <description>&lt;h2 id=&#34;getting-started-with-get-curl-commands&#34; class=&#34;relative group&#34;&gt;Getting Started With GET Curl Commands &lt;span class=&#34;absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100&#34;&gt;&lt;a class=&#34;group-hover:text-primary-300 dark:group-hover:text-neutral-700&#34; style=&#34;text-decoration-line: none !important;&#34; href=&#34;#getting-started-with-get-curl-commands&#34; aria-label=&#34;Anchor&#34;&gt;#&lt;/a&gt;&lt;/span&gt;&lt;/h2&gt;&#xA;&lt;h3 id=&#34;introduction-to-curl&#34; class=&#34;relative group&#34;&gt;Introduction to curl &lt;span class=&#34;absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100&#34;&gt;&lt;a class=&#34;group-hover:text-primary-300 dark:group-hover:text-neutral-700&#34; style=&#34;text-decoration-line: none !important;&#34; href=&#34;#introduction-to-curl&#34; aria-label=&#34;Anchor&#34;&gt;#&lt;/a&gt;&lt;/span&gt;&lt;/h3&gt;&#xA;&lt;p&gt;A &lt;code&gt;curl&lt;/code&gt; command is a tool used on the terminal to make network requests  using various protocols. &lt;code&gt;curl&lt;/code&gt; is designed to aid with the data transfer to and from a server without the need for a web browser. With &lt;code&gt;curl&lt;/code&gt; ,you can upload or download files, send requests to API endpoints to simulate user interaction from the terminal  using a supported protocol such as HTTPs, FTP, and more.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

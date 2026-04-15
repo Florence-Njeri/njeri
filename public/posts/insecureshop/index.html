@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  dir="ltr"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+>
+
+<head>
+  <meta charset="utf-8" />
+  
+    <meta http-equiv="content-language" content="en" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="rgb(255,255,255)" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title> &middot; Florence Njeri</title>
+    <meta name="title" content=" &middot; Florence Njeri" />
+  <meta name="description" content="Insecure Shop Pentest #
+Static Analysis With Drozier #
+Package information #
+I was able to see the pêrmissions that are defined in the app using the command run app.package.list -f insecureshop:
+Package: com.insecureshop
+  Application Label: InsecureShop
+  Process Name: com.insecureshop
+  Version: 1.0
+  Data Directory: /data/user/0/com.insecureshop
+  APK Path: /data/app/~~FIyUrbvYY3VB_X0IA7U5Iw==/com.insecureshop-Az0TW47ZRtrdfG9MlqBcNQ==/base.apk
+  UID: 10110
+  GID: [3003]
+  Shared Libraries: [/system/framework/android.test.base.jar]
+  Shared User ID: null
+  Uses Permissions:
+  - android.permission.INTERNET
+  - android.permission.READ_EXTERNAL_STORAGE
+  - android.permission.WRITE_EXTERNAL_STORAGE
+  - android.permission.READ_CONTACTS
+  - android.permission.WAKE_LOCK
+  Defines Permissions:
+  - com.insecureshop.permission.READ
+The IPC Attack Surface #
+To evaluate the attack surface exposed via Android&rsquo;s IPC, I ran the command run app.package.attacksurface com.insecureshop which returns the following output:" />
+  
+  
+  
+  <link rel="canonical" href="https://florencenjeri.com/posts/insecureshop/" />
+  
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.e566b6c0a0b7804755e52094f25218ae3fe33adeea50ed9df826ef64667c360685e72c0592ed510e3e76e840aaea4693f4bbbbf250fa1c16631a1a29e5c5acdf.css" integrity="sha512-5Wa2wKC3gEdV5SCU8lIYrj/jOt7qUO2d&#43;CbvZGZ8NgaF5ywFku1RDj526ECq6kaT9Lu78lD6HBZjGhop5cWs3w==" />
+  
+  
+  <script type="text/javascript" src="/js/appearance.min.c6198a5ecbc6c7b35a8568d29315f50cf5d775d4461c515a476359767f1a745c245aa83fa96b0c7d83da976cf77481e1fc29537a2391a53ffe69a991638802e6.js" integrity="sha512-xhmKXsvGx7NahWjSkxX1DPXXddRGHFFaR2NZdn8adFwkWqg/qWsMfYPal2z3dIHh/ClTeiORpT/&#43;aamRY4gC5g=="></script>
+  
+  
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  <meta property="og:url" content="https://florencenjeri.com/posts/insecureshop/">
+  <meta property="og:site_name" content="Florence Njeri">
+  <meta property="og:title" content="Florence Njeri">
+  <meta property="og:description" content="Insecure Shop Pentest # Static Analysis With Drozier # Package information # I was able to see the pêrmissions that are defined in the app using the command run app.package.list -f insecureshop:
+Package: com.insecureshop Application Label: InsecureShop Process Name: com.insecureshop Version: 1.0 Data Directory: /data/user/0/com.insecureshop APK Path: /data/app/~~FIyUrbvYY3VB_X0IA7U5Iw==/com.insecureshop-Az0TW47ZRtrdfG9MlqBcNQ==/base.apk UID: 10110 GID: [3003] Shared Libraries: [/system/framework/android.test.base.jar] Shared User ID: null Uses Permissions: - android.permission.INTERNET - android.permission.READ_EXTERNAL_STORAGE - android.permission.WRITE_EXTERNAL_STORAGE - android.permission.READ_CONTACTS - android.permission.WAKE_LOCK Defines Permissions: - com.insecureshop.permission.READ The IPC Attack Surface # To evaluate the attack surface exposed via Android’s IPC, I ran the command run app.package.attacksurface com.insecureshop which returns the following output:">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Florence Njeri">
+  <meta name="twitter:description" content="Insecure Shop Pentest # Static Analysis With Drozier # Package information # I was able to see the pêrmissions that are defined in the app using the command run app.package.list -f insecureshop:
+Package: com.insecureshop Application Label: InsecureShop Process Name: com.insecureshop Version: 1.0 Data Directory: /data/user/0/com.insecureshop APK Path: /data/app/~~FIyUrbvYY3VB_X0IA7U5Iw==/com.insecureshop-Az0TW47ZRtrdfG9MlqBcNQ==/base.apk UID: 10110 GID: [3003] Shared Libraries: [/system/framework/android.test.base.jar] Shared User ID: null Uses Permissions: - android.permission.INTERNET - android.permission.READ_EXTERNAL_STORAGE - android.permission.WRITE_EXTERNAL_STORAGE - android.permission.READ_CONTACTS - android.permission.WAKE_LOCK Defines Permissions: - com.insecureshop.permission.READ The IPC Attack Surface # To evaluate the attack surface exposed via Android’s IPC, I ran the command run app.package.attacksurface com.insecureshop which returns the following output:">
+
+  
+<script type="application/ld+json">
+  [{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Posts",
+    "name": "",
+    "headline": "",
+    
+    "abstract": "\u003ch1 id=\u0022insecure-shop-pentest\u0022 class=\u0022relative group\u0022\u003eInsecure Shop Pentest \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#insecure-shop-pentest\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h1\u003e\n\u003ch2 id=\u0022static-analysis-with-drozier\u0022 class=\u0022relative group\u0022\u003eStatic Analysis With Drozier \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#static-analysis-with-drozier\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h2\u003e\n\u003ch3 id=\u0022package-information\u0022 class=\u0022relative group\u0022\u003ePackage information \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#package-information\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h3\u003e\n\u003cp\u003eI was able to see the pêrmissions that are defined in the app using the command \u003ccode\u003erun app.package.list -f insecureshop\u003c\/code\u003e:\u003c\/p\u003e\n\u003cdiv class=\u0022highlight\u0022\u003e\u003cpre tabindex=\u00220\u0022 class=\u0022chroma\u0022\u003e\u003ccode class=\u0022language-shell\u0022 data-lang=\u0022shell\u0022\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003ePackage: com.insecureshop\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  Application Label: InsecureShop\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  Process Name: com.insecureshop\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  Version: 1.0\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  Data Directory: \/data\/user\/0\/com.insecureshop\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  APK Path: \/data\/app\/~~FIyUrbvYY3VB_X0IA7U5Iw\u003cspan class=\u0022o\u0022\u003e==\u003c\/span\u003e\/com.insecureshop-Az0TW47ZRtrdfG9MlqBcNQ\u003cspan class=\u0022o\u0022\u003e==\u003c\/span\u003e\/base.apk\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  UID: \u003cspan class=\u0022m\u0022\u003e10110\u003c\/span\u003e\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  GID: \u003cspan class=\u0022o\u0022\u003e[\u003c\/span\u003e3003\u003cspan class=\u0022o\u0022\u003e]\u003c\/span\u003e\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  Shared Libraries: \u003cspan class=\u0022o\u0022\u003e[\u003c\/span\u003e\/system\/framework\/android.test.base.jar\u003cspan class=\u0022o\u0022\u003e]\u003c\/span\u003e\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  Shared User ID: null\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  Uses Permissions:\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  - android.permission.INTERNET\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  - android.permission.READ_EXTERNAL_STORAGE\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  - android.permission.WRITE_EXTERNAL_STORAGE\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  - android.permission.READ_CONTACTS\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  - android.permission.WAKE_LOCK\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  Defines Permissions:\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan class=\u0022cl\u0022\u003e  - com.insecureshop.permission.READ\n\u003c\/span\u003e\u003c\/span\u003e\u003c\/code\u003e\u003c\/pre\u003e\u003c\/div\u003e\u003ch3 id=\u0022the-ipc-attack-surface\u0022 class=\u0022relative group\u0022\u003eThe IPC Attack Surface \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#the-ipc-attack-surface\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h3\u003e\n\u003cp\u003eTo evaluate the attack surface exposed via Android\u0026rsquo;s IPC, I ran the command \u003ccode\u003erun app.package.attacksurface com.insecureshop\u003c\/code\u003e which returns the following output:\u003c\/p\u003e",
+    "inLanguage": "en",
+    "url" : "https:\/\/florencenjeri.com\/posts\/insecureshop\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Florence Njeri"
+    },
+    
+    
+    
+    
+    
+    
+    
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "1843"
+  }]
+  </script>
+
+  <meta name="author" content="Florence Njeri" />
+  
+  
+
+
+
+
+
+
+  
+  
+  
+
+
+  
+</head><body
+    class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="font-bold text-primary-600 ltr:pr-2 rtl:pl-2 dark:text-primary-400"
+          >&darr;</span
+        >Skip to main content</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral print:hidden sm:py-10">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="z-40 flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Florence Njeri</a
+  >
+
+      
+
+    </div>
+    
+      
+      <label id="menu-button" for="menu-controller" class="block sm:hidden">
+        <input type="checkbox" id="menu-controller" class="hidden" />
+        <div class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400">
+          
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+
+  </span>
+
+
+        </div>
+        <div
+          id="menu-wrapper"
+          class="fixed inset-0 z-30 invisible w-full h-full m-auto overflow-auto transition-opacity opacity-0 cursor-default bg-neutral-100/50 backdrop-blur-sm dark:bg-neutral-900/50"
+        >
+          <ul
+            class="flex flex-col w-full px-6 py-6 mx-auto overflow-visible list-none max-w-7xl ltr:text-right rtl:text-left sm:px-14 sm:py-10 sm:pt-10 md:px-24 lg:px-32"
+          >
+            <li class="mb-1">
+              <span class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400"
+                >
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+  </span>
+
+</span
+              >
+            </li>
+            
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/"
+                      title=""
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Home</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/posts/"
+                      title="Posts"
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Posts</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/now/"
+                      title="Now"
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Now</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/about/"
+                      title=""
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >About</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    
+                    
+                  
+                </li>
+              
+              
+            
+          </ul>
+        </div>
+      </label>
+      
+      <ul class="flex-row hidden list-none ltr:text-right rtl:text-left sm:flex">
+        
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/"
+                  title=""
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Home</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/posts/"
+                  title="Posts"
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Posts</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/now/"
+                  title="Now"
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Now</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/about/"
+                  title=""
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >About</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                
+                
+              
+            </li>
+          
+          
+
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex flex-col grow">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        
+      </h1>
+      <div class="mt-8 mb-12 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+        
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+    
+  
+
+  
+
+  
+
+  
+    
+  
+
+  
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      &lt;time datetime=&#34;0001-01-01 00:00:00 &amp;#43;0000 UTC&#34;&gt;January 1, 1&lt;/time&gt;&lt;span class=&#34;px-2 text-primary-500&#34;&gt;&amp;middot;&lt;/span&gt;&lt;span title=&#34;Reading time&#34;&gt;9 mins&lt;/span&gt;
+    
+
+    
+    
+  </div>
+
+  
+  
+    <div class="my-1 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400 ">
+      
+        
+      
+        
+      
+    </div>
+  
+
+
+      </div>
+      
+    </header>
+    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+      
+      <div class="min-w-0 min-h-0 max-w-prose grow">
+        <h1 id="insecure-shop-pentest" class="relative group">Insecure Shop Pentest <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#insecure-shop-pentest" aria-label="Anchor">#</a></span></h1>
+<h2 id="static-analysis-with-drozier" class="relative group">Static Analysis With Drozier <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#static-analysis-with-drozier" aria-label="Anchor">#</a></span></h2>
+<h3 id="package-information" class="relative group">Package information <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#package-information" aria-label="Anchor">#</a></span></h3>
+<p>I was able to see the pêrmissions that are defined in the app using the command <code>run app.package.list -f insecureshop</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">Package: com.insecureshop
+</span></span><span class="line"><span class="cl">  Application Label: InsecureShop
+</span></span><span class="line"><span class="cl">  Process Name: com.insecureshop
+</span></span><span class="line"><span class="cl">  Version: 1.0
+</span></span><span class="line"><span class="cl">  Data Directory: /data/user/0/com.insecureshop
+</span></span><span class="line"><span class="cl">  APK Path: /data/app/~~FIyUrbvYY3VB_X0IA7U5Iw<span class="o">==</span>/com.insecureshop-Az0TW47ZRtrdfG9MlqBcNQ<span class="o">==</span>/base.apk
+</span></span><span class="line"><span class="cl">  UID: <span class="m">10110</span>
+</span></span><span class="line"><span class="cl">  GID: <span class="o">[</span>3003<span class="o">]</span>
+</span></span><span class="line"><span class="cl">  Shared Libraries: <span class="o">[</span>/system/framework/android.test.base.jar<span class="o">]</span>
+</span></span><span class="line"><span class="cl">  Shared User ID: null
+</span></span><span class="line"><span class="cl">  Uses Permissions:
+</span></span><span class="line"><span class="cl">  - android.permission.INTERNET
+</span></span><span class="line"><span class="cl">  - android.permission.READ_EXTERNAL_STORAGE
+</span></span><span class="line"><span class="cl">  - android.permission.WRITE_EXTERNAL_STORAGE
+</span></span><span class="line"><span class="cl">  - android.permission.READ_CONTACTS
+</span></span><span class="line"><span class="cl">  - android.permission.WAKE_LOCK
+</span></span><span class="line"><span class="cl">  Defines Permissions:
+</span></span><span class="line"><span class="cl">  - com.insecureshop.permission.READ
+</span></span></code></pre></div><h3 id="the-ipc-attack-surface" class="relative group">The IPC Attack Surface <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#the-ipc-attack-surface" aria-label="Anchor">#</a></span></h3>
+<p>To evaluate the attack surface exposed via Android&rsquo;s IPC, I ran the command <code>run app.package.attacksurface com.insecureshop</code> which returns the following output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">Attack Surface:
+</span></span><span class="line"><span class="cl">  <span class="m">6</span> activities exported
+</span></span><span class="line"><span class="cl">  <span class="m">0</span> broadcast receivers exported
+</span></span><span class="line"><span class="cl">  <span class="m">1</span> content providers exported
+</span></span><span class="line"><span class="cl">  <span class="m">1</span> services exported
+</span></span><span class="line"><span class="cl">    is debuggable
+</span></span></code></pre></div><p>I can see I have potential vectors that attackers can use to compromise our app through the number of exported IPCs and depending on the functionality exposed through the activities, a content provider and a service. I also noted that the service is debuggable, which means that we I can attach a debugger to the process, using adb, and step through the code.</p>
+<h3 id="installing-the-app" class="relative group">Installing the app <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#installing-the-app" aria-label="Anchor">#</a></span></h3>
+<p>I installed the app using adb and I can immediately see the login screen that requires me to input my credentials to see the functionalityioes provided by the app but since I have 6 exported activities, I can directly launch those actiçvities through the adb and manually explore the app. I ran the command <code>run app.activity.info -a com.insecureshop</code> to see the activities exported by InsecureShop which shows the following output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">Package: com.insecureshop
+</span></span><span class="line"><span class="cl">  com.insecureshop.ChooserActivity
+</span></span><span class="line"><span class="cl">    Permission: null
+</span></span><span class="line"><span class="cl">  com.insecureshop.AboutUsActivity
+</span></span><span class="line"><span class="cl">    Permission: null
+</span></span><span class="line"><span class="cl">  com.insecureshop.ProductListActivity
+</span></span><span class="line"><span class="cl">    Permission: null
+</span></span><span class="line"><span class="cl">  com.insecureshop.WebViewActivity
+</span></span><span class="line"><span class="cl">    Permission: null
+</span></span><span class="line"><span class="cl">  com.insecureshop.WebView2Activity
+</span></span><span class="line"><span class="cl">    Permission: null
+</span></span><span class="line"><span class="cl">  com.insecureshop.ResultActivity
+</span></span><span class="line"><span class="cl">    Permission: null
+</span></span></code></pre></div><p>I was not able to gather much about the app from launching the activities individually. So I will proceed to investigating what the content provider does using the drozer command: <code>run app.provider.info -a com.insecureshop</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">Package: com.insecureshop
+</span></span><span class="line"><span class="cl">  Authority: com.insecureshop.provider
+</span></span><span class="line"><span class="cl">    Read Permission: com.insecureshop.permission.READ
+</span></span><span class="line"><span class="cl">    Write Permission: null
+</span></span><span class="line"><span class="cl">    Content Provider: com.insecureshop.contentProvider.InsecureShopProvider
+</span></span><span class="line"><span class="cl">    Multiprocess Allowed: False
+</span></span><span class="line"><span class="cl">    Grant Uri Permissions: False
+</span></span></code></pre></div><p>The content provider does the folloowing:</p>
+<ul>
+<li>The app exposes a <strong>Content Provider</strong> with the authority <strong><code>com.insecureshop.provider</code></strong>, which other apps can use to access its data through a <strong>content URI</strong> (<code>content://com.insecureshop.provider/products</code>)</li>
+<li>Apps reading data from the provider requires the custom permission <strong><code>com.insecureshop.permission.READ</code></strong> in the app&rsquo;s AndroidManifest.</li>
+<li>No specific permission is required for writing (<code>Write Permission: null</code>), which could allow unauthorized data modification depending on how the provider is implemented.</li>
+<li>The provider is implemented in the class <strong><code>com.insecureshop.contentProvider.InsecureShopProvider</code></strong>.</li>
+<li>It does <strong>not support multiprocess access</strong>, meaning it runs in a single process.</li>
+<li>It <strong>does not allow temporary URI permissions</strong> to be granted to other apps.</li>
+</ul>
+<p>This output confirms that the application exposes a content provider with the authority com.insecureshop.provider. It shows that reading data from the provider requires the custom permission com.insecureshop.permission.READ, while no permission is required for write operations. This indicates that interaction with the provider may be partially protected for read access but potentially less restricted for write operations, depending on the implementation of the provider.</p>
+<h3 id="manual-code-analysis" class="relative group">Manual Code Analysis <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#manual-code-analysis" aria-label="Anchor">#</a></span></h3>
+<p>To try and bypass the login, I started from investiogating the launcvher app that is calling the Login Activity. I then manualkly read through the code to understand the login logic and the first thing I note is that we have Owasp M9: Insecure Data Storage  due to <strong>unintentional data exposure</strong> where the app logs the username and pâssword:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Log</span><span class="p">.</span><span class="na">d</span><span class="p">(</span><span class="s">&#34;userName&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">username</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">Log</span><span class="p">.</span><span class="na">d</span><span class="p">(</span><span class="s">&#34;password&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">password</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p>I was able to validate that all user input on the login form is indeed logged:</p>
+<p>
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            srcset="
+            /posts/insecureshop/creds_exposure_hu_6b03d43cb1817c6a.png 330w,
+            /posts/insecureshop/creds_exposure_hu_11d58c41efe246a6.png 660w,
+            /posts/insecureshop/creds_exposure_hu_1c688dfe6791c553.png 1024w,
+            /posts/insecureshop/creds_exposure_hu_bc3d1d65809aaaca.png 2x"
+            src="/posts/insecureshop/creds_exposure_hu_11d58c41efe246a6.png"
+          
+        
+        alt=""
+      />
+      
+    </figure>
+  
+
+</p>
+<p>This could lead to attackers being able to view valid usernames and passwords of users of the platform.</p>
+<p>Next, I see the function <code>verifyUserNamePassword()</code> implemented in the <code>Util</code> class. From inspecting the code, it becomes clear that the application <strong>hardcodes the valid login credentials inside a <code>HashMap</code></strong>, rather than retrieving them from a secure backend or database.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">getUserCreds</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">HashMap</span><span class="w"> </span><span class="n">userCreds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">userCreds</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&#34;shopuser&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;!ns3csh0p&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">userCreds</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>This method creates a <code>HashMap</code> containing a single username–password pair, where the username is <code>shopuser</code> and the password is <code>!ns3csh0p</code>. Because these credentials are embedded directly in the application code, they can easily be discovered through reverse engineering.</p>
+<p>The <code>verifyUserNamePassword()</code> function then retrieves this map and checks:</p>
+<ol>
+<li><em>whether the username provided by the user exists as a key in the map</em>.</li>
+<li><em>If the username is found, the function retrieves the corresponding stored password and compares it to the password entered by the user</em>.</li>
+<li><em>If the two values match, the function returns <code>true</code>, indicating a successful login; otherwise, it returns <code>false</code>.</em></li>
+</ol>
+<p>Since the credentials are hardcoded in the application, logging in with the username <code>shopuser</code> and password <code>!ns3csh0p</code> successfully authenticates the user. This demonstrates a security weakness, as anyone analyzing the application code can easily extract these credentials and gain unauthorized access.</p>
+<p>This behavior relates to the <strong>OWASP Mobile Top 10</strong> risk <strong><a
+  href="https://owasp.org/www-project-mobile-top-10/2023-risks/m9-insecure-data-storage.html"
+  
+  target="_blank" rel="noreferrer noopener"
+>M9: Insecure Data Storage</a></strong>. Hardcoding sensitive information such as login credentials directly inside the application code is considered insecure because attackers can easily extract these values by reverse engineering the APK. According to OWASP, insecure data storage occurs when sensitive data such as passwords or authentication information is stored without proper protection, encryption, or access controls, allowing attackers to retrieve and abuse the information if they gain access to the</p>
+<p>In this case, storing the credentials (<code>shopuser</code> and <code>!ns3csh0p</code>) directly in the application code exposes them to anyone analyzing the app, which could lead to unauthorized access and compromise of user accounts.</p>
+<p>You can include it in your pentest report like this, following your previous writing style and adding context:</p>
+<hr>
+<p><strong>References to Security Standards:</strong></p>
+<ul>
+<li>
+<p><strong>CWE:</strong> CWE-532 – <em>Insertion of Sensitive Information into Log File</em>
+Indicates that logging secrets such as passwords or authentication tokens is unsafe.</p>
+</li>
+<li>
+<p><strong>OWASP MASVS:</strong> MSTG-STORAGE-3
+States that sensitive data, including authentication credentials, must never be written to logs or other insecure storage.</p>
+<p>Hardcoded Credentials and Sensitive Data in SharedPreferences</p>
+</li>
+</ul>
+<hr>
+<p><strong>Impact:</strong>
+Hardcoding credentials combined with logging them exposes the app to <strong>unauthorized access and credential theft</strong>, violating secure storage principles and best practices for mobile applications.</p>
+<p><strong>AndroidManifest Findings</strong></p>
+<ol>
+<li>
+<p><code>android:debuggable=true</code> Debugging was enabled on the app which makes it easier for reverse engineers to hook a debugger to it. This allows dumping a stack trace and accessing debugging helper classes.</p>
+</li>
+<li>
+<p><code>android:allowBackup=true</code> This flag allows anyone to backup your application data via adb. It allows users who have enabled USB debugging to copy application data off of the device.</p>
+</li>
+<li>
+<p>A few activities have intent filters defined. If an Activity in an Android app has an intent filter defined in the manifest, it is automatically made accessible to other apps. Without an intent filter (and if exported isn’t set to true), the activity can only be started from within the same app.</p>
+</li>
+</ol>
+<p><strong>Database-backed Content Providers (SQL Injection)</strong></p>
+<p><strong>Credentials broadcast in plaintext</strong>
+On the About page, when the users click the About InsecureShop button, the <code>onSendData()</code> method is called</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Intent</span><span class="w"> </span><span class="n">intent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Intent</span><span class="p">(</span><span class="s">&#34;com.insecureshop.action.BROADCAST&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">intent</span><span class="p">.</span><span class="na">putExtra</span><span class="p">(</span><span class="s">&#34;username&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">userName</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">intent</span><span class="p">.</span><span class="na">putExtra</span><span class="p">(</span><span class="s">&#34;password&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">password</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">sendBroadcast</span><span class="p">(</span><span class="n">intent</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p>The snippet above grabs the <em>username</em> and <em>password</em> from shared preferences and broadcasts them as a plain, unprotected broadcast. Since no permission is specified on <code>sendBroadcast()</code>, any app on the device can register a receiver for &ldquo;com.insecureshop.action.BROADCAST&rdquo; and silently steal the credentials.</p>
+<p><strong>WebViews</strong></p>
+<p>I identified, <strong>WebViewActivity</strong> in the <em>AndroidManifest.xml</em>  its configured to be <strong>BROWSABLE</strong> and it has also defined an <strong>android.intent.action.VIEW</strong> intent which signifies the presence of a deep link. And this is the data section defined in the intent filter of the WebViewActivity:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">android</span><span class="p">:</span><span class="n">scheme</span><span class="o">=</span><span class="s">&#34;insecureshop&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">android</span><span class="p">:</span><span class="n">host</span><span class="o">=</span><span class="s">&#34;com.insecureshop&#34;</span><span class="o">/&gt;</span><span class="w">
+</span></span></span></code></pre></div><p>The deep link scheme registered in the AndroidManifest is <code>insecureshop://com.insecureshop</code>, handled by the exported <code>WebViewActivity</code>. To test exploitability, I crafted a deep link targeting the <code>/web</code> path:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;insecureshop://com.insecureshop/web?url=https://evil.com&#34;</span><span class="p">&gt;</span>Click me<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="nb">window</span><span class="p">.</span><span class="nx">location</span> <span class="o">=</span> <span class="s2">&#34;https://evil-insecureshopapp.com&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>Inspecting the decompiled source in jadx, the <code>/web</code> path extracts the <code>url</code> query parameter and passes it directly to <code>webview.loadUrl()</code> without any validation:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data4</span><span class="p">.</span><span class="na">getQueryParameter</span><span class="p">(</span><span class="s">&#34;url&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">// ...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">webview</span><span class="p">.</span><span class="na">loadUrl</span><span class="p">(</span><span class="n">data</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p>I confirmed the deep link triggers the activity and loads the attacker-controlled URL by running:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb shell am start -a android.intent.action.VIEW <span class="se">\
+</span></span></span><span class="line"><span class="cl">  -d <span class="s2">&#34;insecureshop://com.insecureshop/web?url=https://evil.com&#34;</span>
+</span></span></code></pre></div><p>InsecureShop opened and loaded <code>evil.com</code> inside its WebView, confirming that an attacker can load any arbitrary URL without any restrictions.</p>
+<p>Then I started a python server to expose the proof of concept webpage above using the command: <code>python3 -m http.server 8081</code> and then I visited the localhost URL on my android studio emulator: <code>http://10.0.2.2:8081</code>. I could see evil.com got loaded in the webview of InsecureShop.</p>
+<p>
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            srcset="
+            /posts/insecureshop/evil_hu_901cedc27c8db76.png 330w,
+            /posts/insecureshop/evil_hu_7a91a0a9a8173c64.png 660w,
+            /posts/insecureshop/evil_hu_6bec9853ae9ba3e5.png 1024w,
+            /posts/insecureshop/evil_hu_556288fb99098c6e.png 2x"
+            src="/posts/insecureshop/evil_hu_7a91a0a9a8173c64.png"
+          
+        
+        alt=""
+      />
+      
+    </figure>
+  
+
+</p>
+<p>This vulnerability aligns with <strong>OWASP Mobile Top 10 2024 — M4: Insufficient Input/Output Validation</strong>. According to OWASP, mobile applications that fail to properly validate and sanitize data from external sources are at risk of being exploited. In this case, the app fails to validate the <code>url</code> parameter extracted from the deep link before passing it to <code>webview.loadUrl()</code>, allowing an attacker to supply an arbitrary URL. OWASP notes that such weaknesses can lead to unauthorized access to sensitive data and manipulation of app functionality — both of which are achievable here when chained with the insecure WebView settings discussed below.</p>
+<p><strong>Improper URL sanitization</strong></p>
+<hr>
+<p>While reviewing <code>WebViewActivity</code>, I identified a second deep link path <code>/webview</code> which attempts to restrict URLs to those ending with <code>insecureshopapp.com</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">StringsKt</span><span class="p">.</span><span class="na">endsWith$default</span><span class="p">(</span><span class="n">queryParameter</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;insecureshopapp.com&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="n">2</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data3</span><span class="p">.</span><span class="na">getQueryParameter</span><span class="p">(</span><span class="s">&#34;url&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>Although the developer attempted to implement host validation, the use of <code>endsWith()</code> is insufficient. The check only verifies that the URL string ends with <code>insecureshopapp.com</code> without validating the full domain structure. This means an attacker can bypass the check by registering a domain such as <code>evil-insecureshopapp.com</code> and crafting the following deep link:</p>
+<pre tabindex="0"><code>insecureshop://com.insecureshop/webview?url=https://evil-insecureshopapp.com
+</code></pre><p>This passes the <code>endsWith()</code> check while loading a fully attacker-controlled domain in the WebView. The correct fix would be to validate the full hostname using <code>Uri.getHost()</code> and compare it against an explicit whitelist rather than a suffix match:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Uri</span><span class="w"> </span><span class="n">parsedUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Uri</span><span class="p">.</span><span class="na">parse</span><span class="p">(</span><span class="n">queryParameter</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">parsedUrl</span><span class="p">.</span><span class="na">getHost</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="s">&#34;insecureshopapp.com&#34;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// safe to load</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p><strong>Make sure that any URLs passed to <code> shouldOverrideUrlLoading()</code>, <code>loadUrl()</code>, or <code>evaluateJavascript()</code> is verified to ensure that any JavaScript passed to the WebView only comes from expected domains.</strong></p>
+<p><strong>References:</strong></p>
+<ul>
+<li>OWASP Mobile Top 10 2024 — M4: Insufficient Input/Output Validation</li>
+<li>CWE-184: Incomplete List of Disallowed Inputs</li>
+</ul>
+<p><strong>Access to protected components</strong></p>
+<p>I also noted that there is a PrivateActivity defined in the Manifest and it is set to <code>exported=false</code></p>
+<p><strong>Content Providers</strong></p>
+<p>In the android ecosystem, each apps intenal data is proteced and other apps cannot get access to only. They can only access the shared data that is stored in external storage or the internal app data that is exposed via Content Providers. In the <strong>InsecureShopProvider</strong> I see the functionaliuty to fetch the username and password creds stored in shared preferences and to add them to a cursor;</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">MatrixCursor</span><span class="w"> </span><span class="n">cursor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MatrixCursor</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">String</span><span class="o">[]</span><span class="p">{</span><span class="s">&#34;username&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;password&#34;</span><span class="p">});</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">strArr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">String</span><span class="o">[</span><span class="n">2</span><span class="o">]</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">String</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Prefs</span><span class="p">.</span><span class="na">INSTANCE</span><span class="p">.</span><span class="na">getUsername</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">// ...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">strArr</span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">username</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">String</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Prefs</span><span class="p">.</span><span class="na">INSTANCE</span><span class="p">.</span><span class="na">getPassword</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">// ...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">strArr</span><span class="o">[</span><span class="n">1</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">password</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">cursor</span><span class="p">.</span><span class="na">addRow</span><span class="p">(</span><span class="n">strArr</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">return</span><span class="w"> </span><span class="n">cursor</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>The URI that triggers this is <code>content://com.insecureshop.provider/insecure</code>. Any app that sends a query to that <strong>URI</strong> gets back a cursor containing the <code>username</code> and <code>password</code> of the logged-in user. The provider does however declare a custom permission <code>android:readPermission=&quot;com.insecureshop.permission.READ&quot;</code></p>
+<h3 id="backup" class="relative group">Backup <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#backup" aria-label="Anchor">#</a></span></h3>
+<p><code>android:allowBackup=&quot;true&quot;</code></p>
+<h3 id="wakeup-lock" class="relative group">Wakeup lock <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#wakeup-lock" aria-label="Anchor">#</a></span></h3>
+
+      </div>
+    </section>
+    <footer class="pt-8 max-w-prose print:hidden">
+      
+
+      
+
+      
+  
+    
+    
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="group flex" href="/posts/pentest_android_apps/">
+              <span
+                class="mr-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+              <span
+                class="ml-2 text-neutral-700 transition-transform group-hover:translate-x-[2px] group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  ></span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="0001-01-01 00:00:00 &#43;0000 UTC">January 1, 1</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/droidpass/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  ></span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="0001-01-01 00:00:00 &#43;0000 UTC">January 1, 1</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ml-2 text-neutral-700 transition-transform group-hover:translate-x-[2px] group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span
+                class="mr-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+        
+          <div
+            class="pointer-events-none absolute top-[100vh] bottom-0 w-12 ltr:right-0 rtl:left-0"
+          >
+            <a
+              href="#the-top"
+              class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+              aria-label="Scroll to top"
+              title="Scroll to top"
+            >
+              &uarr;
+            </a>
+          </div>
+        
+      </main><footer class="py-10 print:hidden">
+  
+    <nav class="pb-4 text-base font-medium text-neutral-500 dark:text-neutral-400">
+      <ul class="flex flex-col list-none sm:flex-row">
+        
+          <li
+            class="mb-1 group ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+          >
+            
+              <a
+                href="https://github.com/Florence-Njeri"
+                title=""
+                target="_blank"
+                >
+                  <span
+                    class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                  >
+                    
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+
+  </span>
+
+
+                  </span>
+                </a
+              >
+            
+          </li>
+        
+          <li
+            class="mb-1 group ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+          >
+            
+              <a
+                href="https://www.linkedin.com/in/florencenjeri/"
+                title=""
+                target="_blank"
+                >
+                  <span
+                    class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                  >
+                    
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+
+  </span>
+
+
+                  </span>
+                </a
+              >
+            
+          </li>
+        
+      </ul>
+    </nav>
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+        
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2026
+            Florence Njeri
+        </p>
+      
+      
+    </div>
+    
+  </div>
+  
+</footer>
+    </div>
+  </body>
+</html>

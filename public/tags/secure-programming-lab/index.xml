@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Secure Programming Lab on Florence Njeri</title>
+    <link>https://florencenjeri.com/tags/secure-programming-lab/</link>
+    <description>Recent content in Secure Programming Lab on Florence Njeri</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 24 Jan 2025 09:00:41 +0000</lastBuildDate>
+    <atom:link href="https://florencenjeri.com/tags/secure-programming-lab/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Secure Programming in C: Buffer Overwrites and Overflows</title>
+      <link>https://florencenjeri.com/posts/toctou_c/</link>
+      <pubDate>Fri, 24 Jan 2025 09:00:41 +0000</pubDate>
+      <guid>https://florencenjeri.com/posts/toctou_c/</guid>
+      <description>&lt;p&gt;The objective of this lab is to build on our understanding of secure programming in C by analyzing, enhancing, and securing the functionality of the program from Project Lab 1, with a focus on identifying and mitigating vulnerabilities and improving resilience against attacks like fuzzing.&lt;/p&gt;&#xA;&lt;p&gt;This lab focuses on identifying vulnerabilities in the source code, applying and validating patches, and proposing future best practices to prevent similar issues. Additionally, we will analyze the code using &lt;strong&gt;security analysis tools (cppcheck)&lt;/strong&gt; to find out about the vulnerabilities in code. After compiling the project, we will inspect the resulting binary in Ghidra to identify similarities and differences, which will further inform our understanding of the program&amp;rsquo;s security and allow us to apply effective mitigations. The goal is to deliver a secure, improved program with a detailed report on the analysis, changes, and recommendations.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

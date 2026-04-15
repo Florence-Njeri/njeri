@@ -1,10 +1,3 @@
-
-  
-
-
-
-
-
 <!DOCTYPE html>
 <html
   lang="en"
@@ -12,7 +5,9 @@
   class="scroll-smooth"
   data-default-appearance="light"
   data-auto-appearance="true"
-><head>
+>
+
+<head>
   <meta charset="utf-8" />
   
     <meta http-equiv="content-language" content="en" />
@@ -20,36 +15,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="rgb(255,255,255)" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  
   <title>Rails Excessive Data Exposure &middot; Florence Njeri</title>
     <meta name="title" content="Rails Excessive Data Exposure &middot; Florence Njeri" />
-  
   <meta name="description" content="For software engineers, it may be easy to assume that no hacker would target our app since it isn’t big or well known. This attitude can lead to recklessness and lower measures for securing data on an app. However, it’s important to remember that data collected by an organization is very valuable. There can also be legal consequences in terms of lawsuits against the business that ensue from leakage of a user’s personally identifiable information (PII).
-What Is Excessive Data Exposure? # Excessive data exposure occurs when an API response returns more data than the client needs. As a rule of thumb, if a client application needs three fields, for example, you shouldn’t return the whole object." />
+What Is Excessive Data Exposure? #
+Excessive data exposure occurs when an API response returns more data than the client needs. As a rule of thumb, if a client application needs three fields, for example, you shouldn’t return the whole object. Excessive data exposure is a big API security concern that should be at the top of every engineer’s mind when designing APIs.
+In this post, you’ll learn about excessive data exposure in Ruby on Rails. By the end of the post, you’ll have learned about the following topics:" />
   
   
   
-  <link rel="canonical" href="http://florencenjeri.com/posts/rails_excessive_data_exposure/" />
-  
-  
-  
-  
-  
-  
+  <link rel="canonical" href="https://florencenjeri.com/posts/rails_excessive_data_exposure/" />
   
   
   
   
-  <link
-    type="text/css"
-    rel="stylesheet"
-    href="/css/main.bundle.min.492ded73440c7e6b6c9d5674d84a2e2d13127ffa2e74be756837abaa6d01cfa66abc6e9e2617b56209354985eed9dba7b503df2bc7c18b1420a620f356437f83.css"
-    integrity="sha512-SS3tc0QMfmtsnVZ02EouLRMSf/oudL51aDerqm0Bz6ZqvG6eJhe1Ygk1SYXu2duntQPfK8fBixQgpiDzVkN/gw=="
-  />
+  
+  
+  
+  
+    
+  
+  
+  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.e566b6c0a0b7804755e52094f25218ae3fe33adeea50ed9df826ef64667c360685e72c0592ed510e3e76e840aaea4693f4bbbbf250fa1c16631a1a29e5c5acdf.css" integrity="sha512-5Wa2wKC3gEdV5SCU8lIYrj/jOt7qUO2d&#43;CbvZGZ8NgaF5ywFku1RDj526ECq6kaT9Lu78lD6HBZjGhop5cWs3w==" />
   
   
   <script type="text/javascript" src="/js/appearance.min.c6198a5ecbc6c7b35a8568d29315f50cf5d775d4461c515a476359767f1a745c245aa83fa96b0c7d83da976cf77481e1fc29537a2391a53ffe69a991638802e6.js" integrity="sha512-xhmKXsvGx7NahWjSkxX1DPXXddRGHFFaR2NZdn8adFwkWqg/qWsMfYPal2z3dIHh/ClTeiORpT/&#43;aamRY4gC5g=="></script>
-  
   
   
   
@@ -64,24 +54,28 @@ What Is Excessive Data Exposure? # Excessive data exposure occurs when an API re
   
   
   
-  
-  
-  <meta property="og:title" content="Rails Excessive Data Exposure" />
-<meta property="og:description" content="For software engineers, it may be easy to assume that no hacker would target our app since it isn’t big or well known. This attitude can lead to recklessness and lower measures for securing data on an app. However, it’s important to remember that data collected by an organization is very valuable. There can also be legal consequences in terms of lawsuits against the business that ensue from leakage of a user’s personally identifiable information (PII).
-What Is Excessive Data Exposure? # Excessive data exposure occurs when an API response returns more data than the client needs. As a rule of thumb, if a client application needs three fields, for example, you shouldn’t return the whole object." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://florencenjeri.com/posts/rails_excessive_data_exposure/" /><meta property="og:image" content="http://florencenjeri.com/posts/rails_excessive_data_exposure/cover.jpg"/><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2022-05-18T09:36:41+00:00" />
-<meta property="article:modified_time" content="2022-05-18T09:36:41+00:00" /><meta property="og:site_name" content="Florence Njeri" />
-
-  <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="http://florencenjeri.com/posts/rails_excessive_data_exposure/cover.jpg"/>
-<meta name="twitter:title" content="Rails Excessive Data Exposure"/>
-<meta name="twitter:description" content="For software engineers, it may be easy to assume that no hacker would target our app since it isn’t big or well known. This attitude can lead to recklessness and lower measures for securing data on an app. However, it’s important to remember that data collected by an organization is very valuable. There can also be legal consequences in terms of lawsuits against the business that ensue from leakage of a user’s personally identifiable information (PII).
-What Is Excessive Data Exposure? # Excessive data exposure occurs when an API response returns more data than the client needs. As a rule of thumb, if a client application needs three fields, for example, you shouldn’t return the whole object."/>
+  <meta property="og:url" content="https://florencenjeri.com/posts/rails_excessive_data_exposure/">
+  <meta property="og:site_name" content="Florence Njeri">
+  <meta property="og:title" content="Rails Excessive Data Exposure">
+  <meta property="og:description" content="For software engineers, it may be easy to assume that no hacker would target our app since it isn’t big or well known. This attitude can lead to recklessness and lower measures for securing data on an app. However, it’s important to remember that data collected by an organization is very valuable. There can also be legal consequences in terms of lawsuits against the business that ensue from leakage of a user’s personally identifiable information (PII).
+What Is Excessive Data Exposure? # Excessive data exposure occurs when an API response returns more data than the client needs. As a rule of thumb, if a client application needs three fields, for example, you shouldn’t return the whole object. Excessive data exposure is a big API security concern that should be at the top of every engineer’s mind when designing APIs. In this post, you’ll learn about excessive data exposure in Ruby on Rails. By the end of the post, you’ll have learned about the following topics:">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-05-18T09:36:41+00:00">
+    <meta property="article:modified_time" content="2022-05-18T09:36:41+00:00">
+    <meta property="article:tag" content="Infosec">
+    <meta property="og:image" content="https://florencenjeri.com/posts/rails_excessive_data_exposure/cover.jpg">
 
   
-  <script type="application/ld+json">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://florencenjeri.com/posts/rails_excessive_data_exposure/cover.jpg">
+  <meta name="twitter:title" content="Rails Excessive Data Exposure">
+  <meta name="twitter:description" content="For software engineers, it may be easy to assume that no hacker would target our app since it isn’t big or well known. This attitude can lead to recklessness and lower measures for securing data on an app. However, it’s important to remember that data collected by an organization is very valuable. There can also be legal consequences in terms of lawsuits against the business that ensue from leakage of a user’s personally identifiable information (PII).
+What Is Excessive Data Exposure? # Excessive data exposure occurs when an API response returns more data than the client needs. As a rule of thumb, if a client application needs three fields, for example, you shouldn’t return the whole object. Excessive data exposure is a big API security concern that should be at the top of every engineer’s mind when designing APIs. In this post, you’ll learn about excessive data exposure in Ruby on Rails. By the end of the post, you’ll have learned about the following topics:">
+
+  
+<script type="application/ld+json">
   [{
     "@context": "https://schema.org",
     "@type": "Article",
@@ -89,9 +83,9 @@ What Is Excessive Data Exposure? # Excessive data exposure occurs when an API re
     "name": "Rails Excessive Data Exposure",
     "headline": "Rails Excessive Data Exposure",
     
-    "abstract": "For software engineers, it may be easy to assume that no hacker would target our app since it isn’t big or well known. This attitude can lead to recklessness and lower measures for securing data on an app. However, it’s important to remember that data collected by an organization is very valuable. There can also be legal consequences in terms of lawsuits against the business that ensue from leakage of a user’s personally identifiable information (PII).\nWhat Is Excessive Data Exposure? # Excessive data exposure occurs when an API response returns more data than the client needs. As a rule of thumb, if a client application needs three fields, for example, you shouldn’t return the whole object.",
+    "abstract": "\u003cp\u003eFor software engineers, it may be easy to assume that no hacker would target our app since it isn’t big or well known. This attitude can lead to recklessness and lower measures for securing data on an app. However, it’s important to remember that data collected by an organization is very valuable. There can also be legal consequences in terms of lawsuits against the business that ensue from leakage of a user’s personally identifiable information (PII).\u003c\/p\u003e\n\u003ch2 id=\u0022what-is-excessive-data-exposure\u0022 class=\u0022relative group\u0022\u003eWhat Is Excessive Data Exposure? \u003cspan class=\u0022absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100\u0022\u003e\u003ca class=\u0022group-hover:text-primary-300 dark:group-hover:text-neutral-700\u0022 style=\u0022text-decoration-line: none !important;\u0022 href=\u0022#what-is-excessive-data-exposure\u0022 aria-label=\u0022Anchor\u0022\u003e#\u003c\/a\u003e\u003c\/span\u003e\u003c\/h2\u003e\n\u003cp\u003eExcessive data exposure occurs when an API response returns more data than the client needs. As a rule of thumb, if a client application needs three fields, for example, you shouldn’t return the whole object. Excessive data exposure is a big API security concern that should be at the top of every engineer’s mind when designing APIs.\nIn this post, you’ll learn about excessive data exposure in Ruby on Rails. By the end of the post, you’ll have learned about the following topics:\u003c\/p\u003e",
     "inLanguage": "en",
-    "url" : "http:\/\/florencenjeri.com\/posts\/rails_excessive_data_exposure\/",
+    "url" : "https:\/\/florencenjeri.com\/posts\/rails_excessive_data_exposure\/",
     "author" : {
       "@type": "Person",
       "name": "Florence Njeri"
@@ -109,19 +103,8 @@ What Is Excessive Data Exposure? # Excessive data exposure occurs when an API re
   }]
   </script>
 
-
-  
   <meta name="author" content="Florence Njeri" />
   
-    
-      <link href="https://github.com/Florence-Njeri" rel="me" />
-    
-      <link href="https://www.linkedin.com/in/florencenjeri/" rel="me" />
-    
-      <link href="https://medium.com/@florencelnjeri" rel="me" />
-    
-  
-  
   
 
 
@@ -132,10 +115,8 @@ What Is Excessive Data Exposure? # Excessive data exposure occurs when an API re
   
   
   
-  
 
 
-  
   
 </head><body
     class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
@@ -236,6 +217,22 @@ What Is Excessive Data Exposure? # Excessive data exposure occurs when an API re
                 <li class="mb-1 group">
                   
                     <a
+                      href="/now/"
+                      title="Now"
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Now</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
                       href="/about/"
                       title=""
                       
@@ -295,6 +292,24 @@ What Is Excessive Data Exposure? # Excessive data exposure occurs when an API re
                     <span
                       class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
                       >Posts</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/now/"
+                  title="Now"
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Now</span
                     >
                   </a
                 >
@@ -378,7 +393,7 @@ What Is Excessive Data Exposure? # Excessive data exposure occurs when an API re
   <div class="flex flex-row flex-wrap items-center">
     
     
-      <time datetime="2022-05-18 09:36:41.827 &#43;0000 UTC">18 May 2022</time><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">6 mins</span>
+      &lt;time datetime=&#34;2022-05-18 09:36:41.827 &amp;#43;0000 UTC&#34;&gt;May 18, 2022&lt;/time&gt;&lt;span class=&#34;px-2 text-primary-500&#34;&gt;&amp;middot;&lt;/span&gt;&lt;span title=&#34;Reading time&#34;&gt;6 mins&lt;/span&gt;
     
 
     
@@ -386,6 +401,22 @@ What Is Excessive Data Exposure? # Excessive data exposure occurs when an API re
   </div>
 
   
+  
+    <div class="my-1 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400 ">
+      
+        
+      
+        
+          
+            <a
+              href="/tags/infosec/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >Infosec</a
+            >
+          
+        
+      
+    </div>
   
 
 
@@ -396,10 +427,10 @@ What Is Excessive Data Exposure? # Excessive data exposure occurs when an API re
             class="mb-6 -mt-4 rounded-md"
             
               
-                srcset=" /posts/rails_excessive_data_exposure/cover_hu3d03a01dcc18bc5be0e67db3d8d209a6_4570541_330x0_resize_q75_box.jpg 330w,
-                /posts/rails_excessive_data_exposure/cover_hu3d03a01dcc18bc5be0e67db3d8d209a6_4570541_660x0_resize_q75_box.jpg 660w, /posts/rails_excessive_data_exposure/cover_hu3d03a01dcc18bc5be0e67db3d8d209a6_4570541_1024x0_resize_q75_box.jpg
-                1024w, /posts/rails_excessive_data_exposure/cover_hu3d03a01dcc18bc5be0e67db3d8d209a6_4570541_1320x0_resize_q75_box.jpg 2x"
-                src="/posts/rails_excessive_data_exposure/cover_hu3d03a01dcc18bc5be0e67db3d8d209a6_4570541_660x0_resize_q75_box.jpg"
+                srcset=" /posts/rails_excessive_data_exposure/cover_hu_6be0f1144250da67.jpg 330w,
+                /posts/rails_excessive_data_exposure/cover_hu_5df59e5afe1ddeb0.jpg 660w, /posts/rails_excessive_data_exposure/cover_hu_33f59016ee085857.jpg
+                1024w, /posts/rails_excessive_data_exposure/cover_hu_641b5f7302e0327d.jpg 2x"
+                src="/posts/rails_excessive_data_exposure/cover_hu_5df59e5afe1ddeb0.jpg"
               
             
             alt=""
@@ -477,102 +508,69 @@ Data is a very important asset to any company that should be protected at all co
     </section>
     <footer class="pt-8 max-w-prose print:hidden">
       
-  <div class="flex">
+
+      
+
+      
+  
     
-      
-      
-        
-        <img
-          class="!mt-0 !mb-0 h-24 w-24 rounded-full ltr:mr-4 rtl:ml-4"
-          width="96"
-          height="96"
-          alt="Florence Njeri"
-          src="/img/author_hucf018583ef31368a9a30d295197ee627_1397744_192x192_fill_q75_box_smart1.jpg"
-        />
-      
     
-    <div class="place-self-center">
-      
-        <div class="text-[0.6rem] uppercase leading-3 text-neutral-500 dark:text-neutral-400">
-          Author
-        </div>
-        <div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">
-          Florence Njeri
-        </div>
-      
-      
-        <div class="text-sm text-neutral-700 dark:text-neutral-400">I am a software engineer, information security researcher and technical writer.</div>
-      
-      <div class="text-2xl sm:text-lg">
-  <div class="flex flex-wrap text-neutral-400 dark:text-neutral-500">
     
-      
-        <a
-          class="px-1 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
-          style="will-change:transform;"
-          href="https://github.com/Florence-Njeri"
-          target="_blank"
-          aria-label="Github"
-          rel="me noopener noreferrer"
-          >
-
-  <span class="relative inline-block align-text-bottom icon">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
-
-  </span>
-
-</a
-        >
-      
-    
-      
-        <a
-          class="px-1 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
-          style="will-change:transform;"
-          href="https://www.linkedin.com/in/florencenjeri/"
-          target="_blank"
-          aria-label="Linkedin"
-          rel="me noopener noreferrer"
-          >
-
-  <span class="relative inline-block align-text-bottom icon">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
-
-  </span>
-
-</a
-        >
-      
-    
-      
-        <a
-          class="px-1 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
-          style="will-change:transform;"
-          href="https://medium.com/@florencelnjeri"
-          target="_blank"
-          aria-label="Medium"
-          rel="me noopener noreferrer"
-          >
-
-  <span class="relative inline-block align-text-bottom icon">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M180.5,74.262C80.813,74.262,0,155.633,0,256S80.819,437.738,180.5,437.738,361,356.373,361,256,280.191,74.262,180.5,74.262Zm288.25,10.646c-49.845,0-90.245,76.619-90.245,171.095s40.406,171.1,90.251,171.1,90.251-76.619,90.251-171.1H559C559,161.5,518.6,84.908,468.752,84.908Zm139.506,17.821c-17.526,0-31.735,68.628-31.735,153.274s14.2,153.274,31.735,153.274S640,340.631,640,256C640,171.351,625.785,102.729,608.258,102.729Z"/></svg>
-
-  </span>
-
-</a
-        >
-      
-    
-  </div>
-
-</div>
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="group flex" href="/posts/androdialer/">
+              <span
+                class="mr-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+              <span
+                class="ml-2 text-neutral-700 transition-transform group-hover:translate-x-[2px] group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  ></span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="0001-01-01 00:00:00 &#43;0000 UTC">January 1, 1</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/get_curl_commands/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Getting Started With GET Curl Commands</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2023-09-16 09:36:41.827 &#43;0000 UTC">September 16, 2023</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ml-2 text-neutral-700 transition-transform group-hover:translate-x-[2px] group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span
+                class="mr-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+            </a>
+          
+        </span>
+      </div>
     </div>
-  </div>
-
-
-      
-
-      
   
 
 
@@ -595,7 +593,6 @@ Data is a very important asset to any company that should be protected at all co
           </div>
         
       </main><footer class="py-10 print:hidden">
-  
   
     <nav class="pb-4 text-base font-medium text-neutral-500 dark:text-neutral-400">
       <ul class="flex flex-col list-none sm:flex-row">
@@ -658,23 +655,19 @@ Data is a very important asset to any company that should be protected at all co
   <div class="flex items-center justify-between">
     <div>
       
-      
+        
         <p class="text-sm text-neutral-500 dark:text-neutral-400">
             &copy;
-            2023
+            2026
             Florence Njeri
         </p>
       
       
-      
     </div>
-    
     
   </div>
   
-  
 </footer>
-
     </div>
   </body>
 </html>

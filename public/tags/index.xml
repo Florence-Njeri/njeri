@@ -2,19 +2,193 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Florence Njeri</title>
-    <link>http://florencenjeri.com/tags/</link>
+    <link>https://florencenjeri.com/tags/</link>
     <description>Recent content in Tags on Florence Njeri</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 18 May 2022 09:36:41 +0000</lastBuildDate><atom:link href="http://florencenjeri.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 Apr 2026 09:00:00 +0000</lastBuildDate>
+    <atom:link href="https://florencenjeri.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Infosec</title>
-      <link>http://florencenjeri.com/tags/infosec/</link>
-      <pubDate>Wed, 18 May 2022 09:36:41 +0000</pubDate>
-      
-      <guid>http://florencenjeri.com/tags/infosec/</guid>
+      <title>Android Security</title>
+      <link>https://florencenjeri.com/tags/android-security/</link>
+      <pubDate>Wed, 15 Apr 2026 09:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/android-security/</guid>
       <description></description>
     </item>
-    
+    <item>
+      <title>Infosec</title>
+      <link>https://florencenjeri.com/tags/infosec/</link>
+      <pubDate>Wed, 15 Apr 2026 09:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/infosec/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Insecure Storage</title>
+      <link>https://florencenjeri.com/tags/insecure-storage/</link>
+      <pubDate>Wed, 15 Apr 2026 09:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/insecure-storage/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mobile Pentesting</title>
+      <link>https://florencenjeri.com/tags/mobile-pentesting/</link>
+      <pubDate>Wed, 15 Apr 2026 09:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/mobile-pentesting/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mobile Exploits</title>
+      <link>https://florencenjeri.com/tags/mobile-exploits/</link>
+      <pubDate>Sun, 01 Mar 2026 09:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/mobile-exploits/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mobile Security</title>
+      <link>https://florencenjeri.com/tags/mobile-security/</link>
+      <pubDate>Sun, 01 Mar 2026 09:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/mobile-security/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>MITM - Mobile Exploits</title>
+      <link>https://florencenjeri.com/tags/mitm---mobile-exploits/</link>
+      <pubDate>Wed, 04 Feb 2026 09:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/mitm---mobile-exploits/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pentesting</title>
+      <link>https://florencenjeri.com/tags/pentesting/</link>
+      <pubDate>Wed, 04 Feb 2026 09:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/pentesting/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Reverse Engineering</title>
+      <link>https://florencenjeri.com/tags/reverse-engineering/</link>
+      <pubDate>Wed, 04 Feb 2026 09:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/reverse-engineering/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Android</title>
+      <link>https://florencenjeri.com/tags/android/</link>
+      <pubDate>Tue, 03 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/android/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Database</title>
+      <link>https://florencenjeri.com/tags/database/</link>
+      <pubDate>Tue, 03 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/database/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Database Security</title>
+      <link>https://florencenjeri.com/tags/database-security/</link>
+      <pubDate>Tue, 03 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/database-security/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mobile</title>
+      <link>https://florencenjeri.com/tags/mobile/</link>
+      <pubDate>Tue, 03 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/mobile/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mobile Pentest</title>
+      <link>https://florencenjeri.com/tags/mobile-pentest/</link>
+      <pubDate>Tue, 03 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/mobile-pentest/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pentest</title>
+      <link>https://florencenjeri.com/tags/pentest/</link>
+      <pubDate>Tue, 03 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/pentest/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Security</title>
+      <link>https://florencenjeri.com/tags/security/</link>
+      <pubDate>Tue, 03 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/security/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ruby on Rails</title>
+      <link>https://florencenjeri.com/tags/ruby-on-rails/</link>
+      <pubDate>Fri, 24 Jan 2025 09:00:41 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/ruby-on-rails/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Secure Programming Lab</title>
+      <link>https://florencenjeri.com/tags/secure-programming-lab/</link>
+      <pubDate>Fri, 24 Jan 2025 09:00:41 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/secure-programming-lab/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>BUffer Overflow</title>
+      <link>https://florencenjeri.com/tags/buffer-overflow/</link>
+      <pubDate>Sun, 01 Dec 2024 09:36:41 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/buffer-overflow/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Buffer Overwrites</title>
+      <link>https://florencenjeri.com/tags/buffer-overwrites/</link>
+      <pubDate>Sun, 01 Dec 2024 09:36:41 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/buffer-overwrites/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>C Programming</title>
+      <link>https://florencenjeri.com/tags/c-programming/</link>
+      <pubDate>Sun, 01 Dec 2024 09:36:41 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/c-programming/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Coding101</title>
+      <link>https://florencenjeri.com/tags/coding101/</link>
+      <pubDate>Sun, 01 Dec 2024 09:36:41 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/coding101/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CTF</title>
+      <link>https://florencenjeri.com/tags/ctf/</link>
+      <pubDate>Sun, 01 Dec 2024 09:36:41 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/ctf/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cyber Security</title>
+      <link>https://florencenjeri.com/tags/cyber-security/</link>
+      <pubDate>Sun, 01 Dec 2024 09:36:41 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/cyber-security/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ghidra</title>
+      <link>https://florencenjeri.com/tags/ghidra/</link>
+      <pubDate>Sun, 01 Dec 2024 09:36:41 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/ghidra/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Getting Started</title>
+      <link>https://florencenjeri.com/tags/getting-started/</link>
+      <pubDate>Sat, 16 Sep 2023 09:36:41 +0000</pubDate>
+      <guid>https://florencenjeri.com/tags/getting-started/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>

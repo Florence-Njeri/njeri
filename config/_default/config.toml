@@ -10,6 +10,9 @@ enableRobotsTXT = true
 pagerSize = 10
 summaryLength = 100
 
+[author]
+  name = "Florence Njeri"
+
 [outputs]
   home = ["HTML", "RSS", "JSON"]
 

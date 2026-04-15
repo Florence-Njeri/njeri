@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Insecure Storage on Florence Njeri</title>
+    <link>https://florencenjeri.com/tags/insecure-storage/</link>
+    <description>Recent content in Insecure Storage on Florence Njeri</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 15 Apr 2026 09:00:00 +0000</lastBuildDate>
+    <atom:link href="https://florencenjeri.com/tags/insecure-storage/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Insecure Storage in Android</title>
+      <link>https://florencenjeri.com/posts/android_storage/</link>
+      <pubDate>Wed, 15 Apr 2026 09:00:00 +0000</pubDate>
+      <guid>https://florencenjeri.com/posts/android_storage/</guid>
+      <description>&lt;h1 id=&#34;insecure-storage-in-android&#34; class=&#34;relative group&#34;&gt;Insecure Storage in Android &lt;span class=&#34;absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100&#34;&gt;&lt;a class=&#34;group-hover:text-primary-300 dark:group-hover:text-neutral-700&#34; style=&#34;text-decoration-line: none !important;&#34; href=&#34;#insecure-storage-in-android&#34; aria-label=&#34;Anchor&#34;&gt;#&lt;/a&gt;&lt;/span&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Insecure storage is still one of the easiest ways to recover sensitive data from an Android app during a pentest. Even when an app has strong network protections, it may still expose tokens, cached responses, credentials, or personal data locally. This post is a quick guide to the main Android storage locations and what they mean from a security testing perspective.&lt;/p&gt;&#xA;&lt;h2 id=&#34;shared-preferences&#34; class=&#34;relative group&#34;&gt;Shared Preferences &lt;span class=&#34;absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100&#34;&gt;&lt;a class=&#34;group-hover:text-primary-300 dark:group-hover:text-neutral-700&#34; style=&#34;text-decoration-line: none !important;&#34; href=&#34;#shared-preferences&#34; aria-label=&#34;Anchor&#34;&gt;#&lt;/a&gt;&lt;/span&gt;&lt;/h2&gt;&#xA;&lt;p&gt;A key-value XML file that stores user preferences such as dark mode or light mode. They are also often used to store access tokens or other kinds of secrets. In itself, that is not an issue, but it makes shared preferences a very interesting target for stealing or overwriting internal files.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -3,7 +3,7 @@ title: "Insecure Storage in Android"
 description: "A beginner-friendly overview of Android storage locations and what pentesters should look for in each one."
 date: 2026-04-15T09:00:00.000Z
 cascade:
-	showReadingTime: true
+  showReadingTime: true
 tags:
 - Infosec
 - Android Security

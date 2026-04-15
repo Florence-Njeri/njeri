@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  dir="ltr"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+>
+
+<head>
+  <meta charset="utf-8" />
+  
+    <meta http-equiv="content-language" content="en" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="rgb(255,255,255)" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Secure Programming in C: Buffer Overwrites and Overflows &middot; Florence Njeri</title>
+    <meta name="title" content="Secure Programming in C: Buffer Overwrites and Overflows &middot; Florence Njeri" />
+  <meta name="description" content="The objective of this lab is to build on our understanding of secure programming in C by analyzing, enhancing, and securing the functionality of the program from Project Lab 1, with a focus on identifying and mitigating vulnerabilities and improving resilience against attacks like fuzzing.
+This lab focuses on identifying vulnerabilities in the source code, applying and validating patches, and proposing future best practices to prevent similar issues. Additionally, we will analyze the code using security analysis tools (cppcheck) to find out about the vulnerabilities in code. After compiling the project, we will inspect the resulting binary in Ghidra to identify similarities and differences, which will further inform our understanding of the program&rsquo;s security and allow us to apply effective mitigations. The goal is to deliver a secure, improved program with a detailed report on the analysis, changes, and recommendations." />
+  
+  
+  
+  <link rel="canonical" href="https://florencenjeri.com/posts/toctou_c/" />
+  
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.e566b6c0a0b7804755e52094f25218ae3fe33adeea50ed9df826ef64667c360685e72c0592ed510e3e76e840aaea4693f4bbbbf250fa1c16631a1a29e5c5acdf.css" integrity="sha512-5Wa2wKC3gEdV5SCU8lIYrj/jOt7qUO2d&#43;CbvZGZ8NgaF5ywFku1RDj526ECq6kaT9Lu78lD6HBZjGhop5cWs3w==" />
+  
+  
+  <script type="text/javascript" src="/js/appearance.min.c6198a5ecbc6c7b35a8568d29315f50cf5d775d4461c515a476359767f1a745c245aa83fa96b0c7d83da976cf77481e1fc29537a2391a53ffe69a991638802e6.js" integrity="sha512-xhmKXsvGx7NahWjSkxX1DPXXddRGHFFaR2NZdn8adFwkWqg/qWsMfYPal2z3dIHh/ClTeiORpT/&#43;aamRY4gC5g=="></script>
+  
+  
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  <meta property="og:url" content="https://florencenjeri.com/posts/toctou_c/">
+  <meta property="og:site_name" content="Florence Njeri">
+  <meta property="og:title" content="Secure Programming in C: Buffer Overwrites and Overflows">
+  <meta property="og:description" content="The objective of this lab is to build on our understanding of secure programming in C by analyzing, enhancing, and securing the functionality of the program from Project Lab 1, with a focus on identifying and mitigating vulnerabilities and improving resilience against attacks like fuzzing.
+This lab focuses on identifying vulnerabilities in the source code, applying and validating patches, and proposing future best practices to prevent similar issues. Additionally, we will analyze the code using security analysis tools (cppcheck) to find out about the vulnerabilities in code. After compiling the project, we will inspect the resulting binary in Ghidra to identify similarities and differences, which will further inform our understanding of the program’s security and allow us to apply effective mitigations. The goal is to deliver a secure, improved program with a detailed report on the analysis, changes, and recommendations.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-01-24T09:00:41+00:00">
+    <meta property="article:modified_time" content="2025-01-24T09:00:41+00:00">
+    <meta property="article:tag" content="Secure Programming Lab">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Secure Programming in C: Buffer Overwrites and Overflows">
+  <meta name="twitter:description" content="The objective of this lab is to build on our understanding of secure programming in C by analyzing, enhancing, and securing the functionality of the program from Project Lab 1, with a focus on identifying and mitigating vulnerabilities and improving resilience against attacks like fuzzing.
+This lab focuses on identifying vulnerabilities in the source code, applying and validating patches, and proposing future best practices to prevent similar issues. Additionally, we will analyze the code using security analysis tools (cppcheck) to find out about the vulnerabilities in code. After compiling the project, we will inspect the resulting binary in Ghidra to identify similarities and differences, which will further inform our understanding of the program’s security and allow us to apply effective mitigations. The goal is to deliver a secure, improved program with a detailed report on the analysis, changes, and recommendations.">
+
+  
+<script type="application/ld+json">
+  [{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Posts",
+    "name": "Secure Programming in C: Buffer Overwrites and Overflows",
+    "headline": "Secure Programming in C: Buffer Overwrites and Overflows",
+    
+    "abstract": "\u003cp\u003eThe objective of this lab is to build on our understanding of secure programming in C by analyzing, enhancing, and securing the functionality of the program from Project Lab 1, with a focus on identifying and mitigating vulnerabilities and improving resilience against attacks like fuzzing.\u003c\/p\u003e\n\u003cp\u003eThis lab focuses on identifying vulnerabilities in the source code, applying and validating patches, and proposing future best practices to prevent similar issues. Additionally, we will analyze the code using \u003cstrong\u003esecurity analysis tools (cppcheck)\u003c\/strong\u003e to find out about the vulnerabilities in code. After compiling the project, we will inspect the resulting binary in Ghidra to identify similarities and differences, which will further inform our understanding of the program\u0026rsquo;s security and allow us to apply effective mitigations. The goal is to deliver a secure, improved program with a detailed report on the analysis, changes, and recommendations.\u003c\/p\u003e",
+    "inLanguage": "en",
+    "url" : "https:\/\/florencenjeri.com\/posts\/toctou_c\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Florence Njeri"
+    },
+    "copyrightYear": "2025",
+    "dateCreated": "2025-01-24T09:00:41\u002b00:00",
+    "datePublished": "2025-01-24T09:00:41\u002b00:00",
+    
+    "dateModified": "2025-01-24T09:00:41\u002b00:00",
+    
+    "keywords": ["Secure Programming Lab"],
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "3511"
+  }]
+  </script>
+
+  <meta name="author" content="Florence Njeri" />
+  
+  
+
+
+
+
+
+
+  
+  
+  
+
+
+  
+</head><body
+    class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="font-bold text-primary-600 ltr:pr-2 rtl:pl-2 dark:text-primary-400"
+          >&darr;</span
+        >Skip to main content</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral print:hidden sm:py-10">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="z-40 flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Florence Njeri</a
+  >
+
+      
+
+    </div>
+    
+      
+      <label id="menu-button" for="menu-controller" class="block sm:hidden">
+        <input type="checkbox" id="menu-controller" class="hidden" />
+        <div class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400">
+          
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+
+  </span>
+
+
+        </div>
+        <div
+          id="menu-wrapper"
+          class="fixed inset-0 z-30 invisible w-full h-full m-auto overflow-auto transition-opacity opacity-0 cursor-default bg-neutral-100/50 backdrop-blur-sm dark:bg-neutral-900/50"
+        >
+          <ul
+            class="flex flex-col w-full px-6 py-6 mx-auto overflow-visible list-none max-w-7xl ltr:text-right rtl:text-left sm:px-14 sm:py-10 sm:pt-10 md:px-24 lg:px-32"
+          >
+            <li class="mb-1">
+              <span class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400"
+                >
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+  </span>
+
+</span
+              >
+            </li>
+            
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/"
+                      title=""
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Home</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/posts/"
+                      title="Posts"
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Posts</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/now/"
+                      title="Now"
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Now</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    <a
+                      href="/about/"
+                      title=""
+                      
+                      >
+                        <span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >About</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                <li class="mb-1 group">
+                  
+                    
+                    
+                  
+                </li>
+              
+              
+            
+          </ul>
+        </div>
+      </label>
+      
+      <ul class="flex-row hidden list-none ltr:text-right rtl:text-left sm:flex">
+        
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/"
+                  title=""
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Home</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/posts/"
+                  title="Posts"
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Posts</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/now/"
+                  title="Now"
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Now</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                <a
+                  href="/about/"
+                  title=""
+                  
+                  >
+                    <span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >About</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            <li
+              class="mb-1 group sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+            >
+              
+                
+                
+              
+            </li>
+          
+          
+
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex flex-col grow">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        Secure Programming in C: Buffer Overwrites and Overflows
+      </h1>
+      <div class="mt-8 mb-12 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+        
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+    
+  
+
+  
+
+  
+
+  
+    
+  
+
+  
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      &lt;time datetime=&#34;2025-01-24 09:00:41.827 &amp;#43;0000 UTC&#34;&gt;January 24, 2025&lt;/time&gt;&lt;span class=&#34;px-2 text-primary-500&#34;&gt;&amp;middot;&lt;/span&gt;&lt;span title=&#34;Reading time&#34;&gt;17 mins&lt;/span&gt;
+    
+
+    
+    
+  </div>
+
+  
+  
+    <div class="my-1 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400 ">
+      
+        
+      
+        
+          
+            <a
+              href="/tags/secure-programming-lab/"
+              class="rounded-md border border-neutral-200 px-1 py-[1px] hover:border-primary-300 hover:text-primary-700 dark:border-neutral-600 dark:hover:border-primary-600 dark:hover:text-primary-400"
+              >Secure Programming Lab</a
+            >
+          
+        
+      
+    </div>
+  
+
+
+      </div>
+      
+    </header>
+    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+      
+      <div class="min-w-0 min-h-0 max-w-prose grow">
+        <p>The objective of this lab is to build on our understanding of secure programming in C by analyzing, enhancing, and securing the functionality of the program from Project Lab 1, with a focus on identifying and mitigating vulnerabilities and improving resilience against attacks like fuzzing.</p>
+<p>This lab focuses on identifying vulnerabilities in the source code, applying and validating patches, and proposing future best practices to prevent similar issues. Additionally, we will analyze the code using <strong>security analysis tools (cppcheck)</strong> to find out about the vulnerabilities in code. After compiling the project, we will inspect the resulting binary in Ghidra to identify similarities and differences, which will further inform our understanding of the program&rsquo;s security and allow us to apply effective mitigations. The goal is to deliver a secure, improved program with a detailed report on the analysis, changes, and recommendations.</p>
+<h2 id="link-to-the-lab-resouces-on-github" class="relative group">Link to the Lab resouces on Github <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#link-to-the-lab-resouces-on-github" aria-label="Anchor">#</a></span></h2>
+<p><a
+  href="https://github.com/Florence-Njeri/Secure-Programming---Lab-Two"
+  
+  target="_blank" rel="noreferrer noopener"
+>Lab 2</a> and <a
+  href="https://github.com/Florence-Njeri/Secure-Programming---LabThree"
+  
+  target="_blank" rel="noreferrer noopener"
+>Lab 3</a></p>
+<h2 id="analysis-method-cppcheck" class="relative group">Analysis Method (cppcheck) <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#analysis-method-cppcheck" aria-label="Anchor">#</a></span></h2>
+<p>Since we are provided with a source code, we try to identify potential threats in the code with a static code analysis tool- cppcheck.</p>
+<p>
+
+
+
+  
+  
+    
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        
+          
+            srcset="
+            /posts/toctou_c/image_hu_8240423451e70a0b.png 330w,
+            /posts/toctou_c/image_hu_b09cb9ec93670506.png 660w,
+            /posts/toctou_c/image_hu_49aae278d31d1d92.png 1024w,
+            /posts/toctou_c/image_hu_c747b18cbea79d4a.png 2x"
+            src="/posts/toctou_c/image_hu_b09cb9ec93670506.png"
+          
+        
+        alt="image.png"
+      />
+      
+    </figure>
+  
+
+</p>
+<ul>
+<li>First, we extract the provided files using the given instructions.</li>
+</ul>
+<p>
+
+
+
+  
+  
+  
+    <figure>
+      <img class="mx-auto my-0 rounded-md" src="image%201.png" alt="image.png" />
+      
+    </figure>
+  
+
+</p>
+<ul>
+<li>We run cppcheck on the program and we identified the following threats:
+<ul>
+<li><strong>Variable Scope Issues</strong>:
+<ul>
+<li>The variables <code>in0</code> and <code>in1</code> in <code>src/main.c</code> have unnecessarily wide scopes, which may lead to unintended use or harder code maintenance.</li>
+</ul>
+</li>
+<li><strong>Unsafe Use of <code>scanf()</code></strong>:
+<ul>
+<li>In <code>src/validation/validation_functions.c</code>, <code>scanf(&quot;%s&quot;, buffer)</code> lacks a field width limit, making it vulnerable to buffer overflows if provided with excessively large input.</li>
+</ul>
+</li>
+<li><strong>Unused Function</strong>:
+<ul>
+<li>The function <code>fnR</code> in <code>src/action/action_functions.c</code> is never called, indicating potential dead code, which can increase codebase complexity or lead to latent issues if not properly reviewed.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Given the program&rsquo;s small size, we can conduct manual security code reviews against secure coding standards and write test programs to identify common vulnerabilities. However, since we use a Makefile to efficiently compile and run multiple files together, manually reviewing each file one by one becomes impractical in real-world scenarios. Therefore, we propose starting with static analysis for a more efficient and thorough approach.</li>
+</ul>
+<h2 id="legacy-options" class="relative group">Legacy Options <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#legacy-options" aria-label="Anchor">#</a></span></h2>
+<h3 id="finding-the-original-compiler-options-legcflags-leading-to-vulnerabilities" class="relative group">Finding the Original Compiler Options (LEGCFLAGS) Leading to Vulnerabilities <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#finding-the-original-compiler-options-legcflags-leading-to-vulnerabilities" aria-label="Anchor">#</a></span></h3>
+<ul>
+<li><code>checksec</code> is a Linux tool that analyzes binary files to identify security features implemented during compilation and linking, such as RELRO, NX, PIE, Stack Canary, and FORTIFY_SOURCE.</li>
+</ul>
+<p>
+
+
+
+  
+  
+  
+    <figure>
+      <img class="mx-auto my-0 rounded-md" src="image%202.png" alt="image.png" />
+      
+    </figure>
+  
+
+</p>
+<ul>
+<li>To infer the <code>LEGCFLAGS</code> (Linux Exploit GDB Compiler Flags) used in the <code>door-locker</code> binary from the given <code>checksec</code> output, we analyze the provided information step by step:</li>
+</ul>
+<h3 id="breakdown-of-checksec-output" class="relative group">Breakdown of <code>checksec</code> Output: <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#breakdown-of-checksec-output" aria-label="Anchor">#</a></span></h3>
+<ol>
+<li><strong>RELRO</strong>: Partial RELRO
+<ul>
+<li>Indicates that the binary is compiled with <code>Wl,-z,relro</code> but <strong>not</strong> with <code>Wl,-z,now</code>.</li>
+<li>This provides partial protection against GOT overwrite attacks.</li>
+<li>At first we only configured with <code>-z,relro -Wl</code>, however it would always still be fully enabled, thus we suspected that this configuration is applied by default, thus we have to take an extra step to disable it with <code>-Wl,-z,lazy</code> to enforce lazy symbol resolution, which is required for Partial RELRO.</li>
+</ul>
+</li>
+<li><strong>STACK CANARY</strong>: No canary found
+<ul>
+<li>Suggests the binary was <strong>not</strong> compiled with <code>fstack-protector</code> or similar flags. This makes it vulnerable to stack-based buffer overflows.</li>
+</ul>
+</li>
+<li><strong>NX (No Execute)</strong>: Enabled
+<ul>
+<li>The binary is compiled with <code>Wl,-z,noexecstack</code> or equivalent, which prevents code execution on the stack.</li>
+</ul>
+</li>
+<li><strong>PIE (Position-Independent Executable)</strong>: Enabled
+<ul>
+<li>Indicates the binary was compiled with <code>fPIE -pie</code>. This allows address randomization, enhancing security against exploits.</li>
+</ul>
+</li>
+<li><strong>RPATH and RUNPATH</strong>: Not set
+<ul>
+<li>The binary has no hardcoded runtime library search paths, indicating good practice.</li>
+</ul>
+</li>
+<li><strong>Symbols</strong>: (45) Symbols
+<ul>
+<li>Indicates the binary includes some debug symbols or symbol table information, possibly due to compilation with <code>g</code> or no stripping of symbols.</li>
+</ul>
+</li>
+<li><strong>FORTIFY</strong>: No
+<ul>
+<li>The binary lacks fortification, thus we configured it explicitly as <code>D_FORTIFY_SOURCE=0</code>.</li>
+</ul>
+</li>
+</ol>
+<h3 id="likely-legacy-options" class="relative group">Likely Legacy Options: <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#likely-legacy-options" aria-label="Anchor">#</a></span></h3>
+<p>Based on the above, the likely compiler flags are:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">LEGCFLAGS</span> <span class="o">=</span>-fpie -D_FORTIFY_SOURCE<span class="o">=</span><span class="m">0</span> -fno-stack-protector
+</span></span><span class="line"><span class="cl"><span class="nv">LEGLDFLAGS</span> <span class="o">=</span>-pie -Wl,-z,relro -Wl,-z,lazy -Wl,-z,noexecstack 
+</span></span></code></pre></div><p>
+
+
+
+  
+  
+  
+    <figure>
+      <img class="mx-auto my-0 rounded-md" src="image%203.png" alt="image.png" />
+      
+    </figure>
+  
+
+</p>
+<ul>
+<li><code>Checksec</code>after making the program and got the identical security configuration result as the binary file provided in Lab 1.</li>
+</ul>
+<p>These flags explain the security features observed:</p>
+<ul>
+<li><code>fPIE -pie</code>: For PIE enabled.  These flags enable Position-Independent Executable (PIE), making the executable&rsquo;s code location-independent, which allows the OS to load it at different memory addresses for better security (such as enabling Address Space Layout Randomization, ASLR).</li>
+<li><code>D_FORTIFY_SOURCE=0</code>: For No Fortify. This disables the FORTIFY_SOURCE security feature, which normally enhances the security of certain string and memory operations by checking for buffer overflows at compile time.</li>
+<li><code>fno-stack-protector</code>: For No Canary Found. This flag disables stack protection mechanisms (canary values) that are used to detect and prevent stack buffer overflows during execution.</li>
+<li><code>Wl,-z,relro</code> &amp; <code>-Wl,-z,lazy</code> : For Partial RELRO. The <code>-z,relro</code> flag enables a form of read-only relocation (RELRO) to protect the Global Offset Table (GOT) from modification, while <code>-z,lazy</code> ensures that symbol resolution is deferred until needed, allowing for Partial RELRO.</li>
+<li><code>Wl,-z,noexecstack</code>: For NX enabled. This flag prevents the stack from being executable, mitigating the risk of certain types of attacks, such as buffer overflows that attempt to execute code from the stack (NX or No Execute protection).</li>
+</ul>
+<h3 id="analyze-binary-in-ghidra" class="relative group">Analyze Binary in Ghidra <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#analyze-binary-in-ghidra" aria-label="Anchor">#</a></span></h3>
+<ul>
+<li>Compilation options used for</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-makefile" data-lang="makefile"><span class="line"><span class="cl"><span class="nv">LEGCFLAGS</span> <span class="o">=</span>-fpie -D_FORTIFY_SOURCE<span class="o">=</span><span class="m">0</span> -fno-stack-protector
+</span></span><span class="line"><span class="cl"><span class="nv">LEGLDFLAGS</span> <span class="o">=</span>-pie -Wl,-z,relro -Wl,-z,lazy -Wl,-z,noexecstack 
+</span></span></code></pre></div><ul>
+<li>Original Binary for main function (Lab 1)</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span><span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">long</span> <span class="n">lVar1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">long</span> <span class="n">lVar2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">iVar3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">iVar3</span> <span class="o">=</span> <span class="nf">validate</span><span class="p">(</span><span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">iVar3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">Checking values&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">lVar1</span> <span class="o">=</span> <span class="nf">strtol</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],(</span><span class="kt">char</span> <span class="o">**</span><span class="p">)</span><span class="mh">0x0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">lVar2</span> <span class="o">=</span> <span class="nf">strtol</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],(</span><span class="kt">char</span> <span class="o">**</span><span class="p">)</span><span class="mh">0x0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">iVar3</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">lVar2</span> <span class="o">==</span> <span class="n">lVar1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;Valid access.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">fngrt</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">fnr</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">fnr</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="n">iVar3</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;Usage : client &lt;chiffre0&gt; &lt;chiffre1&gt;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">iVar3</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">iVar3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><ul>
+<li>New Binary for main function (Lab 2)</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span><span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">iVar1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">iVar2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">long</span> <span class="n">lVar3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">long</span> <span class="n">lVar4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">iVar1</span> <span class="o">=</span> <span class="nf">validate</span><span class="p">(</span><span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">iVar1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">Checking values&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">lVar3</span> <span class="o">=</span> <span class="nf">strtol</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],(</span><span class="kt">char</span> <span class="o">**</span><span class="p">)</span><span class="mh">0x0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">lVar4</span> <span class="o">=</span> <span class="nf">strtol</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],(</span><span class="kt">char</span> <span class="o">**</span><span class="p">)</span><span class="mh">0x0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">iVar2</span> <span class="o">=</span> <span class="nf">fnchck</span><span class="p">((</span><span class="kt">int</span><span class="p">)</span><span class="n">lVar4</span><span class="p">,(</span><span class="kt">int</span><span class="p">)</span><span class="n">lVar3</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">iVar1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">iVar2</span> <span class="o">==</span> <span class="mh">0xf</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">fngrt</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">fnr</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">fnr</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="n">iVar1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;Usage : client &lt;chiffre0&gt; &lt;chiffre1&gt;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">iVar1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">iVar1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="overview" class="relative group">Overview <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#overview" aria-label="Anchor">#</a></span></h3>
+<p>Two binary files, produced from slightly differing versions of source code, were analyzed. Despite identical <code>checksec</code> results indicating similar security configurations, functional discrepancies were observed. This report outlines the differences, potential causes, and investigative steps taken to identify the reasons behind the variations.</p>
+<h3 id="key-observations" class="relative group">Key Observations <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#key-observations" aria-label="Anchor">#</a></span></h3>
+<ol>
+<li>
+<p><strong>Logic Differences in Validation</strong>:</p>
+<ul>
+<li><strong>First Binary</strong>:
+<ul>
+<li>Directly compares two <code>long</code> values using <code>if (lVar2 == lVar1)</code> to determine success. <code>fnchck</code> is included in the project but never called.</li>
+</ul>
+</li>
+<li><strong>Second Binary</strong>:
+<ul>
+<li>Introduces a new function, <code>fnchck</code>, which takes the casted integer values of <code>lVar3</code> and <code>lVar4</code> as arguments. Success is determined by the condition <code>if (fnchck(...) == 0xf)</code>.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Finding</strong>: The second binary includes an additional layer of logic not present in the first.</p>
+</li>
+<li>
+<p><strong>Variable Usage and Type Casting</strong>:</p>
+<ul>
+<li>Both binaries use <code>long</code> variables for storing input values.</li>
+<li>The second binary explicitly casts these <code>long</code> values to <code>int</code> when calling <code>fnchck</code>.</li>
+</ul>
+<p><strong>Finding</strong>: Type casting was introduced in the second binary, potentially as part of an additional validation mechanism.</p>
+</li>
+<li>
+<p><strong>Common Functionality</strong>:</p>
+<ul>
+<li>Both binaries call <code>fngrt()</code> upon success and <code>fnr()</code> upon failure.</li>
+<li>However, the success criteria differ due to the logic variations described above.</li>
+</ul>
+<p><strong>Finding</strong>: Core functionality remains similar, but validation mechanisms differ.</p>
+</li>
+</ol>
+<h3 id="potential-causes-of-differences" class="relative group">Potential Causes of Differences <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#potential-causes-of-differences" aria-label="Anchor">#</a></span></h3>
+<ol>
+<li><strong>Source Code Variations</strong>:
+<ul>
+<li>The inclusion of <code>fnchck</code> in the second binary suggests either a different version of the source code or manual modification.</li>
+</ul>
+</li>
+<li><strong>Conditional Compilation</strong>:
+<ul>
+<li>Preprocessor directives such as <code>#ifdef</code> or <code>#define</code> may have enabled or disabled specific sections of code during compilation.</li>
+</ul>
+</li>
+<li><strong>Compiler or Optimization Settings</strong>:
+<ul>
+<li>Compiler flags (e.g., <code>O2</code>, <code>O3</code>) may have introduced optimizations or modifications in one binary but not the other. However, optimizations typically simplify logic rather than adding new functions like <code>fnchck</code>.</li>
+</ul>
+</li>
+<li><strong>Linker Behavior or Library Dependencies</strong>:
+<ul>
+<li>Differences in the linker scripts, library versions, or included dependencies might have affected the compiled output.</li>
+</ul>
+</li>
+</ol>
+<h3 id="possible-next-investigative-steps" class="relative group">Possible Next Investigative Steps <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#possible-next-investigative-steps" aria-label="Anchor">#</a></span></h3>
+<ol>
+<li><strong>Compilation Flags</strong>:
+<ul>
+<li>The compilation process for both binaries was analyzed with verbose options (<code>gcc -v</code> and <code>ld --verbose</code>) to identify differences in flags. Special attention was paid to optimization levels and security-related flags.</li>
+</ul>
+</li>
+<li><strong>Disassembly Analysis</strong>:
+<ul>
+<li>Using <code>objdump -d</code>, the assembly-level differences between the two binaries were reviewed. This revealed the introduction of <code>fnchck</code> and its associated logic in the second binary.</li>
+</ul>
+</li>
+<li><strong>Preprocessor Directives</strong>:
+<ul>
+<li>The source code was inspected for conditional compilation directives (e.g., <code>#ifdef</code>) that could enable or disable sections of the code.</li>
+</ul>
+</li>
+<li><strong>Controlled Recompilation</strong>:
+<ul>
+<li>Various combinations of compiler and linker flags were tested to replicate the logic in both binaries, including:
+<ul>
+<li>Adjusting optimization levels (<code>O0</code>, <code>O2</code>, <code>O3</code>).</li>
+<li>Explicitly enabling or disabling RELRO (<code>Wl,-z,relro</code> or <code>Wl,-z,now</code>).</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>Original Binary for validate function</li>
+</ul>
+<p>(Lab 1)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">validate</span><span class="p">(</span><span class="kt">int</span> <span class="n">param_1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="n">local_20</span> <span class="p">[</span><span class="mi">24</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;You entered %s and %s. </span><span class="se">\n</span><span class="s">Do you agree ? (Y,n):</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="o">*</span><span class="p">(</span><span class="n">undefined4</span> <span class="o">*</span><span class="p">)(</span><span class="n">param_1</span> <span class="o">+</span> <span class="mi">4</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">         <span class="o">*</span><span class="p">(</span><span class="n">undefined4</span> <span class="o">*</span><span class="p">)(</span><span class="n">param_1</span> <span class="o">+</span> <span class="mi">8</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">__isoc99_scanf</span><span class="p">(</span><span class="o">&amp;</span><span class="n">DAT_00012057</span><span class="p">,</span><span class="n">local_20</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">strcmp</span><span class="p">(</span><span class="n">local_20</span><span class="p">,</span><span class="s">&#34;Y&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><ul>
+<li>New Binary for validate function (Lab 2)</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">validate</span><span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint</span> <span class="n">uVar1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">iVar2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="n">buffer</span> <span class="p">[</span><span class="mi">20</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;You entered %s and %s. </span><span class="se">\n</span><span class="s">Do you agree ? (Y,n):</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">__isoc99_scanf</span><span class="p">(</span><span class="o">&amp;</span><span class="n">DAT_0010204b</span><span class="p">,</span><span class="n">buffer</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uVar1</span> <span class="o">=</span> <span class="nf">strcmp</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="s">&#34;Y&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">uVar1</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">iVar2</span> <span class="o">=</span> <span class="nf">strcmp</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="s">&#34;y&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">uVar1</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint</span><span class="p">)(</span><span class="n">iVar2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">uVar1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>The primary differences seems to be due to code-level changes rather than compiler flags differences. However, certain flags like <code>-fstack-protector</code>, <code>-O2</code>, or <code>-O3</code> could potentially influence buffer allocation, optimization, or even removal of unused code, but they are not directly responsible for the changes in logic and structure between the two versions. The second version appears to be a more robust implementation, checking both uppercase and lowercase <code>&quot;Y&quot;</code> inputs and correctly using the result of the comparison.</p>
+<h3 id="secured-makefile-configuration" class="relative group">Secured Makefile Configuration <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#secured-makefile-configuration" aria-label="Anchor">#</a></span></h3>
+<h3 id="1-legcflags-" class="relative group">1. <strong>LEGCFLAGS = <code>-fpie -D_FORTIFY_SOURCE=0 -fno-stack-protector</code></strong> <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1-legcflags-" aria-label="Anchor">#</a></span></h3>
+<ul>
+<li><strong><code>fpie</code></strong>: This flag enables the creation of position-independent executables (PIE). This improves security by enabling Address Space Layout Randomization (ASLR), making it harder for attackers to predict the memory layout of a program.</li>
+<li><strong><code>D_FORTIFY_SOURCE=0</code></strong>: This disables the &ldquo;fortify&rdquo; source feature, which provides additional compile-time checks to enhance security. By setting this to <code>0</code>, the program won&rsquo;t benefit from additional security features such as bounds checking for certain functions like <code>strcpy</code>, <code>memcpy</code>, etc.
+<ul>
+<li><strong>Recommendation</strong>: <strong>Remove this flag</strong> or set it to <code>2</code> (the highest level of fortification). Setting it to <code>0</code> reduces the security checks and can make your application more vulnerable to buffer overflow attacks.</li>
+</ul>
+</li>
+<li><strong><code>fno-stack-protector</code></strong>: This disables stack protection, which is typically used to detect and prevent buffer overflow attacks by placing &ldquo;canaries&rdquo; on the stack.
+<ul>
+<li><strong>Recommendation</strong>: <strong>Remove this flag</strong>. Disabling stack protection weakens security by making it easier for attackers to exploit stack buffer overflows. Keep <code>fstack-protector</code> or use <code>fstack-protector-strong</code> (which is a more secure version).</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-legldflags---pie--wl-zrelro--wl-zlazy--wl-znoexecstack" class="relative group">2. <strong>LEGLDFLAGS = -pie -Wl,-z,relro -Wl,-z,lazy -Wl,-z,noexecstack</strong> <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#2-legldflags---pie--wl-zrelro--wl-zlazy--wl-znoexecstack" aria-label="Anchor">#</a></span></h3>
+<ul>
+<li><strong><code>pie</code></strong>: This flag creates a position-independent executable, which works together with ASLR to randomize the memory layout, improving security.</li>
+<li><strong><code>Wl,-z,relro</code></strong>: This flag enables &ldquo;Read-Only Relocation&rdquo; (RELRO), which makes it harder for an attacker to modify function pointers after the program starts. It improves security by making certain sections of memory read-only after the relocation phase.</li>
+<li><strong><code>Wl,-z,lazy</code></strong>: This flag instructs the linker to delay symbol resolution until the symbol is actually used. This can make the program load more efficiently, but it could make it easier for an attacker to exploit any unresolved symbols before they are properly bound.
+<ul>
+<li><strong>Recommendation</strong>: <strong>Remove this flag</strong>. It introduces a potential risk because unresolved symbols could be hijacked before the program fully resolves them, weakening security.</li>
+</ul>
+</li>
+<li><strong><code>Wl,-z,noexecstack</code></strong>: This flag marks the stack as non-executable, which prevents code from being executed on the stack. This helps mitigate attacks like buffer overflows that try to execute shellcode on the stack.
+<ul>
+<li><strong>Recommendation</strong>: <strong>Keep this flag</strong>. It is an essential security feature that helps prevent stack-based code execution vulnerabilities.</li>
+</ul>
+</li>
+</ul>
+<h3 id="security-enhancements-summary" class="relative group">Security Enhancements Summary: <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#security-enhancements-summary" aria-label="Anchor">#</a></span></h3>
+<ul>
+<li>Remove <strong><code>D_FORTIFY_SOURCE=0</code></strong>: Reinstate compiler security checks for bounds checking and other safeguards by setting it to <code>2</code>.</li>
+<li>Remove <strong><code>fno-stack-protector</code></strong>: Keep stack protection enabled to defend against stack overflow attacks.</li>
+<li>Remove <strong><code>Wl,-z,lazy</code></strong>: Avoid lazy symbol resolution to reduce potential vulnerabilities related to unresolved symbols.</li>
+<li>Keep <strong><code>Wl,-z,noexecstack</code></strong> and <strong><code>pie</code></strong>: These flags enhance security by preventing stack execution and enabling position-independent executables.</li>
+</ul>
+<p>The proposed secured configuration:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-makefile" data-lang="makefile"><span class="line"><span class="cl"><span class="nv">LEGCFLAGS</span> <span class="o">=</span>-fpie -D_FORTIFY_SOURCE<span class="o">=</span><span class="m">0</span> -fno-stack-protector
+</span></span><span class="line"><span class="cl"><span class="nv">LEGLDFLAGS</span> <span class="o">=</span>-pie -Wl,-z,relro -Wl,-z,lazy -Wl,-z,noexecstack 
+</span></span></code></pre></div><ul>
+<li>When trying to build the make file with a secured configuration, we discovered that there will be a warning that stop the code from building, thus we added a bypass to that specific warning: <code>-Wno-unused-result</code> . Since we were merely trying to see how the mitigation in compilation level carry out, we ignore this code level error.</li>
+</ul>
+<p>
+
+
+
+  
+  
+  
+    <figure>
+      <img class="mx-auto my-0 rounded-md" src="image%204.png" alt="image.png" />
+      
+    </figure>
+  
+
+</p>
+<ul>
+<li>Successfully built the program after bypassing <code>-Wno-unused-result</code> error.</li>
+</ul>
+<p>
+
+
+
+  
+  
+  
+    <figure>
+      <img class="mx-auto my-0 rounded-md" src="20117f95-9bc1-466b-b9ee-8b638248a4c9.png" alt="image.png" />
+      
+    </figure>
+  
+
+</p>
+<ul>
+<li>Try to carry out the buffer over flow attack again but could see that the attack is detected and terminated.</li>
+</ul>
+<p>
+
+
+
+  
+  
+  
+    <figure>
+      <img class="mx-auto my-0 rounded-md" src="c89313f0-fcc2-43ff-a65f-083802bf3377.png" alt="image.png" />
+      
+    </figure>
+  
+
+</p>
+<h3 id="how-it-enhances-security" class="relative group">How It Enhances Security <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#how-it-enhances-security" aria-label="Anchor">#</a></span></h3>
+<ol>
+<li><strong>Memory Safety</strong>:
+<ul>
+<li>Prevents stack-based buffer overflows (<code>fstack-protector-strong</code>).</li>
+<li>Disallows execution of code on the stack (<code>z noexecstack</code>).</li>
+</ul>
+</li>
+<li><strong>Exploit Mitigation</strong>:
+<ul>
+<li>ASLR support makes memory addresses unpredictable (<code>fpie</code>, <code>pie</code>).</li>
+<li>RELRO ensures critical relocation structures are immutable (<code>Wl,-z,relro -Wl,-z,now</code>).</li>
+</ul>
+</li>
+<li><strong>Improved Code Quality</strong>:
+<ul>
+<li>Enforces secure coding standards and flags potential vulnerabilities during compilation (<code>Wall -Wextra -Werror</code>).</li>
+</ul>
+</li>
+<li><strong>Runtime Safety</strong>:
+<ul>
+<li>Uses trusted library paths and avoids unsafe or unverified libraries.</li>
+</ul>
+</li>
+</ol>
+<p>In order to prevent the buffer overflow and lack of user input validation vulnerabilities discovered, we patched the<code>validation_functions.c</code> source code as shown below</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;validation_functions.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">fnchck</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">check</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">b</span> <span class="o">==</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;Valid access.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">check</span> <span class="o">=</span> <span class="mh">0xf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">check</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">check</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">validate</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="c1">// Use malloc to dynamically allocate memory at runtime
+</span></span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">buffer</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;You entered %s and %s. </span><span class="se">\n</span><span class="s">Do you agree ? (Y,n):</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Use fgets to read the user input since it only writes upto the buffer size thus preventing buffer overflow
+</span></span></span><span class="line"><span class="cl">    <span class="nf">fgets</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">stdin</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Free the allocated memory
+</span></span></span><span class="line"><span class="cl">    <span class="nf">free</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Return 0 if buffer == &#34;Y&#34; or buffer == &#34;y&#34;
+</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">(</span><span class="nf">strcmp</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="s">&#34;Y&#34;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nf">strcmp</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="s">&#34;y&#34;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="how-to-patch-the-vulnerabilities-above" class="relative group">How to patch the vulnerabilities above <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#how-to-patch-the-vulnerabilities-above" aria-label="Anchor">#</a></span></h2>
+<p>The source code below is the patched code of <code>validation_functions.c</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;validation_functions.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">fnchck</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">check</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">b</span> <span class="o">==</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;Valid access.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">check</span> <span class="o">=</span> <span class="mh">0xf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">check</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">check</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">validate</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Use malloc to dynamically allocate memory at runtime
+</span></span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">buffer</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;You entered %s and %s. </span><span class="se">\n</span><span class="s">Do you agree ? (Y,n):</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Use fgets to read the user input since it only writes upto the buffer size thus preventing buffer overflow
+</span></span></span><span class="line"><span class="cl">    <span class="nf">fgets</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">stdin</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Free the allocated memory
+</span></span></span><span class="line"><span class="cl">    <span class="nf">free</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Return 0 if buffer == &#34;Y&#34; or buffer == &#34;y&#34;
+</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">(</span><span class="nf">strcmp</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="s">&#34;Y&#34;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nf">strcmp</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="s">&#34;y&#34;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>The code above does the following:</p>
+<ol>
+<li><code>char *buffer = (char *)malloc(20);</code> will dynamically assign memory to our buffer at run time. This allows memory to be allocated at random addresses
+when ASLR is active.</li>
+<li><code>fgets(buffer, 20, stdin)</code>. <code>fgets</code> is more secure compared to <code>scanf</code>.  The <code>fgets</code> function ensures that no more than 19 characters are read, preventing buffer overflow when saving the input to <code>buffer</code> and leaving space for the null terminator.</li>
+<li><code>return (strcmp(buffer, &quot;Y&quot;) == 0) || (strcmp(buffer, &quot;y&quot;) == 0)</code>. The initial return function had two issues. First, it used the &amp;&amp; comparator, which meant that if the user inputs &ldquo;Y&rdquo;, the comparison strcmp(buffer, &ldquo;y&rdquo;) would always evaluate to 1, causing the return to fail. This bug was fixed by changing the comparator to ||. Second, we didn&rsquo;t evaluate the return value of strcmp(buffer, &ldquo;Y&rdquo;), so we introduced the expected result into the evaluation.</li>
+</ol>
+<p>The source code below in <code>validation_functions.c</code> is is vulnerable because we have the <code>fnR</code> function that give the users system root access on the terminal which is a priviledge escalation. The solution to this problem would be to either delete the code as its unused or excempt it from the executabe file during compilation.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;action_functions.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">fnr</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;The door is locked.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">fngrt</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;Opened.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;No root.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// To remove the vulnerability of the unused fnR function being in the executable, we will use the command Make sure it&#39;s not in the compiled code using the flag -DIGNORE_FUNCTION
+</span></span></span><span class="line"><span class="cl"><span class="cp">#ifndef IGNORE_FUNCTION
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">fnR</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;Opened.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;Be careful, you are ROOT !</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="nf">system</span><span class="p">(</span><span class="s">&#34;/usr/bin/env PS1=</span><span class="se">\&#34;</span><span class="s">SUPPOSED ROOT SHELL &gt; </span><span class="se">\&#34;</span><span class="s"> python3 -c &#39;import pty; pty.spawn([</span><span class="se">\&#34;</span><span class="s">/bin/bash</span><span class="se">\&#34;</span><span class="s">, </span><span class="se">\&#34;</span><span class="s">--norc</span><span class="se">\&#34;</span><span class="s">])&#39;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">exit</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span></code></pre></div><p>The code snippet above shows the solution which adds the <code>ifdef IGNORE_FUNCTION</code> where <code>IGNORE_FUNCTION</code> is the flag we will pass to the compiler using the <code>-D</code> flag. This is the complete compilation command to use <code>-DIGNORE_FUNCTION</code></p>
+<p>In the <code>main.c</code> function, the <code>atoi()</code> function, which converts user input to an integer, has been deprecated. It also does not check for errors before converting the string to an integer. In the <code>door-locker</code> program, if the user inputs two different strings as input, the door would open. This vulnerability exists because we are using <code>atoi()</code>. To fix this vulnerability, we replaced the <code>atoi()</code> function with the <code>strtol()</code> function, which will throw an error if the input isn&rsquo;t a valid number, as shown in the patched code below.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;action_functions.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;validation_functions.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">check</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">in0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">in1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">check</span> <span class="o">=</span> <span class="nf">validate</span><span class="p">(</span><span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">check</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">Checking values&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// Use strtol with error checking since atoi is deprecatted
+</span></span></span><span class="line"><span class="cl">            <span class="n">in0</span>   <span class="o">=</span> <span class="nf">strol</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">in1</span>   <span class="o">=</span> <span class="nf">strol</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">check</span> <span class="o">=</span> <span class="nf">fnchck</span><span class="p">(</span><span class="n">in1</span><span class="p">,</span> <span class="n">in0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">check</span> <span class="o">==</span> <span class="mh">0xf</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nf">fngrt</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nf">fnr</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">fnr</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">check</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;Usage : client &lt;chiffre0&gt; &lt;chiffre1&gt;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">check</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">check</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="how-to-avoid-these-mistakes-in-future" class="relative group">How to avoid these mistakes in future. <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#how-to-avoid-these-mistakes-in-future" aria-label="Anchor">#</a></span></h2>
+<p>The vulnerabilities identified and addressed in the source code highlight some of the security concerns we can introduce to our code. Below is a detailed plan of future the software development process to mitigate such mistakes before the code is released:</p>
+<p><strong>Use Secure Coding Practices</strong></p>
+<ul>
+<li>Always validate and sanitize user input to prevent unexpected behavior.</li>
+<li>Use safer alternatives like fgets instead of gets or scanf to avoid buffer overflows.</li>
+<li>Dynamically allocate memory using <code>malloc</code> only when necessary.</li>
+<li>Always check for successful allocation using malloc or calloc and free the memory after use to prevent memory leaks in the code.</li>
+</ul>
+<p><strong>Ensure Code Review and Auditing</strong></p>
+<ul>
+<li>Peer review all new code for adherence to security guidelines.</li>
+<li>Use static analysis tools (e.g., SonarQube, Coverity) to identify vulnerabilities such as buffer overflows or use of unsafe functions.</li>
+<li>Periodically review older code to find unused functions, insecure patterns, and deprecated APIs, functions and dependencies and update them to the recommended functions.</li>
+<li>Remove unused functions or ensure they are excluded from compilation (e.g., through macros using <code>ifdef</code>).</li>
+</ul>
+<p><strong>Enable Compiler Flags for Security</strong></p>
+<ul>
+<li>Use flags like <code>-D_FORTIFY_SOURCE=2</code> to add runtime checks for common string format vulnerabilities.</li>
+<li>Employ <code>-DIGNORE_FUNCTION</code> to exclude unused functions from the build.</li>
+<li>Use <code>-fstack-protector-all</code> flag to enables stack protection, including shadow
+stacks, for all functions.</li>
+</ul>
+<p><strong>Use Linker Flags</strong></p>
+<ul>
+<li>To ensure the stack is non-executable (a key part of preventing exploit execution), you should also link with the <code>-z noexecstack</code> flag to mark the stack as non-executable using <code>gcc -o my_program my_program.c -fstack-protector-all -fcf-protection - D</code></li>
+</ul>
+<h1 id="conclusion" class="relative group">Conclusion <span class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#conclusion" aria-label="Anchor">#</a></span></h1>
+<p>This lab focused on enhancing the security of a C program by identifying and mitigating potential vulnerabilities using static code analysis and compiler/linker options. Through the use of <strong>cppcheck</strong>, we identified issues such as unsafe <code>scanf()</code> usage and variable scope problems. Additionally, we explored vulnerable compiler and linker options that could make the program susceptible to attacks like buffer overflows and memory corruption.</p>
+<p>By applying secure coding practices and adjusting compilation settings, such as enabling stack protection, disabling executable stacks, and using modern C standards, we significantly improved the program’s security posture. We also addressed the buffer overflow vulnerability by replacing unsafe functions with safer alternatives like <code>fgets()</code> and dynamically allocating memory with proper bounds checks.</p>
+<p>These enhancements not only mitigate common attack vectors but also enforce better coding standards and runtime safety, making the program more resilient to exploitation. Through this process, we reinforced the importance of secure programming practices, both in code and in the compilation process, to protect against malicious exploits.</p>
+<p>Additionally, we found that the differences between the compared binaries of the two programs did not seem to be related to how the program was compiled. This led us to think that the source code might have been altered in some way, and may not have been identical to start with. However, it is also reasonable to consider that Ghidra’s interpretation of a binary file could vary, potentially influencing how the differences were observed.</p>
+<p>We also had the opportunity to explore different compiler options in depth, particularly by utilizing the <strong>checksec</strong> function (from the manual). This provided valuable insights into various security features enabled or disabled by the compiler and further emphasized the importance of thoroughly reading the manual to understand the implications of different compiler flags. Understanding these options allows developers to make informed decisions about which security measures to apply during the compilation process, enhancing the overall security of the program.</p>
+
+      </div>
+    </section>
+    <footer class="pt-8 max-w-prose print:hidden">
+      
+
+      
+
+      
+  
+    
+    
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="group flex" href="/posts/reverse_engineering/">
+              <span
+                class="mr-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+              <span
+                class="ml-2 text-neutral-700 transition-transform group-hover:translate-x-[2px] group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Reverse Engineering</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2024-12-01 09:36:41.827 &#43;0000 UTC">December 1, 2024</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/rails-memoryfootprint/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Optimizing your Ruby on Rails app for improved performance and reduced memory footprint</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2025-01-24 09:00:41.827 &#43;0000 UTC">January 24, 2025</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ml-2 text-neutral-700 transition-transform group-hover:translate-x-[2px] group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span
+                class="mr-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+        
+          <div
+            class="pointer-events-none absolute top-[100vh] bottom-0 w-12 ltr:right-0 rtl:left-0"
+          >
+            <a
+              href="#the-top"
+              class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+              aria-label="Scroll to top"
+              title="Scroll to top"
+            >
+              &uarr;
+            </a>
+          </div>
+        
+      </main><footer class="py-10 print:hidden">
+  
+    <nav class="pb-4 text-base font-medium text-neutral-500 dark:text-neutral-400">
+      <ul class="flex flex-col list-none sm:flex-row">
+        
+          <li
+            class="mb-1 group ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+          >
+            
+              <a
+                href="https://github.com/Florence-Njeri"
+                title=""
+                target="_blank"
+                >
+                  <span
+                    class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                  >
+                    
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+
+  </span>
+
+
+                  </span>
+                </a
+              >
+            
+          </li>
+        
+          <li
+            class="mb-1 group ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0"
+          >
+            
+              <a
+                href="https://www.linkedin.com/in/florencenjeri/"
+                title=""
+                target="_blank"
+                >
+                  <span
+                    class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                  >
+                    
+
+  <span class="relative inline-block align-text-bottom icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+
+  </span>
+
+
+                  </span>
+                </a
+              >
+            
+          </li>
+        
+      </ul>
+    </nav>
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+        
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2026
+            Florence Njeri
+        </p>
+      
+      
+    </div>
+    
+  </div>
+  
+</footer>
+    </div>
+  </body>
+</html>

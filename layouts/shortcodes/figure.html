@@ -1,0 +1,17 @@
+{{ $src := .Get "src" }}
+{{ $alt := .Get "alt" | default (.Get "caption") | default "" }}
+{{ $caption := .Get "caption" }}
+{{ $class := .Get "class" | default "rounded-md" }}
+
+<figure{{ with .Get "id" }} id="{{ . }}"{{ end }} class="my-6{{ with .Get "figureClass" }} {{ . }}{{ end }}">
+  <img
+    src="{{ $src | safeURL }}"
+    alt="{{ $alt }}"
+    class="{{ $class }}"
+    {{ with .Get "width" }}width="{{ . }}"{{ end }}
+    {{ with .Get "height" }}height="{{ . }}"{{ end }}
+  />
+  {{ with $caption }}
+    <figcaption class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">{{ . | markdownify }}</figcaption>
+  {{ end }}
+</figure>
