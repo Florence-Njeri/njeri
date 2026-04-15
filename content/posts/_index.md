@@ -1,5 +1,5 @@
 ---
 title: "Posts"
-description: "Software security & AI trustworhiness and safety"
+description: "Cybersecurity stuff and things :)°°°"
 draft: false
 ---
