@@ -1,157 +1,129 @@
 {{ define "main" }}
 <article class="post-archive">
-  <header class="post-archive-header mb-12 lg:mb-16">
-    {{ if .Params.showBreadcrumbs | default (.Site.Params.list.showBreadcrumbs | default false) }}
-      {{ partial "breadcrumbs.html" . }}
-    {{ end }}
-    <h1 class="mt-0 text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral sm:text-5xl">
-      {{ .Title | emojify }}
-    </h1>
-    {{ with .Params.description }}
-      <p class="mt-4 max-w-3xl text-lg leading-8 text-neutral-600 dark:text-neutral-400">{{ . | emojify }}</p>
-    {{ end }}
-  </header>
+  <div class="post-archive-surface">
+    <header class="post-archive-header">
+      {{ if .Params.showBreadcrumbs | default (.Site.Params.list.showBreadcrumbs | default false) }}
+        {{ partial "breadcrumbs.html" . }}
+      {{ end }}
+      <h1 class="post-archive-title">{{ .Title | emojify }}</h1>
+      {{ with .Params.description }}
+        <p class="post-archive-description">{{ . | emojify }}</p>
+      {{ end }}
+    </header>
 
-  {{ .Content }}
+    {{ with .Content }}
+      <div class="post-archive-copy">{{ . }}</div>
+    {{ end }}
 
-  {{ $pages := .Pages }}
-  {{ if .Site.Params.list.groupByYear | default true }}
-    {{ range $pages.GroupByPublishDate "2006" }}
-      <section class="mb-14 lg:mb-16">
-        <div class="mb-6 flex items-center gap-4 lg:mb-8">
-          <span class="h-px flex-1 bg-gradient-to-r from-neutral-200 to-transparent dark:from-neutral-700"></span>
-          <h2 class="text-2xl font-bold tracking-tight text-neutral-700 dark:text-neutral-200">{{ .Key }}</h2>
-          <span class="h-px flex-1 bg-gradient-to-l from-neutral-200 to-transparent dark:from-neutral-700"></span>
-        </div>
-        <div class="grid gap-6 md:grid-cols-2 xl:gap-8">
-          {{ range .Pages }}
-            {{ $thumb := .Resources.GetMatch "thumb.*" }}
-            {{ if not $thumb }}{{ $thumb = .Resources.GetMatch "cover.*" }}{{ end }}
-            {{ $rawExcerpt := .Description | htmlUnescape | plainify }}
-            {{ if and (not $rawExcerpt) .Params.summary }}{{ $rawExcerpt = .Params.summary | htmlUnescape | plainify }}{{ end }}
-            {{ if and (not $rawExcerpt) .Summary }}{{ $rawExcerpt = .Summary | htmlUnescape | plainify }}{{ end }}
-            {{ $rawExcerpt = replaceRE "\\s+" " " $rawExcerpt }}
-            {{ $rawExcerpt = replace $rawExcerpt (.Title | plainify) "" 1 }}
-            {{ $rawExcerpt = replace $rawExcerpt "#" "" }}
-            {{ $excerpt := $rawExcerpt | truncate 240 }}
-            <article class="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-neutral-200/80 bg-white shadow-sm shadow-neutral-200/60 transition duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-neutral-900/10 dark:border-neutral-700/80 dark:bg-neutral-900 dark:shadow-black/10">
-              <div class="flex h-full flex-col">
+    {{ $pages := .Pages }}
+    {{ if .Site.Params.list.groupByYear | default true }}
+      {{ range $pages.GroupByPublishDate "2006" }}
+        <section class="post-year-group">
+          <h2 class="post-year-heading">{{ .Key }}</h2>
+          <div class="post-archive-grid">
+            {{ range .Pages }}
+              {{ $thumb := .Resources.GetMatch "thumb.*" }}
+              {{ if not $thumb }}{{ $thumb = .Resources.GetMatch "cover.*" }}{{ end }}
+              {{ $rawExcerpt := .Description | htmlUnescape | plainify }}
+              {{ if and (not $rawExcerpt) .Params.summary }}{{ $rawExcerpt = .Params.summary | htmlUnescape | plainify }}{{ end }}
+              {{ if and (not $rawExcerpt) .Summary }}{{ $rawExcerpt = .Summary | htmlUnescape | plainify }}{{ end }}
+              {{ $rawExcerpt = replaceRE "\\s+" " " $rawExcerpt }}
+              {{ $rawExcerpt = replace $rawExcerpt (.Title | plainify) "" 1 }}
+              {{ $rawExcerpt = replace $rawExcerpt "#" "" }}
+              {{ $excerpt := $rawExcerpt | truncate 240 }}
+              <article class="post-card">
                 {{ if $thumb }}
                   {{ $image := $thumb.Fill "760x460 smart" }}
-                  <a href="{{ .RelPermalink }}" class="block overflow-hidden bg-neutral-100 dark:bg-neutral-800">
-                    <img src="{{ $image.RelPermalink }}" alt="{{ .Title | plainify }}" class="h-56 w-full object-cover transition duration-500 group-hover:scale-[1.04] sm:h-64" />
+                  <a href="{{ .RelPermalink }}" class="post-card-image-link">
+                    <img src="{{ $image.RelPermalink }}" alt="{{ .Title | plainify }}" class="post-card-image" />
+                  </a>
+                {{ else }}
+                  <a href="{{ .RelPermalink }}" class="post-card-image-link post-card-image-placeholder">
+                    <span class="post-card-placeholder-kicker">Research note</span>
+                    <span class="post-card-placeholder-text">{{ .Title | emojify }}</span>
                   </a>
                 {{ end }}
-                <div class="flex min-w-0 flex-1 flex-col justify-between gap-6 p-6 sm:p-8">
-                  <div class="space-y-5">
-                    <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-medium text-neutral-500 dark:text-neutral-400">
-                      <time class="text-sm font-semibold text-neutral-400 dark:text-neutral-500">
-                        {{ .PublishDate | time.Format ":date_long" }}
-                      </time>
-                      {{ with .ReadingTime }}
-                        <span class="hidden h-1 w-1 rounded-full bg-neutral-300 dark:bg-neutral-600 sm:block"></span>
-                        <span>{{ . }} min read</span>
-                      {{ end }}
+                <div class="post-card-body">
+                  <div class="post-card-copy">
+                    <div class="post-card-meta">
+                      <time>{{ .PublishDate | time.Format ":date_long" }}</time>
+                      {{ with .ReadingTime }}<span>{{ . }} min read</span>{{ end }}
                     </div>
-
-                    <h3 class="max-w-[18ch] text-3xl font-semibold leading-tight tracking-tight text-neutral-900 transition-colors group-hover:text-primary-600 dark:text-neutral-50 dark:group-hover:text-primary-400 sm:text-[2rem]">
+                    <h3 class="post-card-title">
                       <a href="{{ .RelPermalink }}">{{ .Title | emojify }}</a>
                     </h3>
-
                     {{ with $excerpt }}
-                      <p class="text-base leading-8 text-neutral-600 dark:text-neutral-300">
-                        {{ . }}
-                      </p>
+                      <p class="post-card-excerpt">{{ . }}</p>
                     {{ end }}
                   </div>
-
-                  <div class="flex flex-col gap-4 pt-2">
+                  <div class="post-card-footer">
                     {{ with .Params.tags }}
-                      <div class="flex flex-wrap gap-2 text-xs font-medium">
+                      <div class="post-card-tags">
                         {{ range first 3 . }}
-                          <a href="{{ (printf "/tags/%s/" (urlize .)) | relLangURL }}" class="inline-flex items-center rounded-full bg-neutral-100 px-3 py-1 text-neutral-600 transition hover:bg-primary-50 hover:text-primary-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:hover:text-primary-300">
-                            {{ . }}
-                          </a>
+                          <a href="{{ (printf "/tags/%s/" (urlize .)) | relLangURL }}" class="post-card-tag">{{ . }}</a>
                         {{ end }}
                       </div>
                     {{ end }}
-
-                    <a href="{{ .RelPermalink }}" class="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 transition group-hover:gap-3 dark:text-primary-400">
-                      Read article
-                      <span aria-hidden="true">&rarr;</span>
-                    </a>
+                    <a href="{{ .RelPermalink }}" class="post-card-link">Read article</a>
                   </div>
                 </div>
-              </div>
-            </article>
-          {{ end }}
-        </div>
-      </section>
-    {{ end }}
-  {{ else }}
-    <div class="grid gap-6 md:grid-cols-2 xl:gap-8">
-      {{ range $pages }}
-        {{ $thumb := .Resources.GetMatch "thumb.*" }}
-        {{ if not $thumb }}{{ $thumb = .Resources.GetMatch "cover.*" }}{{ end }}
-        {{ $rawExcerpt := .Description | htmlUnescape | plainify }}
-        {{ if and (not $rawExcerpt) .Params.summary }}{{ $rawExcerpt = .Params.summary | htmlUnescape | plainify }}{{ end }}
-        {{ if and (not $rawExcerpt) .Summary }}{{ $rawExcerpt = .Summary | htmlUnescape | plainify }}{{ end }}
-        {{ $rawExcerpt = replaceRE "\\s+" " " $rawExcerpt }}
-        {{ $rawExcerpt = replace $rawExcerpt (.Title | plainify) "" 1 }}
-        {{ $rawExcerpt = replace $rawExcerpt "#" "" }}
-        {{ $excerpt := $rawExcerpt | truncate 240 }}
-        <article class="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-neutral-200/80 bg-white shadow-sm shadow-neutral-200/60 transition duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-neutral-900/10 dark:border-neutral-700/80 dark:bg-neutral-900 dark:shadow-black/10">
-          <div class="flex h-full flex-col">
+              </article>
+            {{ end }}
+          </div>
+        </section>
+      {{ end }}
+    {{ else }}
+      <div class="post-archive-grid">
+        {{ range $pages }}
+          {{ $thumb := .Resources.GetMatch "thumb.*" }}
+          {{ if not $thumb }}{{ $thumb = .Resources.GetMatch "cover.*" }}{{ end }}
+          {{ $rawExcerpt := .Description | htmlUnescape | plainify }}
+          {{ if and (not $rawExcerpt) .Params.summary }}{{ $rawExcerpt = .Params.summary | htmlUnescape | plainify }}{{ end }}
+          {{ if and (not $rawExcerpt) .Summary }}{{ $rawExcerpt = .Summary | htmlUnescape | plainify }}{{ end }}
+          {{ $rawExcerpt = replaceRE "\\s+" " " $rawExcerpt }}
+          {{ $rawExcerpt = replace $rawExcerpt (.Title | plainify) "" 1 }}
+          {{ $rawExcerpt = replace $rawExcerpt "#" "" }}
+          {{ $excerpt := $rawExcerpt | truncate 240 }}
+          <article class="post-card">
             {{ if $thumb }}
               {{ $image := $thumb.Fill "760x460 smart" }}
-              <a href="{{ .RelPermalink }}" class="block overflow-hidden bg-neutral-100 dark:bg-neutral-800">
-                <img src="{{ $image.RelPermalink }}" alt="{{ .Title | plainify }}" class="h-56 w-full object-cover transition duration-500 group-hover:scale-[1.04] sm:h-64" />
+              <a href="{{ .RelPermalink }}" class="post-card-image-link">
+                <img src="{{ $image.RelPermalink }}" alt="{{ .Title | plainify }}" class="post-card-image" />
+              </a>
+            {{ else }}
+              <a href="{{ .RelPermalink }}" class="post-card-image-link post-card-image-placeholder">
+                <span class="post-card-placeholder-kicker">Research note</span>
+                <span class="post-card-placeholder-text">{{ .Title | emojify }}</span>
               </a>
             {{ end }}
-            <div class="flex min-w-0 flex-1 flex-col justify-between gap-6 p-6 sm:p-8">
-              <div class="space-y-5">
-                <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-medium text-neutral-500 dark:text-neutral-400">
-                  <time class="text-sm font-semibold text-neutral-400 dark:text-neutral-500">
-                    {{ .PublishDate | time.Format ":date_long" }}
-                  </time>
-                  {{ with .ReadingTime }}
-                    <span class="hidden h-1 w-1 rounded-full bg-neutral-300 dark:bg-neutral-600 sm:block"></span>
-                    <span>{{ . }} min read</span>
-                  {{ end }}
+            <div class="post-card-body">
+              <div class="post-card-copy">
+                <div class="post-card-meta">
+                  <time>{{ .PublishDate | time.Format ":date_long" }}</time>
+                  {{ with .ReadingTime }}<span>{{ . }} min read</span>{{ end }}
                 </div>
-
-                <h3 class="max-w-[18ch] text-3xl font-semibold leading-tight tracking-tight text-neutral-900 transition-colors group-hover:text-primary-600 dark:text-neutral-50 dark:group-hover:text-primary-400 sm:text-[2rem]">
+                <h3 class="post-card-title">
                   <a href="{{ .RelPermalink }}">{{ .Title | emojify }}</a>
                 </h3>
-
                 {{ with $excerpt }}
-                  <p class="text-base leading-8 text-neutral-600 dark:text-neutral-300">
-                    {{ . }}
-                  </p>
+                  <p class="post-card-excerpt">{{ . }}</p>
                 {{ end }}
               </div>
-
-              <div class="flex flex-col gap-4 pt-2">
+              <div class="post-card-footer">
                 {{ with .Params.tags }}
-                  <div class="flex flex-wrap gap-2 text-xs font-medium">
+                  <div class="post-card-tags">
                     {{ range first 3 . }}
-                      <a href="{{ (printf "/tags/%s/" (urlize .)) | relLangURL }}" class="inline-flex items-center rounded-full bg-neutral-100 px-3 py-1 text-neutral-600 transition hover:bg-primary-50 hover:text-primary-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:hover:text-primary-300">
-                        {{ . }}
-                      </a>
+                      <a href="{{ (printf "/tags/%s/" (urlize .)) | relLangURL }}" class="post-card-tag">{{ . }}</a>
                     {{ end }}
                   </div>
                 {{ end }}
-
-                <a href="{{ .RelPermalink }}" class="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 transition group-hover:gap-3 dark:text-primary-400">
-                  Read article
-                  <span aria-hidden="true">&rarr;</span>
-                </a>
+                <a href="{{ .RelPermalink }}" class="post-card-link">Read article</a>
               </div>
             </div>
-          </div>
-        </article>
-      {{ end }}
-    </div>
-  {{ end }}
+          </article>
+        {{ end }}
+      </div>
+    {{ end }}
+  </div>
 </article>
 {{ end }}
