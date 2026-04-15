@@ -1,14 +1,14 @@
 {{ define "main" }}
-<article>
-  <header class="max-w-prose mb-12">
+<article class="post-archive">
+  <header class="post-archive-header mb-12 lg:mb-16">
     {{ if .Params.showBreadcrumbs | default (.Site.Params.list.showBreadcrumbs | default false) }}
       {{ partial "breadcrumbs.html" . }}
     {{ end }}
-    <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+    <h1 class="mt-0 text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral sm:text-5xl">
       {{ .Title | emojify }}
     </h1>
     {{ with .Params.description }}
-      <p class="mt-4 text-xl text-neutral-500 dark:text-neutral-400">{{ . | emojify }}</p>
+      <p class="mt-4 max-w-3xl text-lg leading-8 text-neutral-600 dark:text-neutral-400">{{ . | emojify }}</p>
     {{ end }}
   </header>
 
@@ -17,101 +17,140 @@
   {{ $pages := .Pages }}
   {{ if .Site.Params.list.groupByYear | default true }}
     {{ range $pages.GroupByPublishDate "2006" }}
-      <section class="mb-12">
-        <h2 class="text-2xl font-bold text-neutral-700 dark:text-neutral-300 mb-6">{{ .Key }}</h2>
-        <div class="space-y-8">
+      <section class="mb-14 lg:mb-16">
+        <div class="mb-6 flex items-center gap-4 lg:mb-8">
+          <span class="h-px flex-1 bg-gradient-to-r from-neutral-200 to-transparent dark:from-neutral-700"></span>
+          <h2 class="text-2xl font-bold tracking-tight text-neutral-700 dark:text-neutral-200">{{ .Key }}</h2>
+          <span class="h-px flex-1 bg-gradient-to-l from-neutral-200 to-transparent dark:from-neutral-700"></span>
+        </div>
+        <div class="space-y-6 lg:space-y-8">
           {{ range .Pages }}
+            {{ $page := . }}
             {{ $thumb := .Resources.GetMatch "thumb.*" }}
             {{ if not $thumb }}{{ $thumb = .Resources.GetMatch "cover.*" }}{{ end }}
-            <div class="pb-8 border-b border-neutral-200 dark:border-neutral-700">
-              <div class="flex flex-col gap-4 md:flex-row md:items-start">
-                {{ with $thumb }}
-                  {{ $image := .Fill "360x200 smart" }}
-                  <a href="{{ $.RelPermalink }}" class="block overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 md:w-64 md:flex-none">
-                    <img src="{{ $image.RelPermalink }}" alt="{{ $.Title | plainify }}" class="h-44 w-full object-cover transition duration-300 hover:scale-[1.02]" />
+            {{ $rawExcerpt := .Description | htmlUnescape | plainify }}
+            {{ if and (not $rawExcerpt) .Params.summary }}{{ $rawExcerpt = .Params.summary | htmlUnescape | plainify }}{{ end }}
+            {{ if and (not $rawExcerpt) .Summary }}{{ $rawExcerpt = .Summary | htmlUnescape | plainify }}{{ end }}
+            {{ $rawExcerpt = replaceRE "\\s+" " " $rawExcerpt }}
+            {{ $rawExcerpt = replace $rawExcerpt (.Title | plainify) "" 1 }}
+            {{ $rawExcerpt = replace $rawExcerpt "#" "" }}
+            {{ $excerpt := $rawExcerpt | truncate 220 }}
+            <article class="group overflow-hidden rounded-3xl border border-neutral-200/80 bg-white/90 shadow-sm shadow-neutral-200/50 transition duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-neutral-900/5 dark:border-neutral-700/80 dark:bg-neutral-900/70 dark:shadow-black/10">
+              <div class="grid gap-0 md:grid-cols-[minmax(0,19rem)_1fr]">
+                {{ if $thumb }}
+                  {{ $image := $thumb.Fill "640x420 smart" }}
+                  <a href="{{ .RelPermalink }}" class="block h-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+                    <img src="{{ $image.RelPermalink }}" alt="{{ .Title | plainify }}" class="h-64 w-full object-cover transition duration-500 group-hover:scale-[1.03] md:h-full" />
                   </a>
                 {{ end }}
-                <div class="flex min-w-0 flex-1 flex-col space-y-3">
-                  <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                    <h3 class="text-xl font-semibold text-primary-600 dark:text-primary-400 hover:underline sm:flex-1">
-                      <a href="{{ .RelPermalink }}">{{ .Title | emojify }}</a>
-                    </h3>
-                    <time class="text-sm text-neutral-500 dark:text-neutral-400 whitespace-nowrap">
-                      {{ .PublishDate | time.Format ":date_long" }}
-                    </time>
-                  </div>
-
-                  {{ if .Params.summary }}
-                    <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                      {{ .Summary | truncate 300 }}
-                    </p>
-                  {{ else if .Summary }}
-                    <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                      {{ .Summary }}
-                    </p>
-                  {{ end }}
-
-                  {{ with .Params.tags }}
-                    <div class="flex flex-wrap gap-2 mt-1 text-xs">
-                      {{ range . }}
-                        <a href="{{ (printf "/tags/%s/" (urlize .)) | relLangURL }}" class="inline-flex items-center px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
-                          {{ . }}
-                        </a>
+                <div class="flex min-w-0 flex-col justify-between gap-5 p-6 sm:p-7">
+                  <div class="space-y-4">
+                    <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-medium text-neutral-500 dark:text-neutral-400">
+                      <time class="uppercase tracking-[0.18em] text-xs text-neutral-500/90 dark:text-neutral-400/90">
+                        {{ .PublishDate | time.Format ":date_long" }}
+                      </time>
+                      {{ with .ReadingTime }}
+                        <span class="hidden h-1 w-1 rounded-full bg-neutral-300 dark:bg-neutral-600 sm:block"></span>
+                        <span>{{ . }} min read</span>
                       {{ end }}
                     </div>
-                  {{ end }}
+
+                    <h3 class="text-2xl font-semibold tracking-tight text-neutral-900 transition-colors group-hover:text-primary-600 dark:text-neutral-50 dark:group-hover:text-primary-400 sm:text-[1.9rem]">
+                      <a href="{{ .RelPermalink }}">{{ .Title | emojify }}</a>
+                    </h3>
+
+                    {{ with $excerpt }}
+                      <p class="text-base leading-8 text-neutral-600 dark:text-neutral-300">
+                        {{ . }}
+                      </p>
+                    {{ end }}
+                  </div>
+
+                  <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                    {{ with .Params.tags }}
+                      <div class="flex flex-wrap gap-2 text-xs font-medium">
+                        {{ range first 4 . }}
+                          <a href="{{ (printf "/tags/%s/" (urlize .)) | relLangURL }}" class="inline-flex items-center rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-neutral-600 transition hover:border-primary-200 hover:text-primary-700 dark:border-neutral-700 dark:bg-neutral-800/80 dark:text-neutral-300 dark:hover:border-primary-700 dark:hover:text-primary-300">
+                            {{ . }}
+                          </a>
+                        {{ end }}
+                      </div>
+                    {{ end }}
+
+                    <a href="{{ .RelPermalink }}" class="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 transition group-hover:gap-3 dark:text-primary-400">
+                      Read article
+                      <span aria-hidden="true">&rarr;</span>
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
+            </article>
           {{ end }}
         </div>
       </section>
     {{ end }}
   {{ else }}
-    <div class="space-y-8">
+    <div class="space-y-6 lg:space-y-8">
       {{ range $pages }}
         {{ $thumb := .Resources.GetMatch "thumb.*" }}
         {{ if not $thumb }}{{ $thumb = .Resources.GetMatch "cover.*" }}{{ end }}
-        <div class="pb-8 border-b border-neutral-200 dark:border-neutral-700">
-          <div class="flex flex-col gap-4 md:flex-row md:items-start">
-            {{ with $thumb }}
-              {{ $image := .Fill "360x200 smart" }}
-              <a href="{{ $.RelPermalink }}" class="block overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 md:w-64 md:flex-none">
-                <img src="{{ $image.RelPermalink }}" alt="{{ $.Title | plainify }}" class="h-44 w-full object-cover transition duration-300 hover:scale-[1.02]" />
+        {{ $rawExcerpt := .Description | htmlUnescape | plainify }}
+        {{ if and (not $rawExcerpt) .Params.summary }}{{ $rawExcerpt = .Params.summary | htmlUnescape | plainify }}{{ end }}
+        {{ if and (not $rawExcerpt) .Summary }}{{ $rawExcerpt = .Summary | htmlUnescape | plainify }}{{ end }}
+        {{ $rawExcerpt = replaceRE "\\s+" " " $rawExcerpt }}
+        {{ $rawExcerpt = replace $rawExcerpt (.Title | plainify) "" 1 }}
+        {{ $rawExcerpt = replace $rawExcerpt "#" "" }}
+        {{ $excerpt := $rawExcerpt | truncate 220 }}
+        <article class="group overflow-hidden rounded-3xl border border-neutral-200/80 bg-white/90 shadow-sm shadow-neutral-200/50 transition duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-neutral-900/5 dark:border-neutral-700/80 dark:bg-neutral-900/70 dark:shadow-black/10">
+          <div class="grid gap-0 md:grid-cols-[minmax(0,19rem)_1fr]">
+            {{ if $thumb }}
+              {{ $image := $thumb.Fill "640x420 smart" }}
+              <a href="{{ .RelPermalink }}" class="block h-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+                <img src="{{ $image.RelPermalink }}" alt="{{ .Title | plainify }}" class="h-64 w-full object-cover transition duration-500 group-hover:scale-[1.03] md:h-full" />
               </a>
             {{ end }}
-            <div class="flex min-w-0 flex-1 flex-col space-y-3">
-              <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                <h3 class="text-xl font-semibold text-primary-600 dark:text-primary-400 hover:underline sm:flex-1">
-                  <a href="{{ .RelPermalink }}">{{ .Title | emojify }}</a>
-                </h3>
-                <time class="text-sm text-neutral-500 dark:text-neutral-400 whitespace-nowrap">
-                  {{ .PublishDate | time.Format ":date_long" }}
-                </time>
-              </div>
-
-              {{ if .Params.summary }}
-                <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                  {{ .Summary | truncate 300 }}
-                </p>
-              {{ else if .Summary }}
-                <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                  {{ .Summary }}
-                </p>
-              {{ end }}
-
-              {{ with .Params.tags }}
-                <div class="flex flex-wrap gap-2 mt-1 text-xs">
-                  {{ range . }}
-                    <a href="{{ (printf "/tags/%s/" (urlize .)) | relLangURL }}" class="inline-flex items-center px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
-                      {{ . }}
-                    </a>
+            <div class="flex min-w-0 flex-col justify-between gap-5 p-6 sm:p-7">
+              <div class="space-y-4">
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-medium text-neutral-500 dark:text-neutral-400">
+                  <time class="uppercase tracking-[0.18em] text-xs text-neutral-500/90 dark:text-neutral-400/90">
+                    {{ .PublishDate | time.Format ":date_long" }}
+                  </time>
+                  {{ with .ReadingTime }}
+                    <span class="hidden h-1 w-1 rounded-full bg-neutral-300 dark:bg-neutral-600 sm:block"></span>
+                    <span>{{ . }} min read</span>
                   {{ end }}
                 </div>
-              {{ end }}
+
+                <h3 class="text-2xl font-semibold tracking-tight text-neutral-900 transition-colors group-hover:text-primary-600 dark:text-neutral-50 dark:group-hover:text-primary-400 sm:text-[1.9rem]">
+                  <a href="{{ .RelPermalink }}">{{ .Title | emojify }}</a>
+                </h3>
+
+                {{ with $excerpt }}
+                  <p class="text-base leading-8 text-neutral-600 dark:text-neutral-300">
+                    {{ . }}
+                  </p>
+                {{ end }}
+              </div>
+
+              <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                {{ with .Params.tags }}
+                  <div class="flex flex-wrap gap-2 text-xs font-medium">
+                    {{ range first 4 . }}
+                      <a href="{{ (printf "/tags/%s/" (urlize .)) | relLangURL }}" class="inline-flex items-center rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-neutral-600 transition hover:border-primary-200 hover:text-primary-700 dark:border-neutral-700 dark:bg-neutral-800/80 dark:text-neutral-300 dark:hover:border-primary-700 dark:hover:text-primary-300">
+                        {{ . }}
+                      </a>
+                    {{ end }}
+                  </div>
+                {{ end }}
+
+                <a href="{{ .RelPermalink }}" class="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 transition group-hover:gap-3 dark:text-primary-400">
+                  Read article
+                  <span aria-hidden="true">&rarr;</span>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
+        </article>
       {{ end }}
     </div>
   {{ end }}

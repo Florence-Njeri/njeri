@@ -1,21 +1,21 @@
-/* Center article content */
-article {
+article:not(.post-archive) {
     max-width: 65ch;
     margin-left: auto !important;
     margin-right: auto !important;
 }
 
-/* Center article prose content */
 .prose {
     max-width: 65ch;
     margin-left: auto !important;
     margin-right: auto !important;
 }
 
-/* Ensure main content is centered */
-main .max-w-7xl,
-main .max-w-prose {
-    max-width: 65ch !important;
+.post-archive {
+    max-width: min(1120px, calc(100vw - 2rem));
     margin-left: auto !important;
     margin-right: auto !important;
+}
+
+.post-archive-header {
+    max-width: 52rem;
 }
