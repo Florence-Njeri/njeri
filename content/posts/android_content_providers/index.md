@@ -10,7 +10,6 @@ tags:
 - Mobile Pentesting
 - Content Providers
 - FileProvider
-draft: false
 ---
 
 ## Pentesting Content Providers
