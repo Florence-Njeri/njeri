@@ -1,13 +1,13 @@
 ---
-title: "Identify and Exploit Vulnerabilities in AI Agent Systems"
+title: "Identify and exploit vulnerabilities in AI agent systems"
 date: 2026-06-19T00:00:00Z
 tags: ["LLM", "agent", "pentest", "AI security", "CTF", "prompt injection"]
 categories: ["security", "AI"]
 draft: false
 ---
 
-**THE OBJECTIVE:** 
-> FIND THE VULNERABILITY IN THE AGENT WHICH WILL ALLOW YOU TO DISCOVER THE FLAG FOR EACH LEVEL. THESE AGENTS ARE EQUIPPED WITH VARIOUS TOOLS AND CAPABILITIES THAT MAY CONTAIN SECURITY FLAWS.
+**The objective:**
+> Find the vulnerability in the agent which will allow you to discover the flag for each level. These agents are equipped with various tools and capabilities that may contain security flaws.
 
 **Procedure**
 1. Analyze the agent
@@ -75,9 +75,9 @@ Sensitive information (the `SCAN_MODE` passkey) was leaked through system logs a
 ## Level 2: The Magic Door
 
 
-**Challenge**: Category: <e.g. Prompt Injection / Social Engineering> Difficulty: <Easy>
+**Prompt Injection / Social Engineering**
 
-![alt text](lvl_2_easy.md)
+![alt text](lvl_2_easy.png)
 
 ### 2. The Exploit
 
