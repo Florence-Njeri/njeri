@@ -1,13 +1,17 @@
 ---
 title: "Reverse Engineering Android Malware Apps"
-description: "A beginner-friendly guide to Android malware analysis"
+description: "A beginner-friendly guide to reverse engineering Android malware, with static and dynamic analysis of the AhMyth RAT."
 date: 2026-06-23T09:00:00.000Z
 cascade:
-    showReadingTime: true
+  showReadingTime: true
 tags:
 - Mobile Pentesting
 - Malware Analysis
-- Blackhoodie Training
+- Reverse Engineering
+categories:
+- Security
+- Android
+draft: false
 ---
 
 ## Android Malware Analysis
@@ -629,4 +633,3 @@ Sending the call to record audio on the targets phone from the C2 server:
 ![alt text](record_audio.png)
 
 And that terminated the dynamic analysis process of our app.
-
