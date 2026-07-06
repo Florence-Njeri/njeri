@@ -17,8 +17,8 @@ dateFormat = "2 January 2006"
 [author]
   name = "Florence Njeri"
   image = "img/author_three.jpg"
-  headline = "Curious and learning about the safety and alignment of large language models"
-  bio = "Securing supply chain at AsyncAPI and researching about the safety and alignment of LLMs"
+  headline = "Cybersecurity Engineer and researcher"
+  bio = "I love all things pentesting; mobile, web & LLMs and researching AI security"
   links = [
     # { discord = "https://discord.gg/invitecode" },
      { github = "https://github.com/Florence-Njeri" },
