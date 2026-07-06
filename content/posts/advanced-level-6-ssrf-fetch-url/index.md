@@ -9,6 +9,7 @@ draft: false
 ## Level 6: Server-Side Request Forgery (SSRF)
 
 Server side request forgery is a type of attack that leads the server to make connections to internal facing services and applications and in other cases connect to arbitrary attcker controlled sites with the aim of leaking sensitive data.
+In an SSRF attack against the server, the attacker causes the application to make an HTTP request back to the server that is hosting the application, via its loopback network interface. This typically involves supplying a URL with a hostname like `127.0.0.1` or `localhost` which is what we will exploit via the model.
 
 ### The exploit and Result : SSRF via Unrestricted URL Fetching
 
