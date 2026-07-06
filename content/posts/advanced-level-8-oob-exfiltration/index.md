@@ -1,5 +1,5 @@
 ﻿---
-title: "Out-of-Band Exfiltration Attack via Tool Chaining"
+title: "Out-of-Band Exfiltration Attack via Tool Chaining in Agentic Workflows"
 date: 2026-07-06T00:00:00Z
 tags: ["LLM", "agent", "CTF", "response filtering bypass"]
 categories: ["security", "AI"]
