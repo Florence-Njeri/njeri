@@ -1,7 +1,7 @@
 ---
 title: "Pentesting Android Broadcast Receivers"
 description: "A beginner-friendly walkthrough of Android BroadcastReceiver attack surfaces, including exported receivers, dynamic registration, intent redirects, ordered broadcast hijacking, App Widget exploitation, and notification action spoofing."
-date: 2026-22-07T16:00:00.000Z
+date: 2026-07-22T16:00:00.000Z
 cascade:
     showReadingTime: true
 tags:
@@ -87,7 +87,7 @@ Broadcasts that expect a result back, sent via `sendOrderedBroadcast(...)`, add 
 
 ![Ordered broadcast setup showing the attack path](image.png)
 
-- **Where the weakness lies:** the target app sets up a `resultReceiver` and assumes whatever comes back is trustworthy. An attacker whose receiver runs first can call `setResultData()`, `setResultExtras()`, or `setResultCode()` to inject their own values into that return.
+- **Where the weakness lies:** the target app sets up a `resultReceiver` and assumes whatever comes back is trustworthy. An attacker whose receiver runs first can call `setResultData()`, `setResultExtras()`, or `setResultCode()` to inject their own values into that return value.
 - **The impact:** that attacker-controlled data flows straight back into the `onReceive()` of the sender's `resultReceiver`. If the app uses those results to make trust decisions, populate UI, or hand data to another internal component, the attacker is now steering that flow.
 
 ## Flag 18: Hijacking an ordered broadcast
@@ -115,7 +115,7 @@ BroadcastReceiver hijackReceiver = new HijackReceiver();
         );
 ```
 
-Once that is in place, every time `Flag18Activity` sends its broadcast my exploit app is the first receiver in line. In `HijackReceiver.onReceive()` I pull the flag out of the intent with `intent.getStringExtra("flag")` and then call `setResultCode(42)`. Because this is an ordered broadcast, that result code travels down the chain, and when the target's `resultReceiver` calls `getResultCode()` it sees **42** instead of whatever the app expected.
+Once that is in place, every time `Flag18Activity` sends its broadcast my exploit app is the first receiver to respond to it. In `HijackReceiver.onReceive()` I pull the flag out of the intent with `intent.getStringExtra("flag")` and then call `setResultCode(42)`. Because this is an ordered broadcast, that result code travels down the chain, and when the target's `resultReceiver` calls `getResultCode()` it sees **42** instead of whatever the app expected.
 
 ![Flag capture output from the broadcast exploit](flag_capture.png)
 
@@ -145,7 +145,7 @@ In Android, a widget is essentially a specialized `BroadcastReceiver`. Because a
 
 ![App widget manifest entry](widget_manifest.png)
 
-`AppWidgetProvider` is a wrapper around `BroadcastReceiver` that handles updating widget data in the background and reacting to interactions like button presses. Because the widget itself lives inside the launcher (the home screen), those button presses are wired up using **PendingIntent broadcasts** sent with the widget-owning app's permissions.
+`AppWidgetProvider` is a wrapper around `BroadcastReceiver` that handles updating widget data in the background and reacting to interactions like button presses. Because the widget itself lives inside the launcher / the home screen, those button presses are wired up using **PendingIntent broadcasts** sent with the widget-owning app's permissions.
 
 The widget's `onReceive()` is implemented by the system inside `AppWidgetProvider`, which then dispatches to protected methods like `onUpdate()`. Those system-protected methods are not directly exploitable. **Where the weakness lies** is the custom code the developer overrides on top of them.
 
@@ -168,7 +168,7 @@ Intent intent = new Intent();
 
 ![Widget intent used to reveal the flag](widget_intent_flag.png)
 
-The pattern to remember: widgets look like a launcher/system feature, but under the hood they are just another exported `BroadcastReceiver` with a slightly fancier API on top.
+**The pattern to remember:** widgets look like a launcher/system feature, but under the hood they are just another exported `BroadcastReceiver` with a slightly fancier API on top.
 
 ## The Notification System
 
