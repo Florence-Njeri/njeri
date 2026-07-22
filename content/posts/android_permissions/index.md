@@ -1,7 +1,7 @@
 ---
 title: "Android Permissions and Component Exposure"
 description: "A beginner-friendly walkthrough of the Android permission model, exported components, custom permissions, and what all of this means for mobile pentesters."
-date: 2026-07-22T16:30:00.000Z
+date: 2026-07-22T9:30:00.000Z
 cascade:
   showReadingTime: true
 tags:
@@ -118,3 +118,4 @@ For a proof of concept, you can usually ignore these during a pentest, since a c
 Android's permission model is really a chain: the manifest decides what is exported, the `protectionLevel` decides who can actually reach it, and the runtime consent dialog is the last line of defense for anything marked `dangerous`. When any link in that chain is weak, an outside app can start talking to components that were never meant to be shared.
 
 For a mobile pentester, the workflow is straightforward. Start at the manifest, list every exported component, note the permission guarding each one, and check the protection level. Anything exported with no permission or with a `normal`-level permission is a candidate. Custom permissions deserve extra attention because developers often reach for them without realizing that `signature` is the only level that truly keeps third-party apps out. Get comfortable reading these three attributes together — `exported`, `permission`, and `protectionLevel` — and most permission-related bugs will surface on their own.
+   

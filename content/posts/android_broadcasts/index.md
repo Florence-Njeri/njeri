@@ -1,7 +1,7 @@
 ---
 title: "Pentesting Android Broadcast Receivers"
 description: "A beginner-friendly walkthrough of Android BroadcastReceiver attack surfaces, including exported receivers, dynamic registration, intent redirects, ordered broadcast hijacking, App Widget exploitation, and notification action spoofing."
-date: 2026-07-22T16:00:00.000Z
+date: 2026-07-22T9:00:00.000Z
 cascade:
     showReadingTime: true
 tags:
