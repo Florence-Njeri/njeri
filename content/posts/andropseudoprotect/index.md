@@ -11,6 +11,39 @@ tags:
 
 # 8ksec - AndroPseudoProtect: Ultimate Device Security
 
+## Reconnaisance
+
+**1. Broadcast Receivers**
+
+Broadcast receivers are protected and set to `DYNAMIC_RECEIVER_NOT_EXPORTED` meaning the registered broadcast receiver can only receive broadcasts from apps signed with this app's signature. It is threfore not exploitable and no need to dig deeper.
+
+However reading further down in the manifest, when the Broadcast Receiver is defined, it is does not implement this permission and is set to exported true. This is definitely a security misconfiguration. This means that any app can send a broadcast targeting our app and it will be handled by the SecurityReceiver:
+
+```xml
+ <receiver
+            android:name="com.eightksec.andropseudoprotect.SecurityReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.eightksec.andropseudoprotect.START_SECURITY"/>
+                <action android:name="com.eightksec.andropseudoprotect.STOP_SECURITY"/>
+            </intent-filter>
+        </receiver>
+```
+To ensure security, the developers should hgave added this permoission to the receiver above: `android:permission="com.eightksec.andropseudoprotect.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION">`
+
+
+**2. External Storage**
+
+After Android 10, Android introduced scoped storage that limits apps to only access data in its private folders and then explicitly request permission to access the external storage. However to bypass scoped storage, this app requests access to `android:requestLegacyExternalStorage="true"` which was the insecure setting where every app had access to all the data in the phones external storage as long as it had `<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>` defined in its **AndroidManifest**. After Android 10, scoped storage was introduced.
+
+**Note**: This ignore flag works perfectly in Android 10
+
+The permissions requested are expectred since the app encrypts all files on your device's external storage to protect against unauthorized access.
+
+**3. Service**
+The Security Service is exported 
+
+
 ## Exploiting Exported Components and Bypassing Security By Obscurity Mechanisms
 
 The goal of this exercise was to develop an android application that exploits Android's IPC by disabling [AndroPseudoProtect.apk](https://academy.8ksec.io/path-player?courseid=android-application-exploitation-challenges&unit=681aad9d039a0df9de032156Unit)'s security functionality.

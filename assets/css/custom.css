@@ -20,8 +20,9 @@ article:not(.post-archive) {
 
 .post-archive-surface {
     background:
-        radial-gradient(circle at top left, rgba(214, 187, 129, 0.14), transparent 24%),
-        linear-gradient(180deg, #fbfaf7 0%, #f7f3eb 100%);
+        radial-gradient(circle at 12% 10%, rgba(56, 107, 168, 0.12), transparent 38%),
+        radial-gradient(circle at 88% 0%, rgba(15, 23, 42, 0.08), transparent 34%),
+        linear-gradient(180deg, #f8fafc 0%, #eef3f8 56%, #e8edf3 100%);
     border: 1px solid rgba(225, 217, 201, 0.75);
     border-radius: 32px;
     box-shadow: 0 28px 64px rgba(15, 23, 42, 0.10);
@@ -105,8 +106,8 @@ article:not(.post-archive) {
 .post-card-image-placeholder {
     align-items: flex-end;
     background:
-        radial-gradient(circle at top left, rgba(201, 155, 65, 0.22), transparent 40%),
-        linear-gradient(135deg, #f3eee3 0%, #f8f6f1 52%, #ece5d8 100%);
+        radial-gradient(circle at 14% 14%, rgba(43, 108, 176, 0.20), transparent 42%),
+        linear-gradient(135deg, #f5f8fc 0%, #ecf2f9 52%, #e5edf6 100%);
     color: #263140;
     display: flex;
     flex-direction: column;
@@ -263,5 +264,72 @@ article:not(.post-archive) {
 
     .post-card-body {
         padding: 1.2rem;
+    }
+}
+
+@media print {
+    article:not(.post-archive),
+    .prose {
+        max-width: none !important;
+        width: 100%;
+    }
+
+    article:not(.post-archive) table,
+    .prose table {
+        border-collapse: collapse;
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    article:not(.post-archive) th,
+    article:not(.post-archive) td,
+    .prose th,
+    .prose td {
+        overflow-wrap: anywhere;
+        vertical-align: top;
+        word-break: break-word;
+    }
+
+    article:not(.post-archive) thead,
+    .prose thead {
+        display: table-header-group;
+    }
+
+    article:not(.post-archive) tr,
+    .prose tr {
+        page-break-inside: avoid;
+    }
+
+    article:not(.post-archive) th:first-child,
+    article:not(.post-archive) td:first-child,
+    .prose th:first-child,
+    .prose td:first-child {
+        width: 22%;
+    }
+
+    article:not(.post-archive) th:nth-child(2),
+    article:not(.post-archive) td:nth-child(2),
+    .prose th:nth-child(2),
+    .prose td:nth-child(2) {
+        width: 10%;
+    }
+
+    article:not(.post-archive) th:nth-child(3),
+    article:not(.post-archive) td:nth-child(3),
+    .prose th:nth-child(3),
+    .prose td:nth-child(3) {
+        width: 18%;
+    }
+
+    article:not(.post-archive) th:nth-child(4),
+    article:not(.post-archive) td:nth-child(4),
+    .prose th:nth-child(4),
+    .prose td:nth-child(4) {
+        width: auto;
+    }
+
+    article:not(.post-archive) td code,
+    .prose td code {
+        white-space: pre-wrap;
     }
 }

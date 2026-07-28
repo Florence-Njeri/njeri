@@ -1,5 +1,5 @@
 ---
 title: "Posts"
-description: "Cybersecurity stuff and things :)°°°"
+description: "Cybersecurity stuff and things :)"
 draft: false
 ---

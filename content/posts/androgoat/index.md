@@ -45,11 +45,11 @@ I started my recon by first uploading the androgoat apk to [MobSF](https://mobsf
 I found multiple static credentials in the APK. Because APKs are just ZIPs, anyone can unzip or decompile and steal these keys; obfuscation does not protect them. The exposed OpenAI and AWS keys could be abused for data access and cloud spend.
 
 **How I uncovered them**
-1) Manual static review in Jadx: Searched for strings like "key" and "secret" and saw the OpenAI key that automated tools missed. ![](strings.png)
+1) Manual static review in Jadx: Searched for strings like "key" and "secret" and saw the OpenAI key that automated tools missed. ![JADX string search revealing the OpenAI key](strings.png)
 2) Automation with [apkleaks](https://github.com/dwisiswant0/apkleaks): Flagged the same OpenAI key and the AWS secret:
     - `abcdef1234567890abcdef1234567890abcdef12` (OpenAI API key)
     - `OviCwsFNWeoCSDKl3ZoD8j4BPnc1kCsfV+lOABCw` (AWS Secret Access Key)
-    ![](apkleaks.png)
+    ![APKLeaks output showing exposed OpenAI and AWS secrets](apkleaks.png)
 3) Cross-check in MobSF: Its Secrets report listed the same tokens in resources/config, confirming they are truly embedded:
 
 ```
@@ -124,7 +124,7 @@ Java.perform(function () {
 
 I was able to successfully bypass this check:
 
-![](emulator_check_bypass.png)
+![Frida bypass of the emulator detection check](emulator_check_bypass.png)
 
 ```Java
 private final boolean isEmulator() {
@@ -183,7 +183,7 @@ The app stores the username and password in `user.xml` under `/data/data/owasp.s
 
 So even though Shared Preferences feels like a “private” store, it is not secure enough for raw credentials.
 
-![](usr_pwd.png)
+![SharedPreferences file exposing the saved username and password](usr_pwd.png)
 
 ### SQLite
 Android apps use SQLite for structured data storage (similar to a standard SQL database).
@@ -194,7 +194,7 @@ The same problem appears again in the SQLite database under `/data/data/owasp.sa
 
 In this app, I was able to export the database directory and see all stored usernames and passwords immediately, without any brute‑forcing or reversing.
 
-![](sqlite.png)
+![SQLite database dump showing stored credentials](sqlite.png)
 
 ### Temp File
 
@@ -225,7 +225,7 @@ Happens because the app takes user input and processes that as code by directly 
 
 Bypassed by: `' OR '1'='1` OR `' OR 1=1 --` and the vulnerable piece of code is here: `String qry = "SELECT * FROM users WHERE username='" + ((Object) $username.getText()) + "'";` because we are appending unsanitised user input to the SQL query by string concatenation
 
-![](sql_injection.png)
+![SQL injection payload bypassing the login query](sql_injection.png)
 
 In practice this means I can log in as any user I want, or dump large parts of the users table, without knowing a valid password.
 
@@ -239,7 +239,7 @@ XSS allows an attacker to execute arbitrary JavaScript code in the context of th
 
 Source of the vulnerability: `webSettings.setJavaScriptEnabled(true);`. By default, Android WebView does not execute JavaScript. Explicitly setting this to true allows the script tags inside the HTML content to run.
 
-Compromise using the Javascript input: <img src=x onerror=alert('XSS')> ![](xss.png)
+Compromise using the Javascript input: <img src=x onerror=alert('XSS')> ![WebView XSS proof of concept](xss.png)
 
 ### 3. Webview
 
@@ -262,14 +262,14 @@ The code above allows for an attacker to do the following:
 2. **Local File Inclusion**: Allows the WebView to access the Android file system using the `file://` scheme. e.g `file:///data/data/owasp.sat.agoat/shared_prefs/`
 
 E.G Dump shared preferences:
-![](web_view_sp.png)
+![WebView dumping shared preferences via a file URL](web_view_sp.png)
 
 3. Allows JavaScript running in a file scheme context (e.g., `file:///sdcard/exploit.html`)
 webViewSettings.
 
 E.G.
 
-![](webview_sd_card.png)
+![WebView reading files from external storage via a file URL](webview_sd_card.png)
 
 4. Disables the Same-Origin Policy (SOP) for file schemes. It allows a script running in a local file to make requests to any origin (including the internet or other local files) and read the response.
 
@@ -294,13 +294,13 @@ If an application does not explicitly tell the OS, "This field contains sensitiv
 ### 1. Keyboard Cache
 Android keyboards (Input Method Editors or IMEs) utilize a user dictionary to provide auto-correction and predictive text. By default, any text typed into a standard `EditText` field is added to this dictionary. In AndroGoat, *the password is defined using `EditText` therefore if i start typing my password, the cached value I had entered is shown in the suggestions*:
 
-![](keyboard_cache.png)
+![Keyboard suggestions leaking the typed password](keyboard_cache.png)
 
 ### 2. Insecure Logging
 
 The app writes the raw password to Logcat which violates GDPR rules.
 
-![](logging.png)
+![Logcat output showing the raw password](logging.png)
 
 ### 3. Clipboard Vuln
 

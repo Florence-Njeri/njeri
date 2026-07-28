@@ -20,7 +20,7 @@ In this blog post, you’ll learn about the core database threats that jeopardiz
 
 Happens when the SQL database executes user data as code. This exploit happens when untrusted user input is used in an SQL query without sanitization. This alters database queries, leading to consequences such as data loss and data exfiltration by malicious attackers.
 
-![](sqli.png)
+![SQL injection attack example](sqli.png)
 
 **Types of SQL Injection**
 
@@ -73,7 +73,7 @@ A CSRF attack happens this way:
 - **The Trap**: In Tab B, you visit a malicious site or click a maliciously crafted link. This page contains a hidden request such as a form that submits automatically or a link to `https://bank.com/transfer?amount=10000&to=attacker`.
 - **The Hijack**: Because your browser sees a request going to your bank, it automatically sends your valid session cookie. The bank's server sees your valid cookie, assumes the request originated from you, and processes the transfer.
 
-![](csrf.png)
+![Cross-site request forgery example](csrf.png)
 
 ### Countermeasures
 
@@ -81,7 +81,7 @@ Protecting against CSRF requires more than just relying on the browser's default
 
 - **Anti-CSRF Tokens**: The server generates a unique, unpredictable nonce (a random string) that must be included in every state‑changing request, like a POST request to initiate a transfer of funds. Because of the Same‑Origin Policy (SOP), an attacker on a different website cannot read this token, making it very hard to forge a valid request.
 
-![](sop.png)
+![Same-origin policy example](sop.png)
 
 - **HTTP Referer / Origin Validation**: The server checks the `Referer` or `Origin` header to ensure the request really started from your app (e.g. `https://bank.com`) and not from a third‑party malicious site.
 - **Double Submit Cookies**: The server sends both a session cookie and a separate anti‑CSRF cookie. The client must submit the anti‑CSRF value (e.g. in a hidden form field) along with the request. The server verifies that the submitted value matches the cookie value before processing the action.

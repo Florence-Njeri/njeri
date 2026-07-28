@@ -1,0 +1,23 @@
+\usepackage{fvextra}
+\usepackage{xcolor}
+\usepackage{framed}
+
+% Define code background color
+\definecolor{codebg}{RGB}{240, 248, 255}
+\definecolor{codefg}{RGB}{0, 0, 0}
+
+% Apply styling to code blocks
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{
+  breaklines,
+  commandchars=\\\{\},
+  fontsize=\small,
+  bgcolor=codebg,
+  frame=lines,
+  framerule=1pt,
+  rulecolor=\color{gray}
+}
+
+% Use an installed monospaced font instead of the missing inconsolata package.
+\setmonofont{Liberation Mono}
+\let\oldtexttt\texttt
+\renewcommand{\texttt}[1]{\colorbox{codebg}{\oldtexttt{\color{codefg}#1}}}

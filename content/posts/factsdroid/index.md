@@ -16,7 +16,7 @@ tags:
 **GOAL**: Intercept network traffic in FactsDroid and view/modify the API requests and responses between FactsDroid and the backend server without statically patching the provided APK. The objective is to successfully implement a Man-in-The-Middle (MITM) attack that allows you to manipulate the facts being displayed to the user, potentially inserting custom content or modifying the retrieved facts before they reach the application.
 
 Upon installing the app using `adb install factsdroid.apk`, I immediately see this error message when launching the app:
-![alt text](isrooted.png)
+![Root check error displayed when FactsDroid launches](isrooted.png)
 
 In order to bypass the root check, I injected the [Frida anti-root script](https://codeshare.frida.re/@dzonerzy/fridantiroot/) into my APK:
 
@@ -24,7 +24,7 @@ In order to bypass the root check, I injected the [Frida anti-root script](https
 
 I was able to successfully bypass the root check:
 
-![](root_bypass.png)
+![Frida bypass of the root check](root_bypass.png)
 
 I had earlier added Burp's CA certificate into my emulator and set up Burp to intercept all the network calls coming from my app by following [this tutorial](https://hacktivity.fr/setting-up-an-android-emulator-for-pentest/).
 
@@ -37,7 +37,7 @@ SSL/TLS is at the application layer of the network and it ensures that the traff
 
 During the TLS handshake, the app compares the server's certificate against this hardcoded pin. If they don't match exactly, the app kills the connection immediately, even if the certificate is technically valid or signed by a trusted authority. This prevents a pentester from using a self-signed certificate from a tool like Burp Suite to intercept and read the traffic, which is why we see the error below upon clicking the **Random Fact** button.
 
-![](ssl_fail.png)
+![SSL pinning failure when the proxy certificate is not trusted](ssl_fail.png)
 
 
 Therefore, I used Frida to bypass the SSL CA authenticity check using the following command (since this is a Flutter app):
@@ -46,8 +46,8 @@ Therefore, I used Frida to bypass the SSL CA authenticity check using the follow
 
 After bypassing SSL pinning, I can now see the facts being rendered on the UI:
 
-![alt text](facts.png)
+![Facts rendered in the app after bypassing SSL pinning](facts.png)
 
 Ensure that **Verify Invisible Proxying** is enabled from the proxy settings -> Request Handling. After enabling this, I was able to intercept and modify the response to change the fact rendered on the UI.
 
-![](intercept.png)
+![Intercepted response modified before reaching the app UI](intercept.png)

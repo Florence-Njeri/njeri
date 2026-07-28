@@ -6,8 +6,6 @@ categories: ["security", "AI"]
 draft: false
 ---
 
-## Level 7: Master of Resources
-
 The instructions on level 7 indicates that the interface of the model is down but calling the API is still possible and the goal is to help restore the connection by probing the MCP server resources. Since MCP is a protocol, you can call it without the LLM (client) to read the resources exposed to the model and so read the flag.xt file.
 
 ### The exploit and result: Unauthorized MCP Resource and Tool Enumeration

@@ -71,17 +71,17 @@ Example uses cases:
 
 Reverse Engineering [CBM hacker's easy_reverse](https://crackmes.one/crackme/5b8a37a433c5d45fc286ad83) with Ghidra. After unzipping the file and getting access to the executable I ran it with the command `./rev50_linux64-bit` and see that it expects me to pass the password as an argument:
 
-![alt text](crackmes_one.png)
+![Crackmes.one challenge prompting for a password argument](crackmes_one.png)
 
 I then decompiled the excecutrable file using Ghidra and selected the main function from the Symbol Tree which loads the decompiled main function code in the Decompiled Window as shown below:
 
-![alt text](decompiled.png)
+![Ghidra decompiler output for the challenge binary](decompiled.png)
 
 I proceed to change the main undefuined signature above to the C standard signature  `int main(int argc, char *argv[])`.
 
 The code now looks much cleaner and easy to read so I proceeded to analyze the code while adding comments:
 
-![alt text](commented_code.png)
+![Decompiled function after adding analysis comments](commented_code.png)
 
 ### 1. The Argument Count (`argc`)
 
@@ -98,12 +98,12 @@ This is the specific requirement  `argv[1][4] == '@'` that checks if the 5th cha
 
 Given this information we are able to deduce how to obtain the flag by crafting an argument that satistifies all the conditions listed above as shown in the following screenshot:
 
-![alt text](image.png)
+![Program output after entering a valid password](image.png)
 
 
 ## Challenge 2
 
 After running the second challenge, I saw that the program requires a password in order to run.
-![alt text](image.png)
+![Second challenge prompting for a password](image.png)
 
 I then decompiled the executable using Ghidra

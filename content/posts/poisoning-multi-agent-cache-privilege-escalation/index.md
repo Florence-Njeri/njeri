@@ -6,7 +6,6 @@ categories: ["security", "AI"]
 draft: false
 ---
 
-## Level 7: The Octopus
 
 It seems this challenge was about *multi-agent poisoning* to gain elevated privileges to read the flag.
 

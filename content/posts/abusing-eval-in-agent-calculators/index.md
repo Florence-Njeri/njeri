@@ -5,8 +5,7 @@ tags: ["LLM", "agent", "CTF", "command injection"]
 categories: ["security", "AI"]
 draft: false
 ---
-
-## Level 5:  Bad Robot  
+ 
 
 ### The exploit and Result : Command Injection via eval()
 
